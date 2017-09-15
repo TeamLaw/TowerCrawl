@@ -1,0 +1,4 @@
+﻿  Game.c
+c:\users\law-iqt\source\repos\towercrawl\game\game\game\game.c(57): warning C4013: 'system' undefined; assuming extern returning int
+  Game.vcxproj -> C:\Users\Law-IQT\Source\Repos\TowerCrawl\Game\Game\Debug\Game.exe
+  Game.vcxproj -> C:\Users\Law-IQT\Source\Repos\TowerCrawl\Game\Game\Debug\Game.pdb (Partial PDB)
