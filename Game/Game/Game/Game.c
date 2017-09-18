@@ -5,16 +5,15 @@
 #include <Windows.h>
 
 //Save game to file?
-int checkPlayerPos(int, int, int, int);
+int checkPlayerPos(int, int);
 void drawRoom();
 void drawHealth();
 void playerMove();
 void createEnemies(struct Room *);
 void createPlayer();
 void createRooms();
-char checkEntities(int, int, struct Room);
 void enemyMove();
-void reDraw(int, int, struct Entity *);
+void drawEntities(int, int, struct Entity *);
 void moveCursor(int, int);
 
 struct Entity 
@@ -27,6 +26,7 @@ struct Entity
 	int floorLoc;//Floor location in tower
 	int health;//Current health
 	int maxHealth;//Max health
+	int damage;//attack power
 };
 
 struct Room 
@@ -61,31 +61,33 @@ int main()
 	createRooms();
 	drawRoom();
 	drawHealth();
+	drawEntities(0, 0, &newPlayer);
+	drawEntities(0, 0, &tower.floors[0].rooms[newPlayer.row][newPlayer.col].enemy);
 
 	while (1)
 	{
-		if ((double)(clock() - startTime) > 100)
+		if ((double)(clock() - startTime) > 1000)
 		{
-			if ((double)(clock() - startTime) > 2000)
-			{
-				enemyMove();
-				startTime = clock();
-			}
-			if (_kbhit()) { playerMove(); }
+			enemyMove();
+			startTime = clock();
 		}
+		if (_kbhit()) { playerMove(); }
 	}
 	
 	return 0;
 }
 	
-void reDraw(int oldX, int oldY, struct Entity * entity)//send entity to redraw, not xy
+void drawEntities(int oldX, int oldY, struct Entity * entity)//send entity to redraw, not xy
 {
 	moveCursor((*(entity)).x, (*(entity)).y);
 
 	printf("%c", (*(entity)).marker);
-
-	moveCursor(oldX, oldY);
-	printf(" ");
+	
+	if (oldX || oldY)
+	{
+		moveCursor(oldX, oldY);
+		printf(" ");
+	}
 
 	moveCursor(0, 0);
 }
@@ -105,8 +107,8 @@ void createPlayer()
 	newPlayer.row = 0;
 	newPlayer.col = 0;
 	newPlayer.floorLoc = 0;
-	newPlayer.x = 4;
-	newPlayer.y = 4;
+	newPlayer.x = 5;
+	newPlayer.y = 5;
 	newPlayer.maxHealth = 10;
 	newPlayer.health = 10;
 }
@@ -124,8 +126,8 @@ void createRooms()
 				(*(room_ptr)).sDoor = (i != 2 ? 1 : 0);
 				(*(room_ptr)).eDoor = (j != 2 ? 1 : 0);
 				(*(room_ptr)).wDoor = (j != 0 ? 1 : 0);
-				(*(room_ptr)).xSize = 16;
-				(*(room_ptr)).ySize = 16;
+				(*(room_ptr)).xSize = 25;
+				(*(room_ptr)).ySize = 25;
 				createEnemies(room_ptr);
 			}
 		}
@@ -148,6 +150,7 @@ void createEnemies(struct Room * room_ptr)
 void enemyMove()
 {
 	struct Room * room_ptr = &tower.floors[0].rooms[newPlayer.row][newPlayer.col];
+	int x = (*(room_ptr)).enemy.x, y = (*(room_ptr)).enemy.y;
 
 	if (abs((*(room_ptr)).enemy.x - newPlayer.x) > abs((*(room_ptr)).enemy.y - newPlayer.y))
 	{
@@ -157,6 +160,7 @@ void enemyMove()
 	{ 
 		(*(room_ptr)).enemy.y += ((*(room_ptr)).enemy.y < newPlayer.y ? 1 : -1);
 	}
+	drawEntities(x, y, &(*(room_ptr)).enemy);
 }
 
 void playerMove()
@@ -167,43 +171,103 @@ void playerMove()
 	switch (getch())
 	{//Need to check for collision with other entities
 	case 'w':
-		if (checkPlayerPos(room.nDoor, 0, -1, room.ySize));
-		else if (newPlayer.y > 0) { newPlayer.y--; }
+		if (checkPlayerPos(1, -1));
+		else if (newPlayer.y > 1) { 
+			newPlayer.y--;
+			drawEntities(x, y, &newPlayer);
+		}
 		break;
 	case 'a':
-		if (checkPlayerPos(room.wDoor, 0, -1, room.xSize));
-		else if (newPlayer.x > 0) { newPlayer.x--; }
+		if (checkPlayerPos(2, -1));
+		else if (newPlayer.x > 1) { 
+			newPlayer.x--; 
+			drawEntities(x, y, &newPlayer);
+		}
 		break;
 	case 's':
-		if (checkPlayerPos(room.sDoor, room.ySize - 3, 1, room.ySize));
-		else if (newPlayer.y < (room.ySize - 3)) { newPlayer.y++; }
+		if (checkPlayerPos(3, 1));
+		else if (newPlayer.y < (room.ySize - 2)) { 
+			newPlayer.y++; 
+			drawEntities(x, y, &newPlayer);
+		}
 		break;
 	case 'd':
-		if (checkPlayerPos(room.eDoor, room.xSize - 3, 1, room.xSize));
-		else if (newPlayer.x < (room.xSize - 3)) { newPlayer.x++; }
+		if (checkPlayerPos(4, 1));
+		else if (newPlayer.x < (room.xSize - 2)) { 
+			newPlayer.x++; 
+			drawEntities(x, y, &newPlayer);
+		}
 		break;
 	}
-	reDraw(x, y, &newPlayer);
 }
 
-int checkPlayerPos(int doorCheck, int locCheck, int newPos, int size)
-{//Needs to be re-written, bug with entering doors when hugging walls
-	if (doorCheck)
-	{
-		if (newPlayer.x == locCheck && (newPlayer.y == (size / 2) || newPlayer.y == (size / 2 - 1)))
-		{
-			newPlayer.x = abs(locCheck - (size - 3));
-			newPlayer.col += newPos;
-			return 1;
-		}
-		else if (newPlayer.y == locCheck && (newPlayer.x == (size / 2) || newPlayer.x == (size / 2 - 1)))
-		{
-			newPlayer.y = abs(locCheck - (size - 3));
-			newPlayer.row += newPos;
-			return 1;
-		}
-	}
+int checkPlayerPos(int direction, int newPos)
+{
+	struct Room room = tower.floors[0].rooms[newPlayer.row][newPlayer.col];
 
+	switch (direction)
+	{
+	case 1:
+		if (room.nDoor)
+		{
+			if (newPlayer.y == 1 && newPlayer.x == (room.xSize / 2))
+			{
+				newPlayer.y = abs(1 - (room.ySize - 1));
+				newPlayer.row += newPos;
+				drawRoom();
+				drawHealth();
+				drawEntities(0, 0, &newPlayer);
+				drawEntities(0, 0, &tower.floors[0].rooms[newPlayer.row][newPlayer.col].enemy);
+				return 1;
+			}
+		}
+		break;
+	case 2:
+		if (room.wDoor)
+		{
+			if (newPlayer.x == 1 && newPlayer.y == (room.ySize / 2))
+			{
+				newPlayer.x = abs(1 - (room.xSize - 1));
+				newPlayer.col += newPos;
+				drawRoom();
+				drawHealth();
+				drawEntities(0, 0, &newPlayer);
+				drawEntities(0, 0, &tower.floors[0].rooms[newPlayer.row][newPlayer.col].enemy);
+				return 1;
+			}
+		}
+		break;
+	case 3:
+		if (room.sDoor)
+		{
+			if (newPlayer.y == room.ySize - 2 && newPlayer.x == (room.xSize / 2))
+			{
+				newPlayer.y = abs(newPlayer.y - (room.ySize - 1));
+				newPlayer.row += newPos;
+				drawRoom();
+				drawHealth();
+				drawEntities(0, 0, &newPlayer);
+				drawEntities(0, 0, &tower.floors[0].rooms[newPlayer.row][newPlayer.col].enemy);
+				return 1;
+			}
+		}
+		break;
+	case 4:
+		if (room.eDoor)
+		{
+			if (newPlayer.x == room.xSize - 2 && newPlayer.y == (room.ySize / 2))
+			{
+				newPlayer.x = abs(newPlayer.x - (room.xSize - 1));
+				newPlayer.col += newPos;
+				drawRoom();
+				drawHealth();
+				drawEntities(0, 0, &newPlayer);
+				drawEntities(0, 0, &tower.floors[0].rooms[newPlayer.row][newPlayer.col].enemy);
+				return 1;
+			}
+		}
+		break;
+	}
 	return 0;
 }
 
@@ -211,35 +275,26 @@ void drawRoom()
 {//Door coded for 2 slots at halfway point of wall
 	struct Room room = tower.floors[0].rooms[newPlayer.row][newPlayer.col];
 
+	system("cls");
 	for (int n = 0; n < room.xSize; n++) 
 	{ 
-		if ((n == (room.xSize / 2) || n == (room.xSize / 2 - 1)) && room.nDoor) { printf(" "); }
+		if ((n == (room.xSize / 2)) && room.nDoor) { printf(" "); }
 		else { printf("="); }
 	}
 	printf("\n");
 	for (int y = 0; y < room.ySize - 2; y++)
 	{
-		if ((y == (room.ySize / 2) || y == (room.ySize / 2 - 1)) && room.wDoor) { printf(" "); }
+		if ((y == (room.ySize / 2 - 1)) && room.wDoor) { printf(" "); }
 		else { printf("["); }
-		for (int x = 0; x < room.xSize - 2; x++) 
-		{ 
-		    printf("%c", checkEntities(x, y, room));
-		}
-		if ((y == (room.ySize / 2) || y == (room.ySize / 2 - 1)) && room.eDoor) { printf(" \n"); }
+		for (int x = 0; x < room.xSize - 2; x++) { printf(" "); }
+		if ((y == (room.ySize / 2 - 1)) && room.eDoor) { printf(" \n"); }
 		else { printf("]\n"); }
 	}
 	for (int s = 0; s < room.xSize; s++) 
 	{ 
-		if ((s == (room.xSize / 2) || s == (room.xSize / 2 - 1)) && room.sDoor) { printf(" "); }
+		if ((s == (room.xSize / 2)) && room.sDoor) { printf(" "); }
 		else { printf("="); }
 	}
-}
-
-char checkEntities(int x, int y, struct Room room)
-{
-	if (room.enemy.maxHealth && room.enemy.health > 0 && room.enemy.x == x && room.enemy.y == y) { return 120; }
-	else if (y == newPlayer.y && x == newPlayer.x) { return 111; }
-	else { return 32; }
 }
 
 void drawHealth()
