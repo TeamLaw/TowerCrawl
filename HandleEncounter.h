@@ -3,4 +3,4 @@
 #include "HandleEncounter.c"
 #endif
 
-int handleEncounter(struct Entity * /*replace with name*/);
+int handleEncounter(struct Entity *);
