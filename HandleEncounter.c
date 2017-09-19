@@ -34,6 +34,6 @@ int handleEncounter(struct Entity * player, struct Entity * entity)
 			return 1;
 		}
 
-		drawEncounterGUI(&monster_entity);
+		drawEncounterGUI(entity);
 	}
 }
