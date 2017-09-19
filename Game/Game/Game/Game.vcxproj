@@ -112,6 +112,9 @@
   <ItemGroup>
     <ClCompile Include="Game.c" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TowerCrawl.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
