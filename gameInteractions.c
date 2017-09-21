@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "TowerCrawl.h"
 
 void drawEncounters(struct Entity* ENTITY_ptr)
 {
@@ -9,7 +10,10 @@ void drawEncounters(struct Entity* ENTITY_ptr)
 	printf("Damage: (%d) ", ENTITY_ptr->damage);
 }
 
-void gameLogic(int choice, struct Entity* MONSTER_ptr)
+/*
+ This function does what
+*/
+void gameLogic( struct Entity* player, struct Entity* entity, int choice )
 {
 	// newPlayer
 	int healingPotionPower = 10;
@@ -20,22 +24,24 @@ void gameLogic(int choice, struct Entity* MONSTER_ptr)
 	{
 	case 1:
 		printf("[-] used the sword to inflict %d damage \n", swordDamage);
-		newPlayer.health -= swordDamage;
+		player->health -= swordDamage;
+		entity->health -= 15;
 		break;
+
 	case 2:
 		printf("[-] used some healing lotion \n");
 
 		// only add health if we don't go over max
-		if (newPlayer.health + healingPotionPower <= newPlayer.maxHealth)
+		if (player->health + healingPotionPower <= player->maxHealth)
 		{
-			newPlayer.health += healingPotionPower;
+			player->health += healingPotionPower;
 		}
-		else if (newPlayer.health == newPlayer.maxHealth)
+		else if (player->health == player->maxHealth)
 		{
 		}
-		else if(newPlayer.health  > newPlayer.maxHealth - healingPotionPower)
+		else if(player->health > player->maxHealth - healingPotionPower)
 		{
-			newPlayer.health = newPlayer.maxHealth;
+			player->health = player->maxHealth;
 		}
 
 		break;
