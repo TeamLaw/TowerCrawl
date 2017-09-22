@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <conio.h>
 #include "TowerCrawl.h"
 
 /*Handle Encounter returns
@@ -6,13 +8,13 @@
 */
 int handleEncounter(struct Entity * player, struct Entity * entity)
 {
-	drawEncounterGUI(entity);
+	//drawEncounterGUI(entity);
 	while (1)
 	{
 		switch (getch() - 48)
 		{
 		case 1:
-			gameLogic(player, entity);
+			//gameLogic(player, entity);
 			break;
 
 		case 2:
@@ -20,7 +22,7 @@ int handleEncounter(struct Entity * player, struct Entity * entity)
 
 		case 9:
 			printf("Bravely run away!");
-			return 1;
+			return 0;
 			break;
 		}
 
@@ -34,6 +36,6 @@ int handleEncounter(struct Entity * player, struct Entity * entity)
 			return 1;
 		}
 
-		drawEncounterGUI(&monster_entity);
+		//drawEncounterGUI(entity);
 	}
 }

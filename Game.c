@@ -1,25 +1,30 @@
-﻿#include <stdio.h>
+﻿#define _CRT_SECURE_NO_WARNINGS 1
+
+#include <stdio.h>
 #include <math.h>
 #include <conio.h>
 #include <time.h>
-#include <Windows.h>
 #include "TowerCrawl.h"
+#include "HandleEncounter.h"
 
 //Save game to file?
 
-struct Entity newPlayer;
+struct Player newPlayer;
 struct Tower tower;
+time_t t;
 
 int main()
 {
+	int difficulty = 0;
 	clock_t startTime = clock();
+	srand((unsigned)time(&t));
+	COORD coord = { 0, 0 };
 
-	createPlayer();
-	createRooms();
+	createPlayer(&newPlayer);
+	createTower(&tower, difficulty);
 	drawRoom();
-	drawHealth();
-	drawEntities(0, 0, &newPlayer);
-	drawEntities(0, 0, &tower.floors[newPlayer.floorLoc].rooms[newPlayer.row][newPlayer.col].enemy);
+	drawInfo();
+	drawEntities(coord, newPlayer.coord, newPlayer.marker);
 
 	while (1)
 	{
@@ -29,20 +34,55 @@ int main()
 			startTime = clock();
 		}
 		if (_kbhit()) { playerMove(); }
+		checkInteraction();
 	}
 	
 	return 0;
 }
-	
-void drawEntities(int oldX, int oldY, struct Entity * entity)
-{
-	moveCursor(entity->coord.X, entity->coord.Y);
 
-	printf("%c", entity->marker);
+void checkInteraction()
+{
+	int interactionResult = 0;
+
+	struct Room * room = &tower.floors[newPlayer.floorLoc].rooms[newPlayer.pos];
+	struct Enemy * enemy = &room->enemy;
+	COORD coord = { 0, 0 };
 	
-	if (oldX || oldY)
+	if (newPlayer.coord.X == enemy->coord.X && newPlayer.coord.Y == enemy->coord.Y)
 	{
-		moveCursor(oldX, oldY);
+		interactionResult = handleEncounter(&newPlayer, enemy);
+		if (!interactionResult)
+		{
+			newPlayer.coord.X += (newPlayer.coord.X <= room->xSize / 2 ? (room->xSize / 3) : -(room->xSize / 3));
+			newPlayer.coord.Y += (newPlayer.coord.Y <= room->ySize / 2 ? (room->ySize / 3) : -(room->ySize / 3));
+			drawRoom();
+			drawInfo();
+			drawEntities(coord, newPlayer.coord, newPlayer.marker);
+			if (room->isPortal) { drawEntities(coord, room->portal.coord, room->portal.marker); }
+		}
+		else if (interactionResult == 1 && enemy->isBoss == 1)
+		{
+			room->isPortal = 1;
+			if (newPlayer.coord.X == room->xSize / 2 && newPlayer.coord.Y == room->ySize / 2) { newPlayer.coord.Y -= 2; }
+			drawEntities(coord, newPlayer.coord, newPlayer.marker);
+			drawEntities(coord, room->portal.coord, room->portal.marker);
+		}
+		else if (interactionResult == -1)
+		{
+			//You ded
+		}
+	}
+}
+	
+void drawEntities(COORD oldCoord, COORD coord, char marker)
+{
+	moveCursor(coord.X, coord.Y);
+
+	printf("%c", marker);
+	
+	if (oldCoord.X || oldCoord.Y)
+	{
+		moveCursor(oldCoord.X, oldCoord.Y);
 		printf(" ");
 	}
 
@@ -51,133 +91,79 @@ void drawEntities(int oldX, int oldY, struct Entity * entity)
 
 void moveCursor(int x, int y)
 {
-	COORD coord;
-	coord.X = x;
-	coord.Y = y;
+	COORD coord = { x, y };
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-}
-
-
-void createPlayer()
-{//hardcoded player info
-	newPlayer.marker = 'o';
-	newPlayer.row = 0;
-	newPlayer.col = 0;
-	newPlayer.floorLoc = 0;
-	newPlayer.coord.X = 5;
-	newPlayer.coord.Y = 5;
-	newPlayer.maxHealth = 10;
-	newPlayer.health = 10;
-	newPlayer.damage = 3;
-}
-
-void createRooms()
-{//hardcoded 3x3 floor setup to place doors and room size
-	int boss = 1, counter = 0, randomN = 0;
-	for (int i = 0; i < 3; i++)
-	{
-		for (int j = 0; j < 3; j++)
-		{
-			struct Room * room_ptr = &tower.floors[0].rooms[i][j];
-			if (room_ptr)
-			{
-				room_ptr->nDoor = (i != 0 ? 1 : 0);
-				room_ptr->sDoor = (i != 2 ? 1 : 0);
-				room_ptr->eDoor = (j != 2 ? 1 : 0);
-				room_ptr->wDoor = (j != 0 ? 1 : 0);
-				room_ptr->xSize = 25;
-				room_ptr->ySize = 25;
-				randomN = randomNum(counter, 9);
-				createEntities(room_ptr, (randomN == 8 ? boss : 0));
-				boss -= (boss && randomN == 8 ? 1 : 0);
-				counter++;
-			}
-		}
-	}
 }
 
 int randomNum(int low, int high)
 {
 	int r;
-	time_t t;
-
-	srand((unsigned)time(&t));
 
 	r = rand() % (high - low) + low;
 	return r;
 }
 
-void createEntities(struct Room * room_ptr, int type)
-{//hardcoded enemy limit per floor and enemy stats and location
-	if (!room_ptr->enemy.maxHealth)
-	{
-		room_ptr->enemy.marker = (type ? '#' : 'x');
-		room_ptr->enemy.coord.X = 9;
-		room_ptr->enemy.coord.Y = 9;
-		room_ptr->enemy.health = 2 * (type ? 5 : 2);
-		room_ptr->enemy.maxHealth = 2 * (type ? 5 : 2);
-		room_ptr->enemy.damage = 1 * (type ? 3 : 1);
-		room_ptr->enemy.typeCheck = type;
-	}
-}
-
 void enemyMove()
 {
-	struct Entity * enemy_ptr = &tower.floors[0].rooms[newPlayer.row][newPlayer.col].enemy;
-	int x = enemy_ptr->coord.X, y = enemy_ptr->coord.Y;
+	struct Enemy * enemy_ptr = &tower.floors[0].rooms[newPlayer.pos].enemy;
+	COORD coord = { enemy_ptr->coord.X, enemy_ptr->coord.Y };
 
 	if (abs(enemy_ptr->coord.X - newPlayer.coord.X) > abs(enemy_ptr->coord.Y - newPlayer.coord.Y))
 	{
 		enemy_ptr->coord.X += (enemy_ptr->coord.X < newPlayer.coord.X ? 1 : -1);
 	}
-	else 
-	{ 
-		enemy_ptr->coord.Y += (enemy_ptr->coord.Y < newPlayer.coord.Y ? 1 : -1);
-	}
-	drawEntities(x, y, enemy_ptr);
+	else { enemy_ptr->coord.Y += (enemy_ptr->coord.Y < newPlayer.coord.Y ? 1 : -1); }
+	
+	if (enemy_ptr->maxHealth) { drawEntities(coord, enemy_ptr->coord, enemy_ptr->marker); }
 }
 
 void playerMove()
 {
-	int x = newPlayer.coord.X, y = newPlayer.coord.Y;
-	struct Room room = tower.floors[0].rooms[newPlayer.row][newPlayer.col];
+	COORD coord = newPlayer.coord;
+	struct Room room = tower.floors[newPlayer.floorLoc].rooms[newPlayer.pos];
 
 	switch (getch())
 	{
 	case 'w':
-		if (checkPlayerPos(1, -1));
-		else if (newPlayer.coord.Y > 1) { 
+		if (checkPlayerPos(1));
+		else if (newPlayer.coord.Y > 1) 
+		{ 
 			newPlayer.coord.Y--;
-			drawEntities(x, y, &newPlayer);
-		}
-		break;
-	case 'a':
-		if (checkPlayerPos(2, -1));
-		else if (newPlayer.coord.X > 1) { 
-			newPlayer.coord.X--; 
-			drawEntities(x, y, &newPlayer);
+			drawEntities(coord, newPlayer.coord, newPlayer.marker);
 		}
 		break;
 	case 's':
-		if (checkPlayerPos(3, 1));
-		else if (newPlayer.coord.Y < (room.ySize - 2)) { 
-			newPlayer.coord.Y++; 
-			drawEntities(x, y, &newPlayer);
+		if (checkPlayerPos(2));
+		else if (newPlayer.coord.Y < (room.ySize - 2))
+		{
+			newPlayer.coord.Y++;
+			drawEntities(coord, newPlayer.coord, newPlayer.marker);
+		}
+		break;
+	case 'a':
+		if (checkPlayerPos(3));
+		else if (newPlayer.coord.X > 1) 
+		{ 
+			newPlayer.coord.X--; 
+			drawEntities(coord, newPlayer.coord, newPlayer.marker);
 		}
 		break;
 	case 'd':
-		if (checkPlayerPos(4, 1));
-		else if (newPlayer.coord.X < (room.xSize - 2)) { 
+		if (checkPlayerPos(4));
+		else if (newPlayer.coord.X < (room.xSize - 2)) 
+		{ 
 			newPlayer.coord.X++; 
-			drawEntities(x, y, &newPlayer);
+			drawEntities(coord, newPlayer.coord, newPlayer.marker);
 		}
 		break;
 	}
 }
 
-int checkPlayerPos(int direction, int newPos)
+int checkPlayerPos(int direction)
 {
-	struct Room room = tower.floors[0].rooms[newPlayer.row][newPlayer.col];
+	struct Room room = tower.floors[newPlayer.floorLoc].rooms[newPlayer.pos];
+	struct Enemy enemy;
+	COORD coord = { 0, 0 };
 
 	switch (direction)
 	{
@@ -187,41 +173,44 @@ int checkPlayerPos(int direction, int newPos)
 			if (newPlayer.coord.Y == 1 && newPlayer.coord.X == (room.xSize / 2))
 			{
 				newPlayer.coord.Y = abs(1 - (room.ySize - 1));
-				newPlayer.row += newPos;
+				newPlayer.pos = (room.nDoor == -1 ? 0 : room.nDoor);
 				drawRoom();
-				drawHealth();
-				drawEntities(0, 0, &newPlayer);
-				drawEntities(0, 0, &tower.floors[0].rooms[newPlayer.row][newPlayer.col].enemy);
+				drawInfo();
+				enemy = tower.floors[newPlayer.floorLoc].rooms[newPlayer.pos].enemy;
+				drawEntities(coord, newPlayer.coord, newPlayer.marker);
+				drawEntities(coord, enemy.coord, enemy.marker);
 				return 1;
 			}
 		}
 		break;
 	case 2:
-		if (room.wDoor)
-		{
-			if (newPlayer.coord.X == 1 && newPlayer.coord.Y == (room.ySize / 2))
-			{
-				newPlayer.coord.X = abs(1 - (room.xSize - 1));
-				newPlayer.col += newPos;
-				drawRoom();
-				drawHealth();
-				drawEntities(0, 0, &newPlayer);
-				drawEntities(0, 0, &tower.floors[0].rooms[newPlayer.row][newPlayer.col].enemy);
-				return 1;
-			}
-		}
-		break;
-	case 3:
 		if (room.sDoor)
 		{
 			if (newPlayer.coord.Y == room.ySize - 2 && newPlayer.coord.X == (room.xSize / 2))
 			{
 				newPlayer.coord.Y = abs(newPlayer.coord.Y - (room.ySize - 1));
-				newPlayer.row += newPos;
+				newPlayer.pos = (room.sDoor == -1 ? 0 : room.sDoor);
 				drawRoom();
-				drawHealth();
-				drawEntities(0, 0, &newPlayer);
-				drawEntities(0, 0, &tower.floors[0].rooms[newPlayer.row][newPlayer.col].enemy);
+				drawInfo();
+				enemy = tower.floors[newPlayer.floorLoc].rooms[newPlayer.pos].enemy;
+				drawEntities(coord, newPlayer.coord, newPlayer.marker);
+				drawEntities(coord, enemy.coord, enemy.marker);
+				return 1;
+			}
+		}
+		break;
+	case 3:
+		if (room.wDoor)
+		{
+			if (newPlayer.coord.X == 1 && newPlayer.coord.Y == (room.ySize / 2))
+			{
+				newPlayer.coord.X = abs(1 - (room.xSize - 1)); 
+				newPlayer.pos = (room.wDoor == -1 ? 0 : room.wDoor);
+				drawRoom();
+				drawInfo();
+				enemy = tower.floors[newPlayer.floorLoc].rooms[newPlayer.pos].enemy;
+				drawEntities(coord, newPlayer.coord, newPlayer.marker);
+				drawEntities(coord, enemy.coord, enemy.marker);
 				return 1;
 			}
 		}
@@ -232,11 +221,12 @@ int checkPlayerPos(int direction, int newPos)
 			if (newPlayer.coord.X == room.xSize - 2 && newPlayer.coord.Y == (room.ySize / 2))
 			{
 				newPlayer.coord.X = abs(newPlayer.coord.X - (room.xSize - 1));
-				newPlayer.col += newPos;
+				newPlayer.pos = (room.eDoor == -1 ? 0 : room.eDoor);
 				drawRoom();
-				drawHealth();
-				drawEntities(0, 0, &newPlayer);
-				drawEntities(0, 0, &tower.floors[0].rooms[newPlayer.row][newPlayer.col].enemy);
+				drawInfo();
+				enemy = tower.floors[newPlayer.floorLoc].rooms[newPlayer.pos].enemy;
+				drawEntities(coord, newPlayer.coord, newPlayer.marker);
+				drawEntities(coord, enemy.coord, enemy.marker);
 				return 1;
 			}
 		}
@@ -248,7 +238,7 @@ int checkPlayerPos(int direction, int newPos)
 
 void drawRoom()
 {//Door coded for 2 slots at halfway point of wall
-	struct Room room = tower.floors[0].rooms[newPlayer.row][newPlayer.col];
+	struct Room room = tower.floors[newPlayer.floorLoc].rooms[newPlayer.pos];
 
 	system("cls");
 	for (int n = 0; n < room.xSize; n++) 
@@ -272,7 +262,7 @@ void drawRoom()
 	}
 }
 
-void drawHealth()
+void drawInfo()
 {
 	printf("\n\n\n");
 	printf("HP: ");
@@ -282,3 +272,4 @@ void drawHealth()
 	}
 	printf("  %d/%d", newPlayer.health, newPlayer.maxHealth);
 }
+
