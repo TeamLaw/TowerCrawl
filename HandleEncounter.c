@@ -6,7 +6,7 @@
 0 if you die
 1 if you stay alive
 */
-int handleEncounter(struct Entity * player, struct Entity * entity)
+int handleEncounter(struct Entity * player, struct Entity * entity, int choice)
 {
 	//drawEncounterGUI(entity);
 	while (1)
@@ -14,7 +14,8 @@ int handleEncounter(struct Entity * player, struct Entity * entity)
 		switch (getch() - 48)
 		{
 		case 1:
-			//gameLogic(player, entity);
+
+			gameLogic(player, entity, choice);
 			break;
 
 		case 2:
@@ -36,6 +37,7 @@ int handleEncounter(struct Entity * player, struct Entity * entity)
 			return 1;
 		}
 
-		//drawEncounterGUI(entity);
+
+		drawEncounterGUI(entity);
 	}
 }
