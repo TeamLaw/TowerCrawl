@@ -1,6 +1,6 @@
-#ifndef HANDLEENCOUNTER
-#define HANDLEENCOUTNER 1
-#include "HandleEncounter.c"
-#endif
+#ifndef HANDLEENCOUNTER_H_
+#define HANDLEENCOUNTER_H_
 
-int handleEncounter(struct Entity *);
+int handleEncounter(struct Entity *, struct Entity *);
+
+#endif
