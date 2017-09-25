@@ -1,5 +1,4 @@
-
-#include "HandleEncounter.h"
+#include "TowerCrawl.h"
 
 //DrawEncounters will display the the health of both the monster and the player
 void drawEncounters(struct Player * Player, struct Sprite * Monster)
@@ -9,8 +8,8 @@ void drawEncounters(struct Player * Player, struct Sprite * Monster)
 	printf("Its health : %d\n\n",Monster->health);
 	printf("Your health : %d\n",Player->health);
 	printf("You have 43 potions.\n");
-	printf("What do you do ?\n");
-	printf("Attack(1) - Use Potion(2) - Wait(3) - Flee(9)\n");
+	printf("\nWhat do you do ?\n");
+	printf("\nAttack(1)\nUse Potion(2)\nWait(3)\nFlee(9)\n");
 }
 
 //GameLogic takes the players choice and caculates what both the player's
