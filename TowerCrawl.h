@@ -99,7 +99,5 @@ void MonsterAction(struct Player*, struct Sprite*);
 int handleEncounter(struct Player *, struct Sprite *);
 int coordCompare(COORD, COORD);
 
-#include "HandleEncounter.h"
-
 #endif
 
