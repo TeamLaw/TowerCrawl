@@ -44,16 +44,19 @@ int handleEncounter(struct Player * Player, struct Sprite * Monster)
 			break;
 		}
 
+		// if the play is dead, end encounter
 		if (Player->health <= 0)
 		{
-			printf("You dead!");
 			return -1;
 		}
+
+		// if the monster is dead, end encounter
 		else if (Monster->health <= 0)
 		{
+			// increase the players experience, monster is dead!
+			Player->experience += Monster->experience;
 			return 1;
 		}
-
 
 		drawEncounters(Player,Monster);
 	}
