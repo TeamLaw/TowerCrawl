@@ -1,4 +1,4 @@
-#include "CreateWorld.h"
+#include "TowerCrawl.h"
 
 void createPlayer(struct Player * player)
 {//hardcoded player info
@@ -23,7 +23,7 @@ void createTower(struct Tower * tower, int dif)
 	for (int i = 0; i < sizeof(tower->floors) / sizeof(tower->floors[0]); i++)
 	{
 		floor = &tower->floors[i];
-
+		pos = 0;
 		for (int j = 0; j < (10 + (dif * 5)); j++)
 		{
 			room = &floor->rooms[j];
@@ -42,15 +42,11 @@ void createTower(struct Tower * tower, int dif)
 			oldDoor = newDoor + (newDoor % 2 ? 1 : -1);
 			pos++;
 			int check = (j == (10 + (dif * 5)) - 1);
-			if (pos > 1) 
-			{ 
-				if (createEnemies(room, dif, (j == (10 + (dif * 5)) - 1)))
-				{
-					room->portal.coord.X = (room->xSize / 2);
-					room->portal.coord.Y = (room->ySize / 2);
-					room->portal.marker = '@';
-				}
-			}//Last room holds a boss
+			if (pos > 1) { (createEnemies(room, dif, (j == (10 + (dif * 5)) - 1))); }
+			
+			room->portal.coord.X = (room->xSize / 2);
+			room->portal.coord.Y = (room->ySize / 2);
+			room->portal.marker = '@';
 		}
 	}
 }

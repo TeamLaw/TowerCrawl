@@ -1,4 +1,4 @@
-#include "HandleEncounter.h"
+#include "TowerCrawl.h"
 
 /*HandleEncounter returns
 -1 if you die
