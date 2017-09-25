@@ -1,43 +1,54 @@
-#include <stdio.h>
-#include <conio.h>
-#include "TowerCrawl.h"
+#include "HandleEncounter.h"
 
-/*Handle Encounter returns
-0 if you die
-1 if you stay alive
+/*HandleEncounter returns
+-1 if you die
+0 if you flee
+1 if you kill the monster
 */
-int handleEncounter(struct Entity * player, struct Entity * entity, int choice)
+int handleEncounter(struct Player * Player, struct Sprite * Monster)
 {
-	//drawEncounterGUI(entity);
+	drawEncounters(Player, Monster);
+	enum PlayerChoice PC = Wait;
+
 	while (1)
 	{
 		switch (getch() - 48)
 		{
+			//If the player hits "1" the player attacks
 		case 1:
-
-			gameLogic(player, entity, choice);
+			PC = Attack;
+			gameLogic(Player, Monster, PC);
 			break;
 
+			//If the player hits "2" the player uses a healing potion
 		case 2:
+			PC = Use_Potion;
+			gameLogic(Player, Monster, PC);
 			break;
 
+			//If the player hits "2" the player waits
+		case 3:
+			PC = Wait;
+			gameLogic(Player, Monster, PC);
+			break;
+
+		//Flee
 		case 9:
-			printf("Bravely run away!");
 			return 0;
 			break;
 		}
 
-		if (player->health <= 0)
+		if (Player->health <= 0)
 		{
 			printf("You dead!");
-			return 0;
+			return -1;
 		}
-		else if (entity->health <= 0)
+		else if (Monster->health <= 0)
 		{
 			return 1;
 		}
 
 
-		drawEncounterGUI(entity);
+		drawEncounters(Player,Monster);
 	}
 }

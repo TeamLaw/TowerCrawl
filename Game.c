@@ -1,11 +1,5 @@
-﻿#define _CRT_SECURE_NO_WARNINGS 1
-
-#include <stdio.h>
-#include <math.h>
-#include <conio.h>
-#include <time.h>
+﻿
 #include "TowerCrawl.h"
-#include "HandleEncounter.h"
 
 //Save game to file?
 

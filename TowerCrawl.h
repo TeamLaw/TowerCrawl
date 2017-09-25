@@ -1,7 +1,22 @@
+#define _CRT_SECURE_NO_WARNINGS 1
+
 #include <Windows.h>
+#include <math.h>
+#include <time.h>
+
+#ifndef stdio 
+#define stdio 1
+#include <stdio.h>
+#endif
+
+#ifndef conio
+#define conio 1
+#include <conio.h>
+#endif // !conio
+
 
 #ifndef TOWERCRAWL_H_
-#define TOWERCRAWL_H_
+#define TOWERCRAWL_H_ 1
 
 struct Entity
 {
@@ -56,6 +71,16 @@ struct Tower
 	struct Floor floors[3];
 };
 
+//enum to pass player choice , I thought it was less ocnfusing than using ints
+enum PlayerChoice
+{
+	Attack,
+	Use_Potion,
+	Wait,
+	Cheat,
+};
+
+//Game.c
 void createPlayer(struct Player *);
 void createTower(struct Tower *, int);
 void createEntities(struct Room *, int);
@@ -68,6 +93,8 @@ void drawEntities(COORD, COORD, char);
 void moveCursor(int, int);
 int randomNum(int, int);//accepts min and max integer and returns: min <= num < max
 void checkInteraction();
+
+#include "HandleEncounter.h"
 
 #endif
 
