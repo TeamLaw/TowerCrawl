@@ -44,7 +44,7 @@ void checkInteraction()
 	
 	if (newPlayer.coord.X == enemy->coord.X && newPlayer.coord.Y == enemy->coord.Y)
 	{
-		interactionResult = handleEncounter(&newPlayer, enemy);
+		//interactionResult = handleEncounter(&newPlayer, enemy);
 		if (!interactionResult)
 		{
 			newPlayer.coord.X += (newPlayer.coord.X <= room->xSize / 2 ? (room->xSize / 3) : -(room->xSize / 3));
@@ -108,7 +108,7 @@ void enemyMove()
 	}
 	else { enemy_ptr->coord.Y += (enemy_ptr->coord.Y < newPlayer.coord.Y ? 1 : -1); }
 	
-	if (enemy_ptr->maxHealth) { drawEntities(coord, enemy_ptr->coord, enemy_ptr->marker); }
+	if (enemy_ptr->health) { drawEntities(coord, enemy_ptr->coord, enemy_ptr->marker); }
 }
 
 void playerMove()
@@ -172,7 +172,7 @@ int checkPlayerPos(int direction)
 				drawInfo();
 				enemy = tower.floors[newPlayer.floorLoc].rooms[newPlayer.pos].enemy;
 				drawEntities(coord, newPlayer.coord, newPlayer.marker);
-				drawEntities(coord, enemy.coord, enemy.marker);
+				if (enemy.health) { drawEntities(coord, enemy.coord, enemy.marker); }
 				return 1;
 			}
 		}
@@ -188,7 +188,7 @@ int checkPlayerPos(int direction)
 				drawInfo();
 				enemy = tower.floors[newPlayer.floorLoc].rooms[newPlayer.pos].enemy;
 				drawEntities(coord, newPlayer.coord, newPlayer.marker);
-				drawEntities(coord, enemy.coord, enemy.marker);
+				if (enemy.health) { drawEntities(coord, enemy.coord, enemy.marker); }
 				return 1;
 			}
 		}
@@ -204,7 +204,7 @@ int checkPlayerPos(int direction)
 				drawInfo();
 				enemy = tower.floors[newPlayer.floorLoc].rooms[newPlayer.pos].enemy;
 				drawEntities(coord, newPlayer.coord, newPlayer.marker);
-				drawEntities(coord, enemy.coord, enemy.marker);
+				if (enemy.health) { drawEntities(coord, enemy.coord, enemy.marker); }
 				return 1;
 			}
 		}
@@ -220,7 +220,7 @@ int checkPlayerPos(int direction)
 				drawInfo();
 				enemy = tower.floors[newPlayer.floorLoc].rooms[newPlayer.pos].enemy;
 				drawEntities(coord, newPlayer.coord, newPlayer.marker);
-				drawEntities(coord, enemy.coord, enemy.marker);
+				if (enemy.health) { drawEntities(coord, enemy.coord, enemy.marker); }
 				return 1;
 			}
 		}
