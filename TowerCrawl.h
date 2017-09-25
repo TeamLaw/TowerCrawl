@@ -30,7 +30,6 @@ struct Sprite
 	int health;
 	int maxHealth;
 	int damage;
-	int experience;
 };
 
 struct Player
@@ -99,5 +98,8 @@ void gameLogic(struct Player*, struct Sprite* Monster, enum PlayerChoice);
 void MonsterAction(struct Player*, struct Sprite*);
 int handleEncounter(struct Player *, struct Sprite *);
 int coordCompare(COORD, COORD);
+
+#include "HandleEncounter.h"
+
 #endif
 
