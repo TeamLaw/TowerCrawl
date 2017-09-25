@@ -26,9 +26,15 @@ int handleEncounter(struct Player * Player, struct Sprite * Monster)
 			gameLogic(Player, Monster, PC);
 			break;
 
-			//If the player hits "2" the player waits
+			//If the player hits "3" the player waits
 		case 3:
 			PC = Wait;
+			gameLogic(Player, Monster, PC);
+			break;
+
+			//If the player hits "7" the player cheats
+		case 7:
+			PC = Cheat;
 			gameLogic(Player, Monster, PC);
 			break;
 
