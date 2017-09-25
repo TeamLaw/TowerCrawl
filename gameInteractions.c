@@ -1,11 +1,24 @@
 #include "TowerCrawl.h"
 
+
 //DrawEncounters will display the the health of both the monster and the player
 void drawEncounters(struct Player * Player, struct Sprite * Monster)
 {
 	system("cls");
 	printf("A monster stands before you!\n");
 	printf("Its health : %d\n\n",Monster->health);
+	printf("        ______ \n");
+	printf("       /---.__\\ \n");
+	printf("      /       `\\ \n");
+	printf("     | o     o  \\ \n");
+	printf("   /'| .vvvvv.  |'\\ \n");
+	printf("  / /| |     |  |  \\ \n");
+	printf(" / /'| `^^^^^'  |/\\ \\ \n");
+	printf(" ~   \\          |  \\ \\ \n");
+	printf("      |         |    ~ \n");
+	printf("      7        / \n");
+	printf("   _ /    .    | \n");
+	printf("____-|_/\\/_`--.|____ \n");
 	printf("Your health : %d\n",Player->health);
 	printf("You have 43 potions.\n");
 	printf("\nWhat do you do ?\n");
