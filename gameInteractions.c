@@ -9,7 +9,6 @@ void drawEncounters(struct Player * Player, struct Enemy * Monster)
 		system("cls");
 		printf("Brosifv Stalin spits on your Democracy! \n");
 		printf("Brosifv Stalin's Health: %d\n\n", Monster->health);
-		printf("Brosifv Stalin spits on your Democracy! \n");
 		printf("                !#########       # \n");
 		printf("              !########!          ##! \n");
 		printf("           !########!               ### \n");
@@ -27,7 +26,7 @@ void drawEncounters(struct Player * Player, struct Enemy * Monster)
 		printf("      ,####'     ##################!'    ##### \n");
 		printf("    ,####'            #######              !####! \n");
 		printf("   ####'                                      ##### \n");
-		printf("   ~##                                          ##~ \n");
+		printf("   ~##                                          ##~ \n\n");
 		printf("Your health : %d\n", Player->health);
 		printf("You have 43 potions.\n");
 		printf("\nWhat do you do ?\n");
