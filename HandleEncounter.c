@@ -5,7 +5,7 @@
 0 if you flee
 1 if you kill the monster
 */
-int handleEncounter(struct Player * Player, struct Sprite * Monster)
+int handleEncounter(struct Player * Player, struct Enemy * Monster)
 {
 	drawEncounters(Player, Monster);
 	enum PlayerChoice PC = Wait;
@@ -38,10 +38,11 @@ int handleEncounter(struct Player * Player, struct Sprite * Monster)
 			gameLogic(Player, Monster, PC);
 			break;
 
-		//Flee
+			//Flee
 		case 9:
 			return 0;
 			break;
+
 		}
 
 		if (Player->health <= 0)
@@ -55,6 +56,6 @@ int handleEncounter(struct Player * Player, struct Sprite * Monster)
 		}
 
 
-		drawEncounters(Player,Monster);
+		drawEncounters(Player, Monster);
 	}
 }

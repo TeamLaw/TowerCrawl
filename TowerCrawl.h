@@ -71,7 +71,7 @@ struct Tower
 	struct Floor floors[3];
 };
 
-//enum to pass player choice , I thought it was less ocnfusing than using ints
+//enum to pass player choice , I thought it was less confusing than using ints
 enum PlayerChoice
 {
 	Attack,
@@ -93,10 +93,10 @@ void drawEntities(COORD, COORD, char);
 void moveCursor(int, int);
 int randomNum(int, int);//accepts min and max integer and returns: min <= num < max
 void checkInteraction();
-void drawEncounters(struct Player *, struct Sprite *);
-void gameLogic(struct Player*, struct Sprite* Monster, enum PlayerChoice);
-void MonsterAction(struct Player*, struct Sprite*);
-int handleEncounter(struct Player *, struct Sprite *);
+void drawEncounters(struct Player *, struct Enemy *);
+void gameLogic(struct Player*, struct Enemy* Monster, enum PlayerChoice);
+void MonsterAction(struct Player*, struct Enemy*);
+int handleEncounter(struct Player *, struct Enemy *);
 int coordCompare(COORD, COORD);
 void ShowPlayerStats(struct Player *);
 

@@ -2,32 +2,64 @@
 
 
 //DrawEncounters will display the the health of both the monster and the player
-void drawEncounters(struct Player * Player, struct Sprite * Monster)
+void drawEncounters(struct Player * Player, struct Enemy * Monster)
 {
-	system("cls");
-	printf("A monster stands before you!\n");
-	printf("Its health : %d\n\n",Monster->health);
-	printf("        ______ \n");
-	printf("       /---.__\\ \n");
-	printf("      /       `\\ \n");
-	printf("     | o     o  \\ \n");
-	printf("   /'| .vvvvv.  |'\\ \n");
-	printf("  / /| |     |  |  \\ \n");
-	printf(" / /'| `^^^^^'  |/\\ \\ \n");
-	printf(" ~   \\          |  \\ \\ \n");
-	printf("      |         |    ~ \n");
-	printf("      7        / \n");
-	printf("   _ /    .    | \n");
-	printf("____-|_/\\/_`--.|____ \n");
-	printf("Your health : %d\n",Player->health);
-	printf("You have 43 potions.\n");
-	printf("\nWhat do you do ?\n");
-	printf("\nAttack(1)\nUse Potion(2)\nWait(3)\nFlee(9)\n");
+	if (Monster->isBoss)
+	{
+		system("cls");
+		printf("Brosifv Stalin spits on your Democracy! \n");
+		printf("Brosifv Stalin's Health: %d\n\n", Monster->health);
+		printf("Brosifv Stalin spits on your Democracy! \n");
+		printf("                !#########       # \n");
+		printf("              !########!          ##! \n");
+		printf("           !########!               ### \n");
+		printf("        !##########                  #### \n");
+		printf("      ######### #####                ###### \n");
+		printf("       !###!      !####!              ###### \n");
+		printf("         !           #####            ######! \n");
+		printf("                       !####!         ####### \n");
+		printf("                          #####       ####### \n");
+		printf("                            !####!   #######! \n");
+		printf("                               ####!######## \n");
+		printf("           ##                    ########## \n");
+		printf("         ,######!           !############# \n");
+		printf("        ,#### ########################!####! \n");
+		printf("      ,####'     ##################!'    ##### \n");
+		printf("    ,####'            #######              !####! \n");
+		printf("   ####'                                      ##### \n");
+		printf("   ~##                                          ##~ \n");
+		printf("Your health : %d\n", Player->health);
+		printf("You have 43 potions.\n");
+		printf("\nWhat do you do ?\n");
+		printf("\nAttack(1)\nUse Potion(2)\nWait(3)\nFlee(9)\n");
+	}
+	else
+	{
+		system("cls");
+		printf("A monster stands before you!\n");
+		printf("Its health : %d\n\n", Monster->health);
+		printf("        ______ \n");
+		printf("       /---.__\\ \n");
+		printf("      /       `\\ \n");
+		printf("     | o     o  \\ \n");
+		printf("   /'| .vvvvv.  |'\\ \n");
+		printf("  / /| |     |  |  \\ \n");
+		printf(" / /'| `^^^^^'  |/\\ \\ \n");
+		printf(" ~   \\          |  \\ \\ \n");
+		printf("      |         |    ~ \n");
+		printf("      7        / \n");
+		printf("   _ /    .    | \n");
+		printf("____-|_/\\/_`--.|____ \n\n\n");
+		printf("Your health : %d\n", Player->health);
+		printf("You have 43 potions.\n");
+		printf("\nWhat do you do ?\n");
+		printf("\nAttack(1)\nUse Potion(2)\nWait(3)\nFlee(9)\n");
+	}
 }
 
 //GameLogic takes the players choice and caculates what both the player's
 //and monster's action and health will be.
-void gameLogic( struct Player* Player, struct Sprite* Monster,enum PlayerChoice PC )
+void gameLogic(struct Player* Player, struct Sprite* Monster, enum PlayerChoice PC)
 {
 	// temp Healing Potion power
 	int healingPotionPower = 25;
@@ -36,7 +68,7 @@ void gameLogic( struct Player* Player, struct Sprite* Monster,enum PlayerChoice 
 	switch (PC)
 	{
 	case Attack:
-	
+
 		//Player does damage to the monster
 		Monster->health -= Player->damage;
 		//Monsters turn
@@ -55,7 +87,7 @@ void gameLogic( struct Player* Player, struct Sprite* Monster,enum PlayerChoice 
 		else if (Player->health == Player->maxHealth)
 		{
 		}
-		else if(Player->health > Player->maxHealth - healingPotionPower)
+		else if (Player->health > Player->maxHealth - healingPotionPower)
 		{
 			Player->health = Player->maxHealth;
 		}
