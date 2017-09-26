@@ -105,5 +105,6 @@ void ShowPlayerStats();
 void displayDeathScreen();
 void clearMemory();
 void createFloor();
+void printGameIntroMessage();
 
 #endif

@@ -10,6 +10,9 @@ int main()
 	clock_t startTime = clock();
 	srand((unsigned)time(&t));
 
+	// display greeting
+	printGameIntroMessage();
+
 	createPlayer();
 	createFloor();
 
@@ -23,6 +26,7 @@ int main()
 		if (_kbhit()) { playerMove(); }
 
 		if (checkInteraction() == -1) { return; }
+
 	}
 	clearMemory();
 	
@@ -64,9 +68,30 @@ int minCheck(int mod)
 	return (counter == delCounter);
 }
 
+
 void clearMemory()
 {
 	for (int i = 0; i < delCounter; i++)
 		free(delPointers[i]);
 	delCounter = 0;
+
+void printGameIntroMessage()
+{
+	printf("TO ADD GRAPHIC\nPRESS ANY KEY TO START THE GAME \n");
+	printf("> ");
+	_getch();
+	system("cls");
+
+	printf("~ An evil wizard has stolen your crown. ~\n~ You and your finest warriors travel to the wizard's tower ~\n~ to take it back! ~ \n>");	
+	_getch();
+	system("cls");
+	
+	printf("~ You burst down the front door of his tower. ~\n~ The room goes dark and you find yourself alone, ~\n~ in a strange room.... ~ \n>");
+	_getch();
+	system("cls");
+	
+	printf("~ Doors appear on the walls. The wizard strange ~\n~ magic will not... cannot keep you from your goal. Travel to the ~\n~ top of the tower and end this maddness! ~ \n>");
+	_getch();
+	system("cls");
+
 }

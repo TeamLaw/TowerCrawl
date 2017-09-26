@@ -4,6 +4,9 @@
 //DrawEncounters will display the the health of both the monster and the player
 void drawEncounters(struct Enemy * Monster)
 {
+	//#########################################
+	//Graphics need to be added to their own  graphics text files
+	//use pullGraphics(Filename);
 	if (Monster->isBoss)
 	{
 		system("cls");

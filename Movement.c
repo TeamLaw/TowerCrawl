@@ -193,6 +193,7 @@ int checkInteraction()
 		else
 		{
 			//Game over, you win!
+
 		}
 	}
 }
