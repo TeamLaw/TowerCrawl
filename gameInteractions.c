@@ -2,7 +2,7 @@
 
 
 //DrawEncounters will display the the health of both the monster and the player
-void drawEncounters(struct Player * Player, struct Enemy * Monster)
+void drawEncounters(struct Enemy * Monster)
 {
 	if (Monster->isBoss)
 	{
@@ -27,7 +27,7 @@ void drawEncounters(struct Player * Player, struct Enemy * Monster)
 		printf("    ,####'            #######              !####! \n");
 		printf("   ####'                                      ##### \n");
 		printf("   ~##                                          ##~ \n\n");
-		printf("Your health : %d\n", Player->health);
+		printf("Your health : %d\n", player.health);
 		printf("You have 43 potions.\n");
 		printf("\nWhat do you do ?\n");
 		printf("\nAttack(1)\nUse Potion(2)\nWait(3)\nFlee(9)\n");
@@ -49,7 +49,7 @@ void drawEncounters(struct Player * Player, struct Enemy * Monster)
 		printf("      7        / \n");
 		printf("   _ /    .    | \n");
 		printf("____-|_/\\/_`--.|____ \n\n");
-		printf("Your health : %d\n", Player->health);
+		printf("Your health : %d\n", player.health);
 		printf("You have 43 potions.\n");
 		printf("\nWhat do you do ?\n");
 		printf("\nAttack(1)\nUse Potion(2)\nWait(3)\nFlee(9)\n");
@@ -60,7 +60,7 @@ void drawEncounters(struct Player * Player, struct Enemy * Monster)
 //GameLogic takes the players choice and caculates what both the player's
 //and monster's action and health will be.
 
-void gameLogic( struct Player* Player, struct Sprite* Monster, enum PlayerChoice PC )
+void gameLogic(struct Enemy* Monster, enum PlayerChoice PC )
 {
 	// temp Healing Potion power
 	int healingPotionPower = 25;
@@ -71,80 +71,63 @@ void gameLogic( struct Player* Player, struct Sprite* Monster, enum PlayerChoice
 	case Attack:
 
 		//Player does damage to the monster
-		Monster->health -= Player->damage;		
+		Monster->health -= player.damage;		
 
 		//Monsters turn
-		MonsterAction(Player, Monster);
+		MonsterAction(Monster);
 
 		break;
 
 	case Use_Potion:
 		// only add health if we don't go over max
-		if (Player->health + healingPotionPower <= Player->maxHealth)
+		if (player.health + healingPotionPower <= player.maxHealth)
 		{
-			Player->health += healingPotionPower;
+			player.health += healingPotionPower;
 		}
-		else if (Player->health == Player->maxHealth)
+		else if (player.health == player.maxHealth)
 		{
 		}
-		else if (Player->health > Player->maxHealth - healingPotionPower)
+		else if (player.health > player.maxHealth - healingPotionPower)
 		{
-			Player->health = Player->maxHealth;
+			player.health = player.maxHealth;
 		}
 		//Monsters turn
-		MonsterAction(Player, Monster);
+		MonsterAction(Monster);
 		break;
 
 		//Cheating is for losers :/
 	case Cheat:
 		//Player gets full health
-		Player->health = Player->maxHealth;
+		player.health = player.maxHealth;
 		//Monster dies
 		Monster->health = 0;
 		break;
 
 	case Wait:
 		//Monsters turn
-		MonsterAction(Player, Monster);
+		MonsterAction(Monster);
 		break;
 	}
 }
 
 //Determines what the monster will do
-void MonsterAction(struct Player* Player, struct Sprite* Monster)
+void MonsterAction(struct Enemy* Monster)
 {
 	//can't do much if it is dead ... or can it?
 	if (Monster->health <= 0)
 	{
-		Player->exp += Monster->exp;
+		player.exp += Monster->exp;
 
-		// determine if level up
-		// after one of the above things has happened, let's determine if a level up is warranted
-		if (Player->exp >= 100 && Player->exp < 200)
-		{
-			// level up to level 2
-			Player->level = 2;
+		int experience = player.exp / 100, counter = 0;
+		while (experience) { 
+			counter++; experience /= 2; 
 		}
-		else if (Player->exp >= 200 && Player->exp < 400)
-		{
-			// level up to level 3
-			Player->level = 3;
-		}
-		else if (Player->exp >= 400 && Player->exp < 800)
-		{
-			// level up to level 4
-			Player->level = 4;
-		}
-		else if (Player->exp >= 800)
-		{
-			// level up to level 5
-			Player->level = 5;
-		}
+		player.level = counter + 1;
 	}
 	else
 	{
 		//Monster attacks player
-		Player->health -= Monster->damage;
+		player.health -= Monster->damage;
 	}
 	return;
 }

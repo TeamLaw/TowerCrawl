@@ -10,9 +10,9 @@ Returns:
 	0 - if player flees
 	1 - if player wins the fight
 */
-int handleEncounter(struct Player * Player, struct Enemy * Monster)
+int handleEncounter(struct Enemy * Monster)
 {
-	drawEncounters(Player, Monster);
+	drawEncounters(Monster);
 	enum PlayerChoice PC = Wait;
 
 	while (1)
@@ -22,25 +22,25 @@ int handleEncounter(struct Player * Player, struct Enemy * Monster)
 			//If the player hits "1" the player attacks
 		case 1:
 			PC = Attack;
-			gameLogic(Player, Monster, PC);
+			gameLogic(Monster, PC);
 			break;
 
 			//If the player hits "2" the player uses a healing potion
 		case 2:
 			PC = Use_Potion;
-			gameLogic(Player, Monster, PC);
+			gameLogic(Monster, PC);
 			break;
 
 			//If the player hits "3" the player waits
 		case 3:
 			PC = Wait;
-			gameLogic(Player, Monster, PC);
+			gameLogic(Monster, PC);
 			break;
 
 			//If the player hits "7" the player cheats
 		case 7:
 			PC = Cheat;
-			gameLogic(Player, Monster, PC);
+			gameLogic(Monster, PC);
 			break;
 
 			//Flee
@@ -50,7 +50,7 @@ int handleEncounter(struct Player * Player, struct Enemy * Monster)
 
 		}
 
-		if (Player->health <= 0)
+		if (player.health <= 0)
 		{
 			printf("You dead!");
 			return -1;
@@ -62,6 +62,6 @@ int handleEncounter(struct Player * Player, struct Enemy * Monster)
 		}
 
 
-		drawEncounters(Player, Monster);
+		drawEncounters(Monster);
 	}
 }

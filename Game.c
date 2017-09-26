@@ -6,21 +6,12 @@
 int main()
 {
 	delCounter = 0;
-	branch = 50;
 	difficulty = 0;
 	clock_t startTime = clock();
 	srand((unsigned)time(&t));
-	COORD coord = { 0, 0 };
 
 	createPlayer();
-	player.roomLoc = createRoom();
-	player.coord.X = player.roomLoc->xSize / 2;
-	player.coord.Y = player.roomLoc->ySize / 2;
-	openDoors(player.roomLoc);
-	
-	drawRoom(player.roomLoc);
-	drawInfo();
-	drawEntities(coord, player.coord, player.marker);
+	createFloor();
 
 	while (1)
 	{
@@ -31,13 +22,9 @@ int main()
 		}
 		if (_kbhit()) { playerMove(); }
 
-		if (checkInteraction() == -1)
-		{
-			return;
-		}
+		if (checkInteraction() == -1) { return; }
 	}
-	for (int i = 0; i < delCounter; i++)
-		free(delPointers[i]);
+	clearMemory();
 	
 	return 0;
 }
@@ -49,8 +36,7 @@ int coordCompare(COORD coord1, COORD coord2)//OVERLOAD OPERATORS IN C++!!!
 
 void moveCursor(int x, int y)
 {
-	COORD coord = { x, y };
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), (COORD) { x, y });
 }
 
 /*randomNum(int low, int high) generates a random number
@@ -69,11 +55,18 @@ int randomNum(int low, int high)
 }
 
 
-int minCheck()
+int minCheck(int mod)
 {//Compares how many rooms have been entered with how many are left, if all have been entered, spawn boss or continue spawning rooms
-	int counter = 0;
+	int counter = mod;
   
 	for (int i = 0; i < delCounter; i++) { counter += delPointers[i]->entered; }
 	
 	return (counter == delCounter);
+}
+
+void clearMemory()
+{
+	for (int i = 0; i < delCounter; i++)
+		free(delPointers[i]);
+	delCounter = 0;
 }

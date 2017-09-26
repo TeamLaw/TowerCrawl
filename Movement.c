@@ -38,17 +38,19 @@ void playerMove()
 		roomChange = (checkPlayerPos(4, room));
 		player.coord.X += (!roomChange && player.coord.X < (room->xSize - 2));
 		break;
+	case 'c':
+		ShowPlayerStats();
+		break;
 	}
 
 	room = player.roomLoc;
-	if (room->isPortal) { drawEntities(coord, room->portal.coord, room->portal.marker); }
+	if (room->isPortal) { drawEntities((COORD) { 0, 0 }, room->portal.coord, room->portal.marker); }
 	if (roomChange) 
 	{ 
-		coord.X = 0, coord.Y = 0; 
-		if (!room->entered) 
+		if (!room->entered)	
 		{ 
 			openDoors(player.roomLoc);
-			if (createEnemies(player.roomLoc, minCheck()))
+			if (createEnemies(player.roomLoc, minCheck(0)))
 			{
 				floorEnd = room;
 				room->portal.coord.X = (room->xSize / 2);
@@ -59,16 +61,15 @@ void playerMove()
 
 		drawRoom(player.roomLoc);
 		drawInfo();
-		if (room->enemy.health) { drawEntities(coord, room->enemy.coord, room->enemy.marker); }
+		if (room->enemy.health) { drawEntities((COORD) { 0, 0 }, room->enemy.coord, room->enemy.marker); }
 	}
 
-	drawEntities(coord, player.coord, player.marker);
+	drawEntities((roomChange ? (COORD) { 0, 0 } : coord), player.coord, player.marker);
 }
 
 int checkPlayerPos(int direction, struct Room * oldRoom)
 {
 	struct Room * newRoom;
-	COORD coord = { 0, 0 };
 
 	switch (direction)
 	{
@@ -147,20 +148,19 @@ int checkInteraction()
 
 	struct Room * room = player.roomLoc;
 	struct Enemy * enemy = &room->enemy;
-	COORD coord = { 0, 0 };
 
 	if (coordCompare(player.coord, enemy->coord) && enemy->health)
 	{
-		interactionResult = handleEncounter(&player, enemy);
+		interactionResult = handleEncounter(enemy);
 		if (!interactionResult)
 		{
 			player.coord.X += (player.coord.X <= room->xSize / 2 ? (room->xSize / 3) : -(room->xSize / 3));
 			player.coord.Y += (player.coord.Y <= room->ySize / 2 ? (room->ySize / 3) : -(room->ySize / 3));
 			drawRoom(room);
 			drawInfo();
-			drawEntities(coord, player.coord, player.marker);
-			if (enemy->health) { drawEntities(coord, enemy->coord, enemy->marker); }
-			if (room->isPortal) { drawEntities(coord, room->portal.coord, room->portal.marker); }
+			drawEntities((COORD) { 0, 0 }, player.coord, player.marker);
+			if (enemy->health) { drawEntities((COORD) { 0, 0 }, enemy->coord, enemy->marker); }
+			if (room->isPortal) { drawEntities((COORD) { 0, 0 }, room->portal.coord, room->portal.marker); }
 		}
 		else if (interactionResult == 1)
 		{
@@ -171,14 +171,28 @@ int checkInteraction()
 			{
 				player.coord.Y += (player.coord.X == room->xSize / 2 && player.coord.Y == room->ySize / 2 ? 2 : 0);
 				room->isPortal = 1;
-				drawEntities(coord, room->portal.coord, room->portal.marker);
+				drawEntities((COORD) { 0, 0 }, room->portal.coord, room->portal.marker);
 			}
-			drawEntities(coord, player.coord, player.marker);
+			drawEntities((COORD) { 0, 0 }, player.coord, player.marker);
 		}
 		else if (interactionResult == -1)
 		{
 			displayDeathScreen();
-			return;
+			return -1;
+		}
+	}
+	if (coordCompare(player.coord, room->portal.coord) && room->isPortal)
+	{
+		clearMemory();
+		if (location != (difficulty + 3))
+		{
+			location++;
+			floorEnd = NULL;
+			createFloor();
+		}
+		else
+		{
+			//Game over, you win!
 		}
 	}
 }
