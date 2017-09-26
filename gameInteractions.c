@@ -1,5 +1,5 @@
+#include "TowerCrawl.h"
 
-#include "HandleEncounter.h"
 
 //DrawEncounters will display the the health of both the monster and the player
 void drawEncounters(struct Player * Player, struct Sprite * Monster)
@@ -7,10 +7,22 @@ void drawEncounters(struct Player * Player, struct Sprite * Monster)
 	system("cls");
 	printf("A monster stands before you!\n");
 	printf("Its health : %d\n\n",Monster->health);
+	printf("        ______ \n");
+	printf("       /---.__\\ \n");
+	printf("      /       `\\ \n");
+	printf("     | o     o  \\ \n");
+	printf("   /'| .vvvvv.  |'\\ \n");
+	printf("  / /| |     |  |  \\ \n");
+	printf(" / /'| `^^^^^'  |/\\ \\ \n");
+	printf(" ~   \\          |  \\ \\ \n");
+	printf("      |         |    ~ \n");
+	printf("      7        / \n");
+	printf("   _ /    .    | \n");
+	printf("____-|_/\\/_`--.|____ \n");
 	printf("Your health : %d\n",Player->health);
 	printf("You have 43 potions.\n");
-	printf("What do you do ?\n");
-	printf("Attack(1) - Use Potion(2) - Wait(3) - Flee(9)\n");
+	printf("\nWhat do you do ?\n");
+	printf("\nAttack(1)\nUse Potion(2)\nWait(3)\nFlee(9)\n");
 }
 
 //GameLogic takes the players choice and caculates what both the player's
@@ -24,17 +36,16 @@ void gameLogic( struct Player* Player, struct Sprite* Monster,enum PlayerChoice 
 	switch (PC)
 	{
 	case Attack:
-	
+
 		//Player does damage to the monster
-		Monster->health -= Player->damage;
+		Monster->health -= Player->damage;		
+
 		//Monsters turn
 		MonsterAction(Player, Monster);
 
 		break;
 
 	case Use_Potion:
-		printf("[-] used some healing lotion \n");
-
 		// only add health if we don't go over max
 		if (Player->health + healingPotionPower <= Player->maxHealth)
 		{
@@ -72,7 +83,30 @@ void MonsterAction(struct Player* Player, struct Sprite* Monster)
 	//can't do much if it is dead ... or can it?
 	if (Monster->health <= 0)
 	{
+		Player->exp += Monster->exp;
 
+		// determine if level up
+		// after one of the above things has happened, let's determine if a level up is warranted
+		if (Player->exp >= 100 && Player->exp < 200)
+		{
+			// level up to level 2
+			Player->level = 2;
+		}
+		else if (Player->exp >= 200 && Player->exp < 400)
+		{
+			// level up to level 3
+			Player->level = 3;
+		}
+		else if (Player->exp >= 400 && Player->exp < 800)
+		{
+			// level up to level 4
+			Player->level = 4;
+		}
+		else if (Player->exp >= 800)
+		{
+			// level up to level 5
+			Player->level = 5;
+		}
 	}
 	else
 	{

@@ -6,10 +6,10 @@
 struct Player newPlayer;
 struct Tower tower;
 time_t t;
+int difficulty = 0;
 
 int main()
 {
-	int difficulty = 0;
 	clock_t startTime = clock();
 	srand((unsigned)time(&t));
 	COORD coord = { 0, 0 };
@@ -34,6 +34,11 @@ int main()
 	return 0;
 }
 
+int coordCompare(COORD coord1, COORD coord2)//OVERLOAD OPERATORS IN C++!!!
+{
+	return (coord1.X == coord2.X && coord1.Y == coord2.Y);
+}
+
 void checkInteraction()
 {
 	int interactionResult = 0;
@@ -42,7 +47,7 @@ void checkInteraction()
 	struct Enemy * enemy = &room->enemy;
 	COORD coord = { 0, 0 };
 	
-	if (newPlayer.coord.X == enemy->coord.X && newPlayer.coord.Y == enemy->coord.Y)
+	if (coordCompare(newPlayer.coord, enemy->coord) && enemy->health)
 	{
 		interactionResult = handleEncounter(&newPlayer, enemy);
 		if (!interactionResult)
@@ -52,43 +57,82 @@ void checkInteraction()
 			drawRoom();
 			drawInfo();
 			drawEntities(coord, newPlayer.coord, newPlayer.marker);
+			if (enemy->health) { drawEntities(coord, enemy->coord, enemy->marker); }
 			if (room->isPortal) { drawEntities(coord, room->portal.coord, room->portal.marker); }
 		}
-		else if (interactionResult == 1 && enemy->isBoss == 1)
-		{
-			room->isPortal = 1;
-			if (newPlayer.coord.X == room->xSize / 2 && newPlayer.coord.Y == room->ySize / 2) { newPlayer.coord.Y -= 2; }
+		else if (interactionResult == 1)
+		{		
+			drawRoom();
+			drawInfo();
+			
+			if (enemy->isBoss && newPlayer.floorLoc < 2)
+			{
+				newPlayer.coord.Y += (newPlayer.coord.X == room->xSize / 2 && newPlayer.coord.Y == room->ySize / 2 ? 2 : 0);
+				room->isPortal = 1;
+				tower.floors[newPlayer.floorLoc + 1].rooms[0].isPortal = 1;
+				drawEntities(coord, room->portal.coord, room->portal.marker);
+			}
 			drawEntities(coord, newPlayer.coord, newPlayer.marker);
-			drawEntities(coord, room->portal.coord, room->portal.marker);
 		}
 		else if (interactionResult == -1)
 		{
 			//You ded
 		}
 	}
+	else if (coordCompare(newPlayer.coord, room->portal.coord) && room->isPortal)
+	{
+		newPlayer.coord.Y += (newPlayer.coord.X == room->xSize / 2 && newPlayer.coord.Y == room->ySize / 2 ? 2 : 0);
+		if (newPlayer.pos)
+		{
+			newPlayer.floorLoc++;
+			newPlayer.pos = 0;
+		}
+		else
+		{
+			newPlayer.floorLoc--;
+			newPlayer.pos = (sizeof(tower.floors[newPlayer.floorLoc].rooms) / sizeof(tower.floors[newPlayer.floorLoc].rooms[0]) - (11 - (difficulty * 5)));
+		}
+		drawRoom();
+		drawInfo();
+		drawEntities(coord, newPlayer.coord, newPlayer.marker);
+		drawEntities(coord, room->portal.coord, room->portal.marker);
+	}
 }
 	
 void drawEntities(COORD oldCoord, COORD coord, char marker)
 {
-	moveCursor(coord.X, coord.Y);
-
-	printf("%c", marker);
-	
 	if (oldCoord.X || oldCoord.Y)
 	{
 		moveCursor(oldCoord.X, oldCoord.Y);
 		printf(" ");
 	}
 
+	moveCursor(coord.X, coord.Y);
+	printf("%c", marker);
+
 	moveCursor(0, 0);
 }
 
+/*moveCursor(int x, int y) moves the cursor to x and y location on command prompt
+Parameters: 
+	X- x Location
+	Y- Y Location
+Returns: 
+	nothing(Void)
+*/
 void moveCursor(int x, int y)
 {
 	COORD coord = { x, y };
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
+/*randomNum(int low, int high) generates a random number
+Parameters: 
+	low - The lowest possible random number 
+	high- The highest possible random number
+Returns: 
+	the random number
+*/
 int randomNum(int low, int high)
 {
 	int r;
@@ -97,20 +141,33 @@ int randomNum(int low, int high)
 	return r;
 }
 
+/*enemyMove() selects the monster that is in the same room as the player,
+	Then it has the monster move toward the player
+Parameters: 
+	none
+Returns: 
+	nothing(Void)
+*/
 void enemyMove()
 {
-	struct Enemy * enemy_ptr = &tower.floors[0].rooms[newPlayer.pos].enemy;
-	COORD coord = { enemy_ptr->coord.X, enemy_ptr->coord.Y };
+	struct Enemy * enemy = &tower.floors[newPlayer.floorLoc].rooms[newPlayer.pos].enemy;
+	COORD coord = { enemy->coord.X, enemy->coord.Y };
 
-	if (abs(enemy_ptr->coord.X - newPlayer.coord.X) > abs(enemy_ptr->coord.Y - newPlayer.coord.Y))
+	if (abs(enemy->coord.X - newPlayer.coord.X) > abs(enemy->coord.Y - newPlayer.coord.Y))
 	{
-		enemy_ptr->coord.X += (enemy_ptr->coord.X < newPlayer.coord.X ? 1 : -1);
+		enemy->coord.X += (enemy->coord.X < newPlayer.coord.X ? 1 : -1);
 	}
-	else { enemy_ptr->coord.Y += (enemy_ptr->coord.Y < newPlayer.coord.Y ? 1 : -1); }
+	else { enemy->coord.Y += (enemy->coord.Y < newPlayer.coord.Y ? 1 : -1); }
 	
-	if (enemy_ptr->health) { drawEntities(coord, enemy_ptr->coord, enemy_ptr->marker); }
+	if (enemy->health) { drawEntities(coord, enemy->coord, enemy->marker); }
 }
 
+/*playerMove() handles input during the player move phase 
+Parameters: 
+	none
+Returns: 
+	nothing(Void)
+*/
 void playerMove()
 {
 	COORD coord = newPlayer.coord;
@@ -118,44 +175,41 @@ void playerMove()
 
 	switch (getch())
 	{
+		//Player moves up on game screen
 	case 'w':
-		if (checkPlayerPos(1));
-		else if (newPlayer.coord.Y > 1) 
-		{ 
-			newPlayer.coord.Y--;
-			drawEntities(coord, newPlayer.coord, newPlayer.marker);
-		}
+		if (checkPlayerPos(1, room));
+		else if (newPlayer.coord.Y > 1) { newPlayer.coord.Y--; }
 		break;
+		//Player moves down on game screen
 	case 's':
-		if (checkPlayerPos(2));
-		else if (newPlayer.coord.Y < (room.ySize - 2))
-		{
-			newPlayer.coord.Y++;
-			drawEntities(coord, newPlayer.coord, newPlayer.marker);
-		}
+		if (checkPlayerPos(2, room));
+		else if (newPlayer.coord.Y < (room.ySize - 2)) { newPlayer.coord.Y++; }
 		break;
+		//Player moves left on game screen
 	case 'a':
-		if (checkPlayerPos(3));
-		else if (newPlayer.coord.X > 1) 
-		{ 
-			newPlayer.coord.X--; 
-			drawEntities(coord, newPlayer.coord, newPlayer.marker);
-		}
+		if (checkPlayerPos(3, room));
+		else if (newPlayer.coord.X > 1) { newPlayer.coord.X--; }
 		break;
+		//Player moves right on game screen
 	case 'd':
-		if (checkPlayerPos(4));
-		else if (newPlayer.coord.X < (room.xSize - 2)) 
-		{ 
-			newPlayer.coord.X++; 
-			drawEntities(coord, newPlayer.coord, newPlayer.marker);
-		}
+		if (checkPlayerPos(4, room));
+		else if (newPlayer.coord.X < (room.xSize - 2)) { newPlayer.coord.X++; }
+		break;
+	case 'c':
+		ShowPlayerStats(&newPlayer);
+		//Have to redraw the entire room
+		drawRoom();
+
+
 		break;
 	}
+	room = tower.floors[newPlayer.floorLoc].rooms[newPlayer.pos];
+	if (room.isPortal) { drawEntities(coord, room.portal.coord, room.portal.marker); }
+	drawEntities(coord, newPlayer.coord, newPlayer.marker);
 }
 
-int checkPlayerPos(int direction)
+int checkPlayerPos(int direction, struct Room room)
 {
-	struct Room room = tower.floors[newPlayer.floorLoc].rooms[newPlayer.pos];
 	struct Enemy enemy;
 	COORD coord = { 0, 0 };
 
@@ -171,7 +225,6 @@ int checkPlayerPos(int direction)
 				drawRoom();
 				drawInfo();
 				enemy = tower.floors[newPlayer.floorLoc].rooms[newPlayer.pos].enemy;
-				drawEntities(coord, newPlayer.coord, newPlayer.marker);
 				if (enemy.health) { drawEntities(coord, enemy.coord, enemy.marker); }
 				return 1;
 			}
@@ -187,7 +240,6 @@ int checkPlayerPos(int direction)
 				drawRoom();
 				drawInfo();
 				enemy = tower.floors[newPlayer.floorLoc].rooms[newPlayer.pos].enemy;
-				drawEntities(coord, newPlayer.coord, newPlayer.marker);
 				if (enemy.health) { drawEntities(coord, enemy.coord, enemy.marker); }
 				return 1;
 			}
@@ -203,7 +255,6 @@ int checkPlayerPos(int direction)
 				drawRoom();
 				drawInfo();
 				enemy = tower.floors[newPlayer.floorLoc].rooms[newPlayer.pos].enemy;
-				drawEntities(coord, newPlayer.coord, newPlayer.marker);
 				if (enemy.health) { drawEntities(coord, enemy.coord, enemy.marker); }
 				return 1;
 			}
@@ -219,7 +270,6 @@ int checkPlayerPos(int direction)
 				drawRoom();
 				drawInfo();
 				enemy = tower.floors[newPlayer.floorLoc].rooms[newPlayer.pos].enemy;
-				drawEntities(coord, newPlayer.coord, newPlayer.marker);
 				if (enemy.health) { drawEntities(coord, enemy.coord, enemy.marker); }
 				return 1;
 			}
@@ -258,7 +308,7 @@ void drawRoom()
 
 void drawInfo()
 {
-	printf("\n\n\n");
+	printf("\nFloor: %d Room: %d\n\n", newPlayer.floorLoc + 1, newPlayer.pos + 1);
 	printf("HP: ");
 	for (int i = 0; i < newPlayer.maxHealth; i++)
 	{
