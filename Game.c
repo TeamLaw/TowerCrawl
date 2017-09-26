@@ -30,7 +30,11 @@ int main()
 			startTime = clock();
 		}
 		if (_kbhit()) { playerMove(); }
-		checkInteraction();
+
+		if (checkInteraction() == -1)
+		{
+			return;
+		}
 	}
 	for (int i = 0; i < delCounter; i++)
 		free(delPointers[i]);
