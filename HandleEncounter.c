@@ -46,7 +46,6 @@ int handleEncounter(struct Player * Player, struct Sprite * Monster)
 
 		if (Player->health <= 0)
 		{
-			printf("You dead!");
 			return -1;
 		}
 		else if (Monster->health <= 0)
