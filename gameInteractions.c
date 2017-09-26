@@ -162,13 +162,13 @@ void displayDeathScreen()
 	printf("              ... \n");
 	printf("            ;::::; \n");
 	printf("          ;::::; :; \n");
-	printf("        ;:::::'   :; \n");
-	printf("      ;:::::;      ;. \n");
-	printf("	   ,:::::'        ;             OOO\ \n");
-	printf("	   ::::::;        ;            OOOOO\ \n");
-	printf("	   ;:::::;        ;           OOOOOOOO \n");
-	printf("	  ,;::::::;      ;'           / OOOOOOO \n");
-	printf("	;:::::::::`. ,,,;.           /  / DOOOOOO \n");
+	printf("        ;:::::'    :; \n");
+	printf("       ;:::::;       ;. \n");
+	printf("       ,:::::'        ;             OOO\ \n");
+	printf("       ::::::;        ;            OOOOO\ \n");
+	printf("       ;:::::;        ;           OOOOOOO \n");
+	printf("      ,;::::::;      ;'         / OOOOOOOO \n");
+	printf("    ;:::::::::`. ,,,;.         /  / DOOOOOO \n");
 	printf("  .';:::::::::::::::::;,      /  /     DOOOO \n");
 	printf(" ,::::::;::::::;;;;::::;,    /  /        DOOO \n");
 	printf(";`::::::`'::::::;;;:::::  ,#/  /          DOOO \n");
@@ -180,4 +180,7 @@ void displayDeathScreen()
 	printf(" `:::::`::::::::::::;'`:;::#                O \n");
 	printf("  `:::::`::::::::;'  /  / `:# \n");
 	printf("   ::::::`:::::;'   /  /   `# \n");
+	_getch();
+	return;
+
 }
