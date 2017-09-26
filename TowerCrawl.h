@@ -12,7 +12,7 @@
 #ifndef conio
 #define conio 1
 #include <conio.h>
-#endif // !conio
+#endif
 
 
 #ifndef TOWERCRAWL_H_
@@ -39,6 +39,7 @@ struct Player
 	int pos;
 	int level;
 	int roomCheck;
+	int experience;
 };
 
 struct Enemy
@@ -63,7 +64,7 @@ struct Room
 
 struct Floor
 {//Hardcoded 3x3 rooms for the floor
-	struct Room rooms[25];
+	struct Room rooms[20];
 };
 
 struct Tower
@@ -83,8 +84,8 @@ enum PlayerChoice
 //Game.c
 void createPlayer(struct Player *);
 void createTower(struct Tower *, int);
-void createEntities(struct Room *, int);
-int checkPlayerPos(int);
+int createEnemies(struct Room *, int, int);
+int checkPlayerPos(int, struct Room);
 void drawRoom();
 void drawInfo();
 void playerMove();
@@ -93,8 +94,11 @@ void drawEntities(COORD, COORD, char);
 void moveCursor(int, int);
 int randomNum(int, int);//accepts min and max integer and returns: min <= num < max
 void checkInteraction();
-
-#include "HandleEncounter.h"
-
+void drawEncounters(struct Player *, struct Sprite *);
+void gameLogic(struct Player*, struct Sprite* Monster, enum PlayerChoice);
+void MonsterAction(struct Player*, struct Sprite*);
+int handleEncounter(struct Player *, struct Sprite *);
+int coordCompare(COORD, COORD);
+void ShowPlayerStats(struct Player *);
 #endif
 
