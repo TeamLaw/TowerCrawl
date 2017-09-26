@@ -53,6 +53,7 @@ void createTower(struct Tower * tower, int dif)
 
 int createEnemies(struct Room * room, int dif, int isBoss)
 {//only making 1 enemy atm, have to work out some sort of collision or sometin for multiple, might just stick with 1 enemy per room and just increase stats
+	room->enemy.exp = 50;
 	room->enemy.coord.X = (room->xSize / 2); 
 	room->enemy.coord.Y = (room->ySize / 2);
 	room->enemy.maxHealth = ((3 + (dif * 2)) * (isBoss ? 2 : 1));
