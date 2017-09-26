@@ -39,6 +39,7 @@ struct Player
 	int pos;
 	int level;
 	int roomCheck;
+	int experience;
 };
 
 struct Enemy
@@ -99,6 +100,5 @@ void MonsterAction(struct Player*, struct Sprite*);
 int handleEncounter(struct Player *, struct Sprite *);
 int coordCompare(COORD, COORD);
 void ShowPlayerStats(struct Player *);
-
 #endif
 
