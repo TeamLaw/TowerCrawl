@@ -105,7 +105,7 @@ void enemyMove();
 void drawEntities(COORD, COORD, char);
 void moveCursor(int, int);
 int randomNum(int, int);//accepts min and max integer and returns: min <= num < max
-void checkInteraction();
+int checkInteraction();
 int coordCompare(COORD, COORD);
 int minCheck();
 void drawEncounters(struct Player *, struct Enemy *);
@@ -114,5 +114,7 @@ void MonsterAction(struct Player *, struct Enemy *);
 int handleEncounter(struct Player *, struct Enemy *);
 void ShowPlayerStats(struct Player *);
 void displayDeathScreen();
+void printGameIntroMessage();
+pullGraphics(char * FileName);
 
 #endif

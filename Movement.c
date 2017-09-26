@@ -140,8 +140,8 @@ int checkPlayerPos(int direction, struct Room * oldRoom)
 
 	return 0;
 }
-
-void checkInteraction()
+// -1 death
+int checkInteraction()
 {
 	int interactionResult = 0;
 
