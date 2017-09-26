@@ -114,5 +114,7 @@ void MonsterAction(struct Player *, struct Enemy *);
 int handleEncounter(struct Player *, struct Enemy *);
 void ShowPlayerStats(struct Player *);
 void displayDeathScreen();
+void printGameIntroMessage();
+pullGraphics(char * FileName);
 
 #endif
