@@ -178,7 +178,7 @@ int checkInteraction()
 		else if (interactionResult == -1)
 		{
 			displayDeathScreen();
-			return;
+			return -1;
 		}
 	}
 }

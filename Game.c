@@ -36,7 +36,7 @@ int main()
 
 		if (checkInteraction() == -1)
 		{
-			return;
+			return ; 
 		}
 	}
 	for (int i = 0; i < delCounter; i++)
