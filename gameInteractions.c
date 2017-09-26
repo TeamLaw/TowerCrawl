@@ -119,32 +119,33 @@ void MonsterAction(struct Player* Player, struct Sprite* Monster)
 
 
 // adding module for death screen animation
+// adding module for death screen animation
 void displayDeathScreen()
 {
 	system("cls");
 
-	puts("==================================================\n");
-	puts("                 YOU HAVE DIED                    \n");
-	puts("==================================================\n");
-	puts("			 ...							\n");
-	puts("	  ;::::							\n");
-	puts("	 ;::::; :;							\n");
-	puts("	;:::::'   :;						\n");
-	puts("	:::::;     ;.						\n");
-	puts("	 ,:::::'       ;           OOO\		\n");
-	puts("	 ::::::;       ;          OOOOO\		\n");
-	puts("	 ;:::::;       ;         OOOOOOOO		\n");
-	puts("	  ,;::::::;     ;'         / OOOOOOO	\n");
-	puts("	;:::::::::`. ,,,;.        /  / DOOOOOO		\n");
-	puts("  .';:::::::::::::::::;,     /  /     DOOOO		\n");
-	puts(" ,::::::;::::::;;;;::::;,   /  /        DOOO	\n");
-	puts(";`::::::`'::::::;;;::::: ,#/  /          DOOO	\n");
-	puts(":`:::::::`;::::::;;::: ;::#  /            DOOO	\n");
-	puts("::`:::::::`;:::::::: ;::::# /              DOO	\n");
-	puts("`:`:::::::`;:::::: ;::::::#/               DOO	\n");
-	puts(" :::`:::::::`;; ;:::::::::##                OO	\n");
-	puts(" ::::`:::::::`;::::::::;:::#                OO	\n");
-	puts(" `:::::`::::::::::::;'`:;::#                O	\n");
-	puts("  `:::::`::::::::;' /  / `:#					\n");
-	puts("   ::::::`:::::;'  /  /   `#					\n");
+	printf("==================================================\n");
+	printf("                 YOU HAVE DIED                    \n");
+	printf("==================================================\n");
+	printf("                ... \n");
+	printf("              ;::::; \n");
+	printf("            ;::::; :; \n");
+	printf("          ;:::::'   :; \n");
+	printf("        ;:::::;      ;. \n");
+	printf("	   ,:::::'        ;           OOO\ \n");
+	printf("	   ::::::;        ;          OOOOO\ \n");
+	printf("	   ;:::::;        ;         OOOOOOOO \n");
+	printf("	  ,;::::::;      ;'         / OOOOOOO \n");
+	printf("	;:::::::::`. ,,,;.        /  / DOOOOOO \n");
+	printf("  .';:::::::::::::::::;,     /  /     DOOOO \n");
+	printf(" ,::::::;::::::;;;;::::;,   /  /        DOOO \n");
+	printf(";`::::::`'::::::;;;::::: ,#/  /          DOOO \n");
+	printf(":`:::::::`;::::::;;::: ;::#  /            DOOO \n");
+	printf("::`:::::::`;:::::::: ;::::# /              DOO \n");
+	printf("`:`:::::::`;:::::: ;::::::#/               DOO \n");
+	printf(" :::`:::::::`;; ;:::::::::##                OO \n");
+	printf(" ::::`:::::::`;::::::::;:::#                OO \n");
+	printf(" `:::::`::::::::::::;'`:;::#                O \n");
+	printf("  `:::::`::::::::;' /  / `:# \n");
+	printf("   ::::::`:::::;'  /  /   `# \n");
 }
