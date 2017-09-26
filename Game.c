@@ -71,6 +71,5 @@ int minCheck()
   
 	for (int i = 0; i < delCounter; i++) { counter += delPointers[i]->entered; }
 	
-
 	return (counter == delCounter);
 }
