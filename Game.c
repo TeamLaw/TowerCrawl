@@ -164,6 +164,9 @@ void playerMove()
 		if (checkPlayerPos(4, room));
 		else if (newPlayer.coord.X < (room.xSize - 2)) { newPlayer.coord.X++; }
 		break;
+	case 'c':
+		ShowPlayerStats(&newPlayer);
+		break;
 	}
 	room = tower.floors[newPlayer.floorLoc].rooms[newPlayer.pos];
 	if (room.isPortal) { drawEntities(coord, room.portal.coord, room.portal.marker); }
