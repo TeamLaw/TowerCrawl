@@ -30,6 +30,7 @@ struct Sprite
 	int health;
 	int maxHealth;
 	int damage;
+	int exp;
 };
 
 struct Player
@@ -39,7 +40,7 @@ struct Player
 	int pos;
 	int level;
 	int roomCheck;
-	int experience;
+	int exp;
 };
 
 struct Enemy

@@ -50,6 +50,8 @@ int handleEncounter(struct Player * Player, struct Sprite * Monster)
 		}
 		else if (Monster->health <= 0)
 		{
+			// give player gains experience, this gaining levels?
+			Player->experience += Monster->experience;
 			return 1;
 		}
 
