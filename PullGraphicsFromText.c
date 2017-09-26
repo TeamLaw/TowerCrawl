@@ -6,8 +6,9 @@ pullGraphics(char * FileName)
 	void print_image(FILE *fptr);
 
 	FILE *fptr = NULL;
-
-	if ((fptr = fopen(FileName, "r")) == NULL)
+	errno_t err;
+	err = fopen_s(fptr, FileName, "r");
+	if (fptr == NULL)
 	{
 		fprintf(stderr, "error opening %s\n", FileName);
 		return 1;
