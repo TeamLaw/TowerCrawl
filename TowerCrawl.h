@@ -37,9 +37,8 @@ struct Player
 {
 	struct Sprite;
 	int floorLoc;
-	int pos;
+	struct Room * roomLoc;
 	int level;
-	int roomCheck;
 	int experience;
 };
 
@@ -54,11 +53,12 @@ struct Room
 {//One enemy per room
 	int xSize;
 	int ySize;
-	int nDoor;
-	int sDoor;
-	int eDoor;
-	int wDoor;
 	int isPortal;
+	int entered;
+	struct Room * nDoor;
+	struct Room * sDoor;
+	struct Room * eDoor;
+	struct Room * wDoor;	
 	struct Entity portal;
 	struct Enemy enemy;
 };
@@ -81,13 +81,24 @@ enum PlayerChoice
 	Wait,
 	Cheat,
 };
+struct Room * delPointers[1000];
+int delCounter;
+
+struct Room * floorEnd;
+
+struct Player player;
+struct Tower tower;
+time_t t;
+int difficulty;
+int branch;
 
 //Game.c
-void createPlayer(struct Player *);
-void createTower(struct Tower *, int);
-int createEnemies(struct Room *, int, int);
-int checkPlayerPos(int, struct Room);
-void drawRoom();
+void createPlayer();
+struct Room * createRoom();
+int openDoors(struct Room *);
+int createEnemies(struct Room *, int);
+int checkPlayerPos(int, struct Room *);
+void drawRoom(struct Room *);
 void drawInfo();
 void playerMove();
 void enemyMove();
@@ -95,11 +106,12 @@ void drawEntities(COORD, COORD, char);
 void moveCursor(int, int);
 int randomNum(int, int);//accepts min and max integer and returns: min <= num < max
 void checkInteraction();
-void drawEncounters(struct Player *, struct Enemy *);
-void gameLogic(struct Player*, struct Enemy* Monster, enum PlayerChoice);
-void MonsterAction(struct Player*, struct Enemy*);
-int handleEncounter(struct Player *, struct Enemy *);
 int coordCompare(COORD, COORD);
+int minCheck();
+void drawEncounters(struct Player *, struct Enemy *);
+void gameLogic(struct Player *, struct Enemy *, enum PlayerChoice);
+void MonsterAction(struct Player *, struct Enemy *);
+int handleEncounter(struct Player *, struct Enemy *);
 void ShowPlayerStats(struct Player *);
 
 #endif
