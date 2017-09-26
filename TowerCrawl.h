@@ -101,3 +101,4 @@ int coordCompare(COORD, COORD);
 void ShowPlayerStats(struct Player *);
 
 #endif
+
