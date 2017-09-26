@@ -27,7 +27,7 @@ void drawEncounters(struct Player * Player, struct Sprite * Monster)
 
 //GameLogic takes the players choice and caculates what both the player's
 //and monster's action and health will be.
-void gameLogic( struct Player* Player, struct Sprite* Monster,enum PlayerChoice PC )
+void gameLogic( struct Player* Player, struct Sprite* Monster, enum PlayerChoice PC )
 {
 	// temp Healing Potion power
 	int healingPotionPower = 25;
