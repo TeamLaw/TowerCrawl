@@ -76,7 +76,12 @@ void checkInteraction()
 		}
 		else if (interactionResult == -1)
 		{
-			//You ded
+			// adding stuff here, clear the screen. print some death animation
+			//
+			displayDeathScreen();
+
+			_getch();
+			return;
 		}
 	}
 	else if (coordCompare(newPlayer.coord, room->portal.coord) && room->isPortal)
@@ -113,12 +118,26 @@ void drawEntities(COORD oldCoord, COORD coord, char marker)
 	moveCursor(0, 0);
 }
 
+/*moveCursor(int x, int y) moves the cursor to x and y location on command prompt
+Parameters: 
+	X- x Location
+	Y- Y Location
+Returns: 
+	nothing(Void)
+*/
 void moveCursor(int x, int y)
 {
 	COORD coord = { x, y };
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
+/*randomNum(int low, int high) generates a random number
+Parameters: 
+	low - The lowest possible random number 
+	high- The highest possible random number
+Returns: 
+	the random number
+*/
 int randomNum(int low, int high)
 {
 	int r;
@@ -127,6 +146,13 @@ int randomNum(int low, int high)
 	return r;
 }
 
+/*enemyMove() selects the monster that is in the same room as the player,
+	Then it has the monster move toward the player
+Parameters: 
+	none
+Returns: 
+	nothing(Void)
+*/
 void enemyMove()
 {
 	struct Enemy * enemy = &tower.floors[newPlayer.floorLoc].rooms[newPlayer.pos].enemy;
@@ -141,6 +167,12 @@ void enemyMove()
 	if (enemy->health) { drawEntities(coord, enemy->coord, enemy->marker); }
 }
 
+/*playerMove() handles input during the player move phase 
+Parameters: 
+	none
+Returns: 
+	nothing(Void)
+*/
 void playerMove()
 {
 	COORD coord = newPlayer.coord;
@@ -148,24 +180,32 @@ void playerMove()
 
 	switch (getch())
 	{
+		//Player moves up on game screen
 	case 'w':
 		if (checkPlayerPos(1, room));
 		else if (newPlayer.coord.Y > 1) { newPlayer.coord.Y--; }
 		break;
+		//Player moves down on game screen
 	case 's':
 		if (checkPlayerPos(2, room));
 		else if (newPlayer.coord.Y < (room.ySize - 2)) { newPlayer.coord.Y++; }
 		break;
+		//Player moves left on game screen
 	case 'a':
 		if (checkPlayerPos(3, room));
 		else if (newPlayer.coord.X > 1) { newPlayer.coord.X--; }
 		break;
+		//Player moves right on game screen
 	case 'd':
 		if (checkPlayerPos(4, room));
 		else if (newPlayer.coord.X < (room.xSize - 2)) { newPlayer.coord.X++; }
 		break;
 	case 'c':
 		ShowPlayerStats(&newPlayer);
+		//Have to redraw the entire room
+		drawRoom();
+
+
 		break;
 	}
 	room = tower.floors[newPlayer.floorLoc].rooms[newPlayer.pos];

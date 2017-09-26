@@ -25,6 +25,7 @@ void drawEncounters(struct Player * Player, struct Sprite * Monster)
 	printf("\nAttack(1)\nUse Potion(2)\nWait(3)\nFlee(9)\n");
 }
 
+
 //GameLogic takes the players choice and caculates what both the player's
 //and monster's action and health will be.
 void gameLogic( struct Player* Player, struct Sprite* Monster, enum PlayerChoice PC )
@@ -36,6 +37,7 @@ void gameLogic( struct Player* Player, struct Sprite* Monster, enum PlayerChoice
 	switch (PC)
 	{
 	case Attack:
+
 		//Player does damage to the monster
 		Monster->health -= Player->damage;		
 
@@ -45,7 +47,6 @@ void gameLogic( struct Player* Player, struct Sprite* Monster, enum PlayerChoice
 		break;
 
 	case Use_Potion:
-				
 		// only add health if we don't go over max
 		if (Player->health + healingPotionPower <= Player->maxHealth)
 		{
@@ -114,4 +115,36 @@ void MonsterAction(struct Player* Player, struct Sprite* Monster)
 		Player->health -= Monster->damage;
 	}
 	return;
+}
+
+
+// adding module for death screen animation
+void displayDeathScreen()
+{
+	system("cls");
+
+	puts("==================================================\n");
+	puts("                 YOU HAVE DIED                    \n");
+	puts("==================================================\n");
+	puts("			 ...							\n");
+	puts("	  ;::::							\n");
+	puts("	 ;::::; :;							\n");
+	puts("	;:::::'   :;						\n");
+	puts("	:::::;     ;.						\n");
+	puts("	 ,:::::'       ;           OOO\		\n");
+	puts("	 ::::::;       ;          OOOOO\		\n");
+	puts("	 ;:::::;       ;         OOOOOOOO		\n");
+	puts("	  ,;::::::;     ;'         / OOOOOOO	\n");
+	puts("	;:::::::::`. ,,,;.        /  / DOOOOOO		\n");
+	puts("  .';:::::::::::::::::;,     /  /     DOOOO		\n");
+	puts(" ,::::::;::::::;;;;::::;,   /  /        DOOO	\n");
+	puts(";`::::::`'::::::;;;::::: ,#/  /          DOOO	\n");
+	puts(":`:::::::`;::::::;;::: ;::#  /            DOOO	\n");
+	puts("::`:::::::`;:::::::: ;::::# /              DOO	\n");
+	puts("`:`:::::::`;:::::: ;::::::#/               DOO	\n");
+	puts(" :::`:::::::`;; ;:::::::::##                OO	\n");
+	puts(" ::::`:::::::`;::::::::;:::#                OO	\n");
+	puts(" `:::::`::::::::::::;'`:;::#                O	\n");
+	puts("  `:::::`::::::::;' /  / `:#					\n");
+	puts("   ::::::`:::::;'  /  /   `#					\n");
 }
