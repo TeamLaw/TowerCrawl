@@ -76,7 +76,12 @@ void checkInteraction()
 		}
 		else if (interactionResult == -1)
 		{
-			//You ded
+			// adding stuff here, clear the screen. print some death animation
+			//
+			displayDeathScreen();
+
+			_getch();
+			return;
 		}
 	}
 	else if (coordCompare(newPlayer.coord, room->portal.coord) && room->isPortal)
@@ -199,6 +204,7 @@ void playerMove()
 		ShowPlayerStats(&newPlayer);
 		//Have to redraw the entire room
 		drawRoom();
+
 		break;
 	}
 	room = tower.floors[newPlayer.floorLoc].rooms[newPlayer.pos];
