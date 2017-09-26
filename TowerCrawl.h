@@ -40,7 +40,7 @@ struct Player
 	int pos;
 	int level;
 	int roomCheck;
-	int exp;
+	int experience;
 };
 
 struct Enemy
