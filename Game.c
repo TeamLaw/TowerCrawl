@@ -49,6 +49,13 @@ void moveCursor(int x, int y)
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
+/*randomNum(int low, int high) generates a random number
+Parameters: 
+	low - The lowest possible random number 
+	high- The highest possible random number
+Returns: 
+	the random number
+*/
 int randomNum(int low, int high)
 {
 	int r;
@@ -57,11 +64,13 @@ int randomNum(int low, int high)
 	return r;
 }
 
+
 int minCheck()
 {//Compares how many rooms have been entered with how many are left, if all have been entered, spawn boss or continue spawning rooms
 	int counter = 0;
-
+  
 	for (int i = 0; i < delCounter; i++) { counter += delPointers[i]->entered; }
 	
 	return (counter == delCounter);
 }
+

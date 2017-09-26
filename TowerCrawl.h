@@ -1,9 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS 1
-
-#include <Windows.h>
-#include <math.h>
-#include <time.h>
-
 #ifndef stdio 
 #define stdio 1
 #include <stdio.h>
@@ -14,9 +8,15 @@
 #include <conio.h>
 #endif
 
-
+//TowerCrawl will only run once
 #ifndef TOWERCRAWL_H_
 #define TOWERCRAWL_H_ 1
+
+#define _CRT_SECURE_NO_WARNINGS 1
+
+#include <Windows.h>
+#include <math.h>
+#include <time.h>
 
 struct Entity
 {
@@ -37,9 +37,9 @@ struct Player
 {
 	struct Sprite;
 	int floorLoc;
-	//int pos;
-	//int roomCheck;
 	struct Room * roomLoc;
+	int level;
+	int experience;
 };
 
 struct Enemy
@@ -106,12 +106,13 @@ void drawEntities(COORD, COORD, char);
 void moveCursor(int, int);
 int randomNum(int, int);//accepts min and max integer and returns: min <= num < max
 void checkInteraction();
-void drawEncounters(struct Player *, struct Sprite *);
-void gameLogic(struct Player *, struct Sprite *, enum PlayerChoice);
-void MonsterAction(struct Player *, struct Sprite *);
-int handleEncounter(struct Player *, struct Sprite *);
 int coordCompare(COORD, COORD);
 int minCheck();
+void drawEncounters(struct Player *, struct Enemy *);
+void gameLogic(struct Player *, struct Enemy *, enum PlayerChoice);
+void MonsterAction(struct Player *, struct Enemy *);
+int handleEncounter(struct Player *, struct Enemy *);
+void ShowPlayerStats(struct Player *);
 
 #endif
 

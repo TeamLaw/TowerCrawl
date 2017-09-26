@@ -73,13 +73,14 @@ RETRY:
 
 int createEnemies(struct Room * room, int bossCheck)
 {//only making 1 enemy atm, have to work out some sort of collision or sometin for multiple, might just stick with 1 enemy per room and just increase stats
+
 	int isBoss = (((delCounter > 10 && randomNum(1, 101) < delCounter) || bossCheck) && !floorEnd);
 	room->enemy.coord.X = randomNum(1, room->xSize - 1); 
 	room->enemy.coord.Y = randomNum(1, room->ySize - 1);
 	room->enemy.maxHealth = 3 * (isBoss ? 2 : 1);
 	room->enemy.health = 3 * (isBoss ? 2 : 1);
 	room->enemy.damage = 1 * (isBoss ? 2 : 1);
-	//room->enemy.exp = 25 * 
+	room->enemy.exp = 50;
 	room->enemy.marker = (isBoss ? '#' : 'x');
 	room->enemy.isBoss = isBoss;
 	//room->enemy.loot = 

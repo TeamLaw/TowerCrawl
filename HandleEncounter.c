@@ -1,11 +1,16 @@
 #include "TowerCrawl.h"
 
-/*HandleEncounter returns
--1 if you die
-0 if you flee
-1 if you kill the monster
+/*HandleEncounter(struct Player * Player, struct Sprite * Monster) 
+	Will handle when a player encounters a monster
+Parameters:
+	Player - is the main player
+	Monster- is the monster that the player is fighting
+Returns:
+	-1- if player dies
+	0 - if player flees
+	1 - if player wins the fight
 */
-int handleEncounter(struct Player * Player, struct Sprite * Monster)
+int handleEncounter(struct Player * Player, struct Enemy * Monster)
 {
 	drawEncounters(Player, Monster);
 	enum PlayerChoice PC = Wait;
@@ -26,16 +31,23 @@ int handleEncounter(struct Player * Player, struct Sprite * Monster)
 			gameLogic(Player, Monster, PC);
 			break;
 
-			//If the player hits "2" the player waits
+			//If the player hits "3" the player waits
 		case 3:
 			PC = Wait;
 			gameLogic(Player, Monster, PC);
 			break;
 
-		//Flee
+			//If the player hits "7" the player cheats
+		case 7:
+			PC = Cheat;
+			gameLogic(Player, Monster, PC);
+			break;
+
+			//Flee
 		case 9:
 			return 0;
 			break;
+
 		}
 
 		if (Player->health <= 0)
@@ -45,10 +57,11 @@ int handleEncounter(struct Player * Player, struct Sprite * Monster)
 		}
 		else if (Monster->health <= 0)
 		{
+			// give player gains experience, this gaining levels?
 			return 1;
 		}
 
 
-		drawEncounters(Player,Monster);
+		drawEncounters(Player, Monster);
 	}
 }
