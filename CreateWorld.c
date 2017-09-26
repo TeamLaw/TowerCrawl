@@ -3,14 +3,28 @@
 void createPlayer()
 {//hardcoded player info
 	player.marker = 'o';
-	player.floorLoc = 0;
 	player.coord.X = 0;
 	player.coord.Y = 0;
 	player.maxHealth = 10;
 	player.health = 10;
 	player.damage = 3;
 	player.exp = 0;
+	player.level = 1;
 	player.roomLoc = NULL;
+}
+
+void createFloor()
+{
+	branch = 50;
+
+	player.roomLoc = createRoom();
+	player.coord.X = player.roomLoc->xSize / 2;
+	player.coord.Y = player.roomLoc->ySize / 2;
+	openDoors(player.roomLoc);
+
+	drawRoom(player.roomLoc);
+	drawInfo();
+	drawEntities((COORD) { 0, 0 }, player.coord, player.marker);
 }
 
 struct Room * createRoom()
@@ -63,7 +77,7 @@ RETRY:
 		room->eDoor = (randomNum(1, 100) < branch ? createRoom() : room->eDoor);
 		counter += (room->eDoor ? 1 : 0);
 	}
-	if (delCounter == 1 || (minCheck() && delCounter < 10)) { goto RETRY; }
+	if (minCheck(1) && delCounter < 10) { goto RETRY; }
 
 	branch -= (counter ? (counter - 1) * 5 : 0);
 	room->entered = 1;

@@ -40,11 +40,28 @@ void drawEntities(COORD oldCoord, COORD coord, char marker)
 
 void drawInfo()
 {
-	printf("\nFloor: %d Branch: %d Rooms: %d\n\n", player.floorLoc + 1, branch, delCounter);
+	printf("\nBranch: %d Rooms: %d Floor: %d\n\n", branch, delCounter, location + 1);
 	printf("HP: ");
 	for (int i = 0; i < player.maxHealth; i++)
 	{
 		printf("%c", (player.health > i ? 47 : 46));
 	}
 	printf("  %d/%d", player.health, player.maxHealth);
+}
+
+void ShowPlayerStats()
+{
+	system("cls");
+	printf("Player's Damage: %d \n", player.damage);
+	printf("Player's Current Health: %d \n", player.health);
+	printf("Player's Max Health: %d \n", player.maxHealth);
+	printf("Player's Current Level: %d \n", player.level);
+	_getch();
+
+	drawRoom(player.roomLoc);
+	drawInfo();
+	if (player.roomLoc->enemy.health) { drawEntities((COORD){ 0,0 }, player.roomLoc->enemy.coord, player.roomLoc->enemy.marker); }
+	drawEntities((COORD) { 0, 0 }, player.coord, player.marker);
+
+	return 0;
 }

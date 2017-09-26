@@ -36,7 +36,6 @@ struct Sprite
 struct Player
 {
 	struct Sprite;
-	int floorLoc;
 	struct Room * roomLoc;
 	int level;
 	int experience;
@@ -63,16 +62,6 @@ struct Room
 	struct Enemy enemy;
 };
 
-struct Floor
-{//Hardcoded 3x3 rooms for the floor
-	struct Room rooms[20];
-};
-
-struct Tower
-{//Hardcoded 7 floors
-	struct Floor floors[3];
-};
-
 //enum to pass player choice , I thought it was less confusing than using ints
 enum PlayerChoice
 {
@@ -87,10 +76,10 @@ int delCounter;
 struct Room * floorEnd;
 
 struct Player player;
-struct Tower tower;
 time_t t;
 int difficulty;
 int branch;
+int location;
 
 //Game.c
 void createPlayer();
@@ -107,14 +96,15 @@ void moveCursor(int, int);
 int randomNum(int, int);//accepts min and max integer and returns: min <= num < max
 int checkInteraction();
 int coordCompare(COORD, COORD);
-int minCheck();
-void drawEncounters(struct Player *, struct Enemy *);
-void gameLogic(struct Player *, struct Enemy *, enum PlayerChoice);
-void MonsterAction(struct Player *, struct Enemy *);
-int handleEncounter(struct Player *, struct Enemy *);
-void ShowPlayerStats(struct Player *);
+int minCheck(int);
+void drawEncounters(struct Enemy *);
+void gameLogic(struct Enemy *, enum PlayerChoice);
+void MonsterAction(struct Enemy *);
+int handleEncounter(struct Enemy *);
+void ShowPlayerStats();
 void displayDeathScreen();
+void clearMemory();
+void createFloor();
 void printGameIntroMessage();
-pullGraphics(char * FileName);
 
 #endif
