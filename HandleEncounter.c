@@ -10,7 +10,7 @@ Returns:
 	0 - if player flees
 	1 - if player wins the fight
 */
-int handleEncounter(struct Player * Player, struct Sprite * Monster)
+int handleEncounter(struct Player * Player, struct Enemy * Monster)
 {
 	drawEncounters(Player, Monster);
 	enum PlayerChoice PC = Wait;
@@ -43,10 +43,11 @@ int handleEncounter(struct Player * Player, struct Sprite * Monster)
 			gameLogic(Player, Monster, PC);
 			break;
 
-		//Flee
+			//Flee
 		case 9:
 			return 0;
 			break;
+
 		}
 
 		if (Player->health <= 0)
@@ -57,11 +58,10 @@ int handleEncounter(struct Player * Player, struct Sprite * Monster)
 		else if (Monster->health <= 0)
 		{
 			// give player gains experience, this gaining levels?
-			Player->experience += Monster->experience;
 			return 1;
 		}
 
 
-		drawEncounters(Player,Monster);
+		drawEncounters(Player, Monster);
 	}
 }
