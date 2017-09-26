@@ -44,7 +44,7 @@ void checkInteraction()
 	
 	if (newPlayer.coord.X == enemy->coord.X && newPlayer.coord.Y == enemy->coord.Y)
 	{
-		//interactionResult = handleEncounter(&newPlayer, enemy);
+		interactionResult = handleEncounter(&newPlayer, enemy);
 		if (!interactionResult)
 		{
 			newPlayer.coord.X += (newPlayer.coord.X <= room->xSize / 2 ? (room->xSize / 3) : -(room->xSize / 3));
