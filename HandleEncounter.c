@@ -1,9 +1,14 @@
 #include "TowerCrawl.h"
 
-/*HandleEncounter returns
--1 if you die
-0 if you flee
-1 if you kill the monster
+/*HandleEncounter(struct Player * Player, struct Sprite * Monster) 
+	Will handle when a player encounters a monster
+Parameters:
+	Player - is the main player
+	Monster- is the monster that the player is fighting
+Returns:
+	-1- if player dies
+	0 - if player flees
+	1 - if player wins the fight
 */
 int handleEncounter(struct Player * Player, struct Sprite * Monster)
 {
