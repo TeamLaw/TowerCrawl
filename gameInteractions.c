@@ -36,6 +36,7 @@ void gameLogic( struct Player* Player, struct Sprite* Monster,enum PlayerChoice 
 	switch (PC)
 	{
 	case Attack:
+
 		//Player does damage to the monster
 		Monster->health -= Player->damage;		
 
@@ -45,7 +46,6 @@ void gameLogic( struct Player* Player, struct Sprite* Monster,enum PlayerChoice 
 		break;
 
 	case Use_Potion:
-				
 		// only add health if we don't go over max
 		if (Player->health + healingPotionPower <= Player->maxHealth)
 		{
