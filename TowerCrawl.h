@@ -1,13 +1,3 @@
-//TowerCrawl will only run once
-#ifndef TOWERCRAWL_H_
-#define TOWERCRAWL_H_ 1
-
-#define _CRT_SECURE_NO_WARNINGS 1
-
-#include <Windows.h>
-#include <math.h>
-#include <time.h>
-
 #ifndef stdio 
 #define stdio 1
 #include <stdio.h>
@@ -17,6 +7,16 @@
 #define conio 1
 #include <conio.h>
 #endif
+
+//TowerCrawl will only run once
+#ifndef TOWERCRAWL_H_
+#define TOWERCRAWL_H_ 1
+
+#define _CRT_SECURE_NO_WARNINGS 1
+
+#include <Windows.h>
+#include <math.h>
+#include <time.h>
 
 struct Entity
 {
@@ -30,6 +30,7 @@ struct Sprite
 	int health;
 	int maxHealth;
 	int damage;
+	int exp;
 };
 
 struct Player
@@ -100,7 +101,6 @@ void MonsterAction(struct Player*, struct Sprite*);
 int handleEncounter(struct Player *, struct Sprite *);
 int coordCompare(COORD, COORD);
 void ShowPlayerStats(struct Player *);
-
 
 #endif
 

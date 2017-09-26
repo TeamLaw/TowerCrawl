@@ -109,6 +109,7 @@ void drawEntities(COORD oldCoord, COORD coord, char marker)
 
 	moveCursor(coord.X, coord.Y);
 	printf("%c", marker);
+
 	moveCursor(0, 0);
 }
 
@@ -194,11 +195,11 @@ void playerMove()
 		if (checkPlayerPos(4, room));
 		else if (newPlayer.coord.X < (room.xSize - 2)) { newPlayer.coord.X++; }
 		break;
-
 	case 'c':
 		ShowPlayerStats(&newPlayer);
 		//Have to redraw the entire room
 		drawRoom();
+
 
 		break;
 	}
