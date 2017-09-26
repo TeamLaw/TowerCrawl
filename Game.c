@@ -74,4 +74,3 @@ int minCheck()
 
 	return (counter == delCounter);
 }
-
