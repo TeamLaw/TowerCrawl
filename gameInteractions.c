@@ -48,7 +48,7 @@ void drawEncounters(struct Player * Player, struct Enemy * Monster)
 		printf("      |         |    ~ \n");
 		printf("      7        / \n");
 		printf("   _ /    .    | \n");
-		printf("____-|_/\\/_`--.|____ \n\n\n");
+		printf("____-|_/\\/_`--.|____ \n\n");
 		printf("Your health : %d\n", Player->health);
 		printf("You have 43 potions.\n");
 		printf("\nWhat do you do ?\n");
@@ -56,9 +56,11 @@ void drawEncounters(struct Player * Player, struct Enemy * Monster)
 	}
 }
 
+
 //GameLogic takes the players choice and caculates what both the player's
 //and monster's action and health will be.
-void gameLogic(struct Player* Player, struct Sprite* Monster, enum PlayerChoice PC)
+
+void gameLogic( struct Player* Player, struct Sprite* Monster, enum PlayerChoice PC )
 {
 	// temp Healing Potion power
 	int healingPotionPower = 25;
@@ -145,4 +147,37 @@ void MonsterAction(struct Player* Player, struct Sprite* Monster)
 		Player->health -= Monster->damage;
 	}
 	return;
+}
+
+
+// adding module for death screen animation
+// adding module for death screen animation
+void displayDeathScreen()
+{
+	system("cls");
+
+	printf("==================================================\n");
+	printf("                 YOU HAVE DIED                    \n");
+	printf("==================================================\n");
+	printf("              ... \n");
+	printf("            ;::::; \n");
+	printf("          ;::::; :; \n");
+	printf("        ;:::::'   :; \n");
+	printf("      ;:::::;      ;. \n");
+	printf("	   ,:::::'        ;             OOO\ \n");
+	printf("	   ::::::;        ;            OOOOO\ \n");
+	printf("	   ;:::::;        ;           OOOOOOOO \n");
+	printf("	  ,;::::::;      ;'           / OOOOOOO \n");
+	printf("	;:::::::::`. ,,,;.           /  / DOOOOOO \n");
+	printf("  .';:::::::::::::::::;,      /  /     DOOOO \n");
+	printf(" ,::::::;::::::;;;;::::;,    /  /        DOOO \n");
+	printf(";`::::::`'::::::;;;:::::  ,#/  /          DOOO \n");
+	printf(":`:::::::`;::::::;;:::  ;::#  /            DOOO \n");
+	printf("::`:::::::`;::::::::  ;::::# /              DOO \n");
+	printf("`:`:::::::`;::::::  ;::::::#/               DOO \n");
+	printf(" :::`:::::::`;;  ;:::::::::##                OO \n");
+	printf(" ::::`:::::::`;::::::::;:::#                OO \n");
+	printf(" `:::::`::::::::::::;'`:;::#                O \n");
+	printf("  `:::::`::::::::;'  /  / `:# \n");
+	printf("   ::::::`:::::;'   /  /   `# \n");
 }
