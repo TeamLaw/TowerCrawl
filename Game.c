@@ -205,7 +205,6 @@ void playerMove()
 		//Have to redraw the entire room
 		drawRoom();
 
-
 		break;
 	}
 	room = tower.floors[newPlayer.floorLoc].rooms[newPlayer.pos];
