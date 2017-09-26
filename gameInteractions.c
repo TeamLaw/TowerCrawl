@@ -36,21 +36,17 @@ void gameLogic( struct Player* Player, struct Sprite* Monster,enum PlayerChoice 
 	switch (PC)
 	{
 	case Attack:
-		// give player gains experience, this gaining levels?
-		Player->experience += 100;
 	
 		//Player does damage to the monster
-		Monster->health -= Player->damage;		
-
+		Monster->health -= Player->damage;
 		//Monsters turn
 		MonsterAction(Player, Monster);
 
 		break;
 
 	case Use_Potion:
-		// give player gains experience, this gaining levels?
-		Player->experience += 50;
-		
+		printf("[-] used some healing lotion \n");
+
 		// only add health if we don't go over max
 		if (Player->health + healingPotionPower <= Player->maxHealth)
 		{
@@ -79,28 +75,6 @@ void gameLogic( struct Player* Player, struct Sprite* Monster,enum PlayerChoice 
 		//Monsters turn
 		MonsterAction(Player, Monster);
 		break;
-	}
-
-	// after one of the above things has happened, let's determine if a level up is warranted
-	if (Player->experience >= 100 && Player->experience < 200)
-	{
-		// level up to level 2
-		Player->level = 2;
-	}
-	else if (Player->experience >= 200 && Player->experience < 400)
-	{
-		// level up to level 3
-		Player->level = 3;
-	}
-	else if (Player->experience >= 400 && Player->experience < 800)
-	{
-		// level up to level 4
-		Player->level = 4;
-	}
-	else if (Player->experience >= 800)
-	{
-		// level up to level 5
-		Player->level = 5;
 	}
 }
 
