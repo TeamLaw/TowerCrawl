@@ -1,7 +1,7 @@
 /*HandleEncounter.c
 Team Law
 TowerCrawl
-Programmers: Kyle Law, Jesse Sabatini, Andrew Neumann, Joe H
+Programmers: Kyle, Jesse, Andrew, Joe
 */
 
 #include "TowerCrawl.h"
