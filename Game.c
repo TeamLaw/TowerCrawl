@@ -118,15 +118,15 @@ void printGameIntroMessage()
 	_getch();
 	system("cls");
 
-	printf("~ An evil wizard has stolen your crown. ~\n~ You and your finest warriors travel to the wizard's tower ~\n~ to take it back! ~ \n>");
+	printf("~ The evil wizard, Karl Marx has stolen your crown. ~\n~ You and your finest warriors travel to his tower ~\n~ in order to take back what was once yours! ~ \n>");
 	_getch();
 	system("cls");
 
-	printf("~ You burst down the front door of his tower. ~\n~ The room goes dark and you find yourself alone, ~\n~ in a strange room.... ~ \n>");
+	printf("~ Your warriors immediately splinter the drawbridge of Tower Kremlin. ~\n~ Suddenly, the room goes dark and you find yourself alone, ~\n~ in a strange and communist place.... ~ \n>");
 	_getch();
 	system("cls");
 
-	printf("~ Doors appear on the walls. The wizard strange ~\n~ magic will not... cannot keep you from your goal. Travel to the ~\n~ top of the tower and end this maddness! ~ \n>");
+	printf("~ Doors begin to appear on the walls. The wizard's strange magic thickens the air, ~\n~ but such commie shenanigans cannot...... will not keep you from your goal. ~\n~ Travel to the top of Tower Kremlin and end this madness! ~ \n>");
 	_getch();
 	system("cls");
 
