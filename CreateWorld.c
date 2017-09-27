@@ -1,7 +1,20 @@
+/*CreateWorld.c
+Team Law
+TowerCrawl
+Programmers: Kyle, Jesse, Andrew, Joe
+*/
 #include "TowerCrawl.h"
 
+/*createPlayer()
+hardcoded player info
+Parameters:
+None
+Returns:
+	Void
+Programmer: Law
+*/
 void createPlayer()
-{//hardcoded player info
+{
 	player.marker = 'o';
 	player.coord.X = 0;
 	player.coord.Y = 0;
@@ -13,6 +26,14 @@ void createPlayer()
 	player.roomLoc = NULL;
 }
 
+/*createFloor()
+Creates floor
+Parameters:
+None
+Returns:
+Void
+Programmer: Law
+*/
 void createFloor()
 {
 	branch = 50;
@@ -27,6 +48,14 @@ void createFloor()
 	drawEntities((COORD) { 0, 0 }, player.coord, player.marker);
 }
 
+/*createRoom()
+Creates Rooms using generation code
+Parameters:
+None
+Returns:
+returns pointer to room
+Programmer: Law
+*/
 struct Room * createRoom()
 {
 	struct Room * room = malloc(sizeof(struct Room));
@@ -52,6 +81,14 @@ struct Room * createRoom()
 	return room;
 }
 
+/*openDoors(struct Room * room)
+Generates the next room the player is walking into including the doors
+Parameters:
+ Room - the room that is being created
+Returns:
+returns number of doors
+Programmer: Law
+*/
 int openDoors(struct Room * room)
 {
 	int counter = 0;
@@ -85,8 +122,17 @@ RETRY:
 	return counter;
 }
 
+/*createEnemies(struct Room * room, int bossCheck)
+only making 1 enemy atm, have to work out some sort of collision or sometin for multiple, might just stick with 1 enemy per room and just increase stats
+Parameters:
+ room - the room that is being accessed
+ bosscheck - the modifier number that decides if there is a boss in this room
+Returns:
+ 1 - if this is a boss
+Programmer: Law
+*/
 int createEnemies(struct Room * room, int bossCheck)
-{//only making 1 enemy atm, have to work out some sort of collision or sometin for multiple, might just stick with 1 enemy per room and just increase stats
+{
 
 	int isBoss = (((delCounter > 10 && randomNum(1, 101) < delCounter) || bossCheck) && !floorEnd);
 	room->enemy.coord.X = randomNum(1, room->xSize - 1); 
