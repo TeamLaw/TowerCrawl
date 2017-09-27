@@ -61,7 +61,8 @@ void playerMove()
 
 		drawRoom(player.roomLoc);
 		drawInfo();
-		if (room->enemy.health) { drawEntities((COORD) { 0, 0 }, room->enemy.coord, room->enemy.marker); }
+		drawLegend();
+		if (room->enemy.health > 0) { drawEntities((COORD) { 0, 0 }, room->enemy.coord, room->enemy.marker); }
 	}
 
 	drawEntities((roomChange ? (COORD) { 0, 0 } : coord), player.coord, player.marker);
@@ -149,7 +150,7 @@ int checkInteraction()
 	struct Room * room = player.roomLoc;
 	struct Enemy * enemy = &room->enemy;
 
-	if (coordCompare(player.coord, enemy->coord) && enemy->health)
+	if (coordCompare(player.coord, enemy->coord) && enemy->health > 0)
 	{
 		interactionResult = handleEncounter(enemy);
 		if (!interactionResult)
@@ -158,6 +159,7 @@ int checkInteraction()
 			player.coord.Y += (player.coord.Y <= room->ySize / 2 ? (room->ySize / 3) : -(room->ySize / 3));
 			drawRoom(room);
 			drawInfo();
+			drawLegend();
 			drawEntities((COORD) { 0, 0 }, player.coord, player.marker);
 			if (enemy->health) { drawEntities((COORD) { 0, 0 }, enemy->coord, enemy->marker); }
 			if (room->isPortal) { drawEntities((COORD) { 0, 0 }, room->portal.coord, room->portal.marker); }
@@ -166,6 +168,7 @@ int checkInteraction()
 		{
 			drawRoom(room);
 			drawInfo();
+			drawLegend();
 
 			if (enemy->isBoss)
 			{

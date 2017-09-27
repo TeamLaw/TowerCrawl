@@ -7,17 +7,19 @@ int main()
 {
 	delCounter = 0;
 	difficulty = 0;
+	location = 1;
 	clock_t startTime = clock();
 	srand((unsigned)time(&t));
 
 	createPlayer();
 	createFloor();
+	createNPCs();
 
 	while (1)
 	{
 		if ((double)(clock() - startTime) > 1000)
 		{
-			enemyMove();
+			if (player.roomLoc->enemy.health > 0) { enemyMove(); }
 			startTime = clock();
 		}
 		if (_kbhit()) { playerMove(); }

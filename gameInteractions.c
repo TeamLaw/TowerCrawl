@@ -123,6 +123,7 @@ void MonsterAction(struct Enemy* Monster)
 			counter++; experience /= 2; 
 		}
 		player.level = counter + 1;
+		player.money += Monster->money;
 	}
 	else
 	{
