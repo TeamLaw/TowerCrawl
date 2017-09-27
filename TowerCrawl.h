@@ -25,7 +25,7 @@ Programmers: Kyle, Jesse, Andrew, Joe
 
 struct Item
 {
-  char name[100];
+    char name[100];
 	int value;
 	int health;
 	int maxHealth;
@@ -35,14 +35,13 @@ struct Item
 struct Entity
 {
 	char marker;
-	char * name;
+	char name[21];
 	COORD coord;
 };
 
 struct Sprite
 {
 	struct Entity;
-	char name[21];
 	int health;
 	int maxHealth;
 	int damage;
@@ -97,6 +96,7 @@ enum PlayerChoice
 struct Room * delPointers[1000];
 int delCounter;
 
+struct Room * floorStart;
 struct Room * floorEnd;
 
 struct Player player;

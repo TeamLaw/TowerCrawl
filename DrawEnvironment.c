@@ -1,4 +1,4 @@
-
+﻿
 /*DrawEnviroment.c
 Team Law
 TowerCrawl
@@ -31,6 +31,16 @@ void drawRoom(struct Room * room)
 	}
 }
 
+/*drawEntities(COORD oldCoord, COORD coord, char marker)
+Moves the cursor to the old coord and deletes the marker and reprints the marker at the new coord location
+Parameters:
+oldCoord - location of the entity's old position
+coord - location of where the entity moved
+marker - char to print on screen
+Returns:
+none
+Programmer: Law
+*/
 void drawEntities(COORD oldCoord, COORD coord, char marker)
 {
 	if (oldCoord.X || oldCoord.Y)

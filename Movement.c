@@ -86,10 +86,15 @@ void playerMove()
 		drawInfo();
 		drawLegend();
 		if (room->enemy.health > 0) { drawEntities((COORD) { 0, 0 }, room->enemy.coord, room->enemy.marker); }
-
 	}
 
 	drawEntities((roomChange ? (COORD) { 0, 0 } : coord), player.coord, player.marker);
+	if (player.roomLoc == floorStart)
+	{
+		drawEntities((COORD) { 0, 0 }, shopkeeper.coord, shopkeeper.marker);
+		drawEntities((COORD) { 0, 0 }, blacksmith.coord, blacksmith.marker);
+		drawEntities((COORD) { 0, 0 }, innkeeper.coord, innkeeper.marker);
+	}
 }
 
 /*
@@ -241,6 +246,7 @@ int checkInteraction()
 		if (location != (difficulty + 3))
 		{
 			location++;
+			floorStart = NULL;
 			floorEnd = NULL;
 			createFloor();
 		}

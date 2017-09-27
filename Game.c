@@ -15,7 +15,7 @@ int main()
 	clock_t startTime = clock();
 	srand((unsigned)time(&t));
   
-  printGameIntroMessage()
+	printGameIntroMessage();
 	createPlayer();
 	createFloor();
 	createNPCs();
@@ -36,40 +36,17 @@ int main()
 	return 0;
 }
 
-/*
-randomNum(int low, int high) generates a random number
-Parameters:
-low - The lowest possible random number
-high- The highest possible random number
-Returns:
-the random number
-*/
 int coordCompare(COORD coord1, COORD coord2)//OVERLOAD OPERATORS IN C++!!!
 {
 	return (coord1.X == coord2.X && coord1.Y == coord2.Y);
 }
 
-/*
-randomNum(int low, int high) generates a random number
-Parameters:
-low - The lowest possible random number
-high- The highest possible random number
-Returns:
-the random number
-*/
+
 void moveCursor(int x, int y)
 {
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), (COORD) { x, y });
 }
 
-/*
-randomNum(int low, int high) generates a random number
-Parameters:
-low - The lowest possible random number
-high- The highest possible random number
-Returns:
-the random number
-*/
 int randomNum(int low, int high)
 {
 	int r;
