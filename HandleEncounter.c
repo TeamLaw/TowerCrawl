@@ -1,6 +1,7 @@
 #include "TowerCrawl.h"
 
-/*HandleEncounter(struct Player * Player, struct Sprite * Monster) 
+/*
+HandleEncounter(struct Player * Player, struct Sprite * Monster) 
 	Will handle when a player encounters a monster
 Parameters:
 	Player - is the main player
@@ -60,8 +61,7 @@ int handleEncounter(struct Enemy * Monster)
 			// give player gains experience, this gaining levels?
 			return 1;
 		}
-
-
+		
 		drawEncounters(Monster);
 	}
 }
