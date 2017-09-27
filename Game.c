@@ -74,6 +74,7 @@ void clearMemory()
 	for (int i = 0; i < delCounter; i++)
 		free(delPointers[i]);
 	delCounter = 0;
+}
 
 void printGameIntroMessage()
 {
@@ -90,7 +91,7 @@ void printGameIntroMessage()
 	_getch();
 	system("cls");
 	
-	printf("~ Doors appear on the walls. The wizard strange ~\n~ magic will not... cannot keep you from your goal. Travel to the ~\n~ top of the tower and end this maddness! ~ \n>");
+	printf("~ Doors appear on the walls. The wizard's strange ~\n~ magic will not... cannot keep you from your goal. Travel to the ~\n~ top of the tower and end this maddness! ~ \n>");
 	_getch();
 	system("cls");
 
