@@ -125,7 +125,18 @@ Programmer: Joe
 */
 void printGameIntroMessage()
 {
-	printf("TO ADD GRAPHIC\nPRESS ANY KEY TO START THE GAME \n");
+	printf("============= \n");
+	printf("WELCOME TO    \n");		
+ 	printf("============= \n");		
+ 		
+ 	printf("\n-`-`-`-``-`-` \n");		
+ 	printf("  T		   \n");		
+ 	printf("  0		   \n");		
+ 	printf("  W		   \n");		
+ 	printf("  E		   \n");		
+ 	printf("C R A W L  \n\n");		
+ 		
+ 	printf("PRESS ANY KEY TO START THE GAME \n");
 	printf("> ");
 	_getch();
 	system("cls");
