@@ -56,6 +56,7 @@ void ShowPlayerStats()
 	printf("Player's Current Health: %d \n", player.health);
 	printf("Player's Max Health: %d \n", player.maxHealth);
 	printf("Player's Current Level: %d \n", player.level);
+	printf("Player1");
 	printf("                 _A_ \n");
 	printf("                / | \\ \n");
 	printf("               |.-=-.| \n");
