@@ -35,14 +35,13 @@ struct Item
 struct Entity
 {
 	char marker;
-	char * name;
+	char name[21];
 	COORD coord;
 };
 
 struct Sprite
 {
 	struct Entity;
-	char name[21];
 	int health;
 	int maxHealth;
 	int damage;
