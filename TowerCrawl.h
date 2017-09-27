@@ -42,6 +42,7 @@ struct Entity
 struct Sprite
 {
 	struct Entity;
+	char name[21];
 	int health;
 	int maxHealth;
 	int damage;

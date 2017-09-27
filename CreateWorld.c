@@ -1,9 +1,14 @@
+
+#define _CRT_SECURE_NO_WARNINGS 1
 /*CreateWorld.c
 Team Law
 TowerCrawl
 Programmers: Kyle, Jesse, Andrew, Joe
 */
+
 #include "TowerCrawl.h"
+#include <string.h>
+
 
 /*createPlayer()
 hardcoded player info
@@ -25,6 +30,17 @@ void createPlayer()
 	player.exp = 0;
 	player.level = 1;
 	player.roomLoc = NULL;
+	player.name[21] = 0;
+	
+	printf("What shall we call you, your lordship? (enter player name - max 20 characters long): \n");
+	fgets(player.name, 20, stdin);
+	int length = strlen(player.name);
+	for (int i = 0; i < length; i++)
+	{
+		if ((int)player.name[i] == 10) { player.name[i] = 0; }
+	}
+	printf("%s, how bad shall we make your day? (1)Normal (2)So Intense (3)Insanely Bad Day", player.name);
+	difficulty = (_getch() - 49); // removing form the ASCII character value
 }
 
 
