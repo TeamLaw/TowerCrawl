@@ -1,3 +1,8 @@
+/*TowerCrawl.h
+Team Law
+TowerCrawl
+Programmers: Kyle, Jesse, Andrew, Joe
+*/
 #ifndef stdio 
 #define stdio 1
 #include <stdio.h>
@@ -18,9 +23,19 @@
 #include <math.h>
 #include <time.h>
 
+struct Item
+{
+  char name[100];
+	int value;
+	int health;
+	int maxHealth;
+	int damage;
+};
+
 struct Entity
 {
 	char marker;
+	char * name;
 	COORD coord;
 };
 
@@ -32,21 +47,29 @@ struct Sprite
 	int maxHealth;
 	int damage;
 	int exp;
+	int level;
+	int money;
 };
 
 struct Player
 {
 	struct Sprite;
 	struct Room * roomLoc;
-	int level;
 	int experience;
+	struct Item inventory[10];
+};
+
+struct NPC
+{
+	struct Entity;
+	struct Item merchandise[10];
 };
 
 struct Enemy
 {
 	struct Sprite;
+	struct Item loot;
 	int isBoss;//0 = normal enemy, 1 = boss
-	int loot;//0 = no loot, 1 = armor(max hp), 2 = weapon(damage), 3 = potion(healing)
 };
 
 struct Room
@@ -77,6 +100,10 @@ int delCounter;
 struct Room * floorEnd;
 
 struct Player player;
+struct NPC shopkeeper;
+struct NPC innkeeper;
+struct NPC blacksmith;
+
 time_t t;
 int difficulty;
 int branch;
@@ -84,12 +111,13 @@ int location;
 
 //Game.c
 void createPlayer();
-struct Room * createRoom();
+struct Room * createRoom(int);
 int openDoors(struct Room *);
 int createEnemies(struct Room *, int);
 int checkPlayerPos(int, struct Room *);
 void drawRoom(struct Room *);
 void drawInfo();
+void drawLegend();
 void playerMove();
 void enemyMove();
 void drawEntities(COORD, COORD, char);
@@ -106,6 +134,8 @@ void ShowPlayerStats();
 void displayDeathScreen();
 void clearMemory();
 void createFloor();
+void createNPCs();
 void printGameIntroMessage();
+
 
 #endif

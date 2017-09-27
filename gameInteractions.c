@@ -1,3 +1,8 @@
+/*gameInteractions.c
+Team Law
+TowerCrawl
+Programmers: Kyle, Jesse, Andrew, Joe
+*/
 #include "TowerCrawl.h"
 
 
@@ -59,9 +64,19 @@ void drawEncounters(struct Enemy * Monster)
 	}
 }
 
+/*
+void gameLogic(struct Enemy* Monster, enum PlayerChoice PC)
 
-//GameLogic takes the players choice and caculates what both the player's
-//and monster's action and health will be.
+Purpose: takes the players choice and caculates what both the player's
+and monster's action and health will be.. 
+
+Parameter 1: struct Enemy* Monster (this is a pointer to the Monster struct)
+
+Parameter 2: enum PlayerChoice PC (this is a PlayerChoice of type enum, which 
+essentially contains a list of aliases to values we can use in our logic)
+
+Programmer: Joe
+*/
 
 void gameLogic(struct Enemy* Monster, enum PlayerChoice PC )
 {
@@ -126,6 +141,7 @@ void MonsterAction(struct Enemy* Monster)
 			counter++; experience /= 2; 
 		}
 		player.level = counter + 1;
+		player.money += Monster->money;
 	}
 	else
 	{
@@ -136,8 +152,15 @@ void MonsterAction(struct Enemy* Monster)
 }
 
 
-// adding module for death screen animation
-// adding module for death screen animation
+/*
+void displayDeathScreen()
+
+Purpose: Prints out ASCII art to the user upon losing all health.
+
+Parameters: none
+
+Programmer: Joe
+*/
 void displayDeathScreen()
 {
 	system("cls");

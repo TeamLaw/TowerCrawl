@@ -1,3 +1,10 @@
+
+/*DrawEnviroment.c
+Team Law
+TowerCrawl
+Programmers: Kyle, Jesse, Andrew, Joe
+*/
+
 #include "TowerCrawl.h"
 
 void drawRoom(struct Room * room)
@@ -40,13 +47,23 @@ void drawEntities(COORD oldCoord, COORD coord, char marker)
 
 void drawInfo()
 {
-	printf("\nBranch: %d Rooms: %d Floor: %d\n\n", branch, delCounter, location + 1);
-	printf("HP: ");
-	for (int i = 0; i < player.maxHealth; i++)
-	{
-		printf("%c", (player.health > i ? 47 : 46));
-	}
-	printf("  %d/%d", player.health, player.maxHealth);
+	printf("\n\nRooms: %d Floor: %d\n\n", delCounter, location);
+	printf("HP: %d/%d\n", player.health, player.maxHealth);
+	printf("$: %d", player.money);
+}
+
+void drawLegend()
+{
+	printf("\n\n\n=LEGEND==========\n\n");
+	printf(" O   %s\n", player.name);
+	printf(" S   Shopkeeper\n");
+	printf(" B   Blacksmith\n");
+	printf(" I   Innkeeper\n");
+	printf(" C   Chest\n");
+	printf(" x   Monster\n");
+	printf(" #   Boss\n");
+	printf(" @   Portal\n");
+
 }
 
 void ShowPlayerStats()
@@ -79,10 +96,11 @@ void ShowPlayerStats()
 	printf("            \ \\|/  |  \\ \n");
 	printf("              '--' `--` \n");
 	_getch();
-
 	drawRoom(player.roomLoc);
 	drawInfo();
-	if (player.roomLoc->enemy.health) { drawEntities((COORD){ 0,0 }, player.roomLoc->enemy.coord, player.roomLoc->enemy.marker); }
+	drawLegend();
+	if (player.roomLoc->enemy.health > 0) { drawEntities((COORD){ 0,0 }, player.roomLoc->enemy.coord, player.roomLoc->enemy.marker); }
+
 	drawEntities((COORD) { 0, 0 }, player.coord, player.marker);
 
 	return 0;
