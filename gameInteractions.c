@@ -148,12 +148,12 @@ void displayDeathScreen()
 	printf("              ... \n");
 	printf("            ;::::; \n");
 	printf("          ;::::; :; \n");
-	printf("        ;:::::'    :; \n");
-	printf("       ;:::::;       ;. \n");
-	printf("       ,:::::'        ;             OOO\ \n");
-	printf("       ::::::;        ;            OOOOO\ \n");
-	printf("       ;:::::;        ;           OOOOOOO \n");
-	printf("      ,;::::::;      ;'         / OOOOOOOO \n");
+	printf("        ;:::::'     :; \n");
+	printf("       ;:::::;        ;. \n");
+	printf("       ,::::: (*)  (*) ;             OOO\ \n");
+	printf("       ::::::;   /\    ;            OOOOO\ \n");
+	printf("       ;:::::;  ____   ;           OOOOOOO \n");
+	printf("      ,;::::::; \__/ ;'         / OOOOOOOO \n");
 	printf("    ;:::::::::`. ,,,;.         /  / DOOOOOO \n");
 	printf("  .';:::::::::::::::::;,      /  /     DOOOO \n");
 	printf(" ,::::::;::::::;;;;::::;,    /  /        DOOO \n");
@@ -168,5 +168,4 @@ void displayDeathScreen()
 	printf("   ::::::`:::::;'   /  /   `# \n");
 	_getch();
 	return;
-
 }
