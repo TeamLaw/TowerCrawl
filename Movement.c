@@ -1,5 +1,12 @@
 #include "TowerCrawl.h"
-
+/*
+enemyMove() determines where the monster in the player's current room
+Parameters :
+	None
+Returns :
+	void
+Programmer: Law
+*/
 void enemyMove()
 {
 	struct Enemy * enemy = &player.roomLoc->enemy;
@@ -13,7 +20,14 @@ void enemyMove()
 
 	if (enemy->health) { drawEntities(coord, enemy->coord, enemy->marker); }
 }
-
+/*
+playerMove() handles the player's input 
+Parameters :
+	None
+Returns :
+	void
+Programmer: Law
+*/
 void playerMove()
 {
 	int roomChange = 0;
@@ -67,12 +81,24 @@ void playerMove()
 	drawEntities((roomChange ? (COORD) { 0, 0 } : coord), player.coord, player.marker);
 }
 
+/*
+checkPlayerPos(int direction, struct Room * oldRoom) checks for to see if the player has ran into portals or monsters
+Parameters :
+	direction - Which direction the player is moving 
+		1 -North 2- South 3- West 4- East
+	oldRoom - a pointer that hold the value of the room a player is leaving if he changes rooms.
+Returns :
+1 - moves through door
+
+Programmer: Law
+*/
 int checkPlayerPos(int direction, struct Room * oldRoom)
 {
 	struct Room * newRoom;
 
 	switch (direction)
 	{
+		//player is moving North
 	case 1:
 		if (oldRoom->nDoor)
 		{
@@ -89,6 +115,7 @@ int checkPlayerPos(int direction, struct Room * oldRoom)
 			}
 		}
 		break;
+		//player is moving South
 	case 2:
 		if (oldRoom->sDoor)
 		{
@@ -105,6 +132,7 @@ int checkPlayerPos(int direction, struct Room * oldRoom)
 			}
 		}
 		break;
+		//player is moving West
 	case 3:
 		if (oldRoom->wDoor)
 		{
@@ -121,6 +149,7 @@ int checkPlayerPos(int direction, struct Room * oldRoom)
 			}
 		}
 		break;
+		//player is moving East
 	case 4:
 		if (oldRoom->eDoor)
 		{
@@ -141,16 +170,25 @@ int checkPlayerPos(int direction, struct Room * oldRoom)
 
 	return 0;
 }
-// -1 death
+
+/*
+checkInteraction() checks for to see if the player has ran into portals or monsters
+Parameters :
+	None
+Returns :
+	-1 - if player dies
+
+Programmer: Law, Neumann
+*/
 int checkInteraction()
 {
 	int interactionResult = 0;
-
 	struct Room * room = player.roomLoc;
 	struct Enemy * enemy = &room->enemy;
-
+	// checks to see if you ran into an alive monster
 	if (coordCompare(player.coord, enemy->coord) && enemy->health)
 	{
+		//Text combat
 		interactionResult = handleEncounter(enemy);
 		if (!interactionResult)
 		{
@@ -181,6 +219,7 @@ int checkInteraction()
 			return -1;
 		}
 	}
+	//checking to see if the character has walked into a portal
 	if (coordCompare(player.coord, room->portal.coord) && room->isPortal)
 	{
 		clearMemory();
