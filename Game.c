@@ -112,12 +112,16 @@ void clearMemory()
 }
 
 /*
-printGameIntroMessage() Handles the intro message and art
-Parameters:
-None
-Returns:
-Void
-Programmer: Law
+
+void printGameIntroMessage()
+
+Purpose: Prints a welcome message and ASCII art image to the user. It then
+procedures to display a series of tales to the user before they start playing
+the game.
+
+Parameters: None
+
+Programmer: Joe
 */
 void printGameIntroMessage()
 {
@@ -139,3 +143,5 @@ void printGameIntroMessage()
 	system("cls");
 
 }
+
+
