@@ -76,6 +76,17 @@ void clearMemory()
 	delCounter = 0;
 }
 
+/*
+void printGameIntroMessage()
+
+Purpose: Prints a welcome message and ASCII art image to the user. It then
+procedures to display a series of tales to the user before they start playing
+the game.
+
+Parameters: None
+
+Programmer: Joe
+*/
 void printGameIntroMessage()
 {
 	printf("============= \n");
