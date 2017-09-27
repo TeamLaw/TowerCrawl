@@ -1,4 +1,8 @@
-﻿
+﻿/*Game.c
+Team Law
+TowerCrawl
+Programmers: Kyle Law, Jesse Sabatini, Andrew Neumann, Joe H
+*/
 #include "TowerCrawl.h"
 
 //Save game to file?

@@ -1,3 +1,9 @@
+/*DrawEnviroment.c
+Team Law
+TowerCrawl
+Programmers: Kyle Law, Jesse Sabatini, Andrew Neumann, Joe H
+*/
+
 #include "TowerCrawl.h"
 
 void drawRoom(struct Room * room)

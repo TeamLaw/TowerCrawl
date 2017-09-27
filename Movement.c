@@ -1,3 +1,9 @@
+/*Movement.c 
+Team Law
+TowerCrawl
+Programmers: Kyle Law, Jesse Sabatini, Andrew Neumann, Joe H
+*/
+
 #include "TowerCrawl.h"
 /*
 enemyMove() determines where the monster in the player's current room
@@ -20,6 +26,7 @@ void enemyMove()
 
 	if (enemy->health) { drawEntities(coord, enemy->coord, enemy->marker); }
 }
+
 /*
 playerMove() handles the player's input 
 Parameters :

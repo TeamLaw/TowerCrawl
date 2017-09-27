@@ -1,3 +1,8 @@
+/*TowerCrawl.h
+Team Law
+TowerCrawl
+Programmers: Kyle Law, Jesse Sabatini, Andrew Neumann, Joe H
+*/
 #ifndef stdio 
 #define stdio 1
 #include <stdio.h>
