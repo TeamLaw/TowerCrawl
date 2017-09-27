@@ -75,7 +75,7 @@ Parameter 1: struct Enemy* Monster (this is a pointer to the Monster struct)
 Parameter 2: enum PlayerChoice PC (this is a PlayerChoice of type enum, which 
 essentially contains a list of aliases to values we can use in our logic)
 
-Programmer: Joe
+Programmer: Joe, Law
 */
 
 void gameLogic(struct Enemy* Monster, enum PlayerChoice PC )

@@ -20,6 +20,8 @@ Programmer: Law
 */
 void createPlayer()
 {
+	int dif;
+
 	player.marker = 'O';
 	player.coord.X = 0;
 	player.coord.Y = 0;
@@ -40,7 +42,8 @@ void createPlayer()
 		if ((int)player.name[i] == 10) { player.name[i] = 0; }
 	}
 	printf("%s, how bad shall we make your day? (1)Normal (2)So Intense (3)Insanely Bad Day", player.name);
-	difficulty = (_getch() - 49); // removing form the ASCII character value
+	dif = _getch() - 49;
+	difficulty = (dif >= 0 && dif <= 2 ? dif : 100); // removing form the ASCII character value
 }
 
 
@@ -56,11 +59,12 @@ void createFloor()
 {
 	branch = 50;
 
-
 	player.roomLoc = createRoom(1);
 	player.coord.X = player.roomLoc->xSize / 2;
 	player.coord.Y = player.roomLoc->ySize / 2;
 	openDoors(player.roomLoc);
+
+	floorStart = player.roomLoc;
 
 	drawRoom(player.roomLoc);
 	drawInfo();
@@ -169,7 +173,34 @@ int createEnemies(struct Room * room, int bossCheck)
 	return isBoss;
 }
 
+/*createNPCs()
+Populates the 3 NPC structs with information and displays them on screen
+Parameters:
+none
+Returns:
+none
+Programmer: Law
+*/
 void createNPCs()
 {
+	struct Room * room = player.roomLoc;
 
+	shopkeeper.coord.X = 2;
+	shopkeeper.coord.Y = 2;
+	shopkeeper.marker = 'S';
+	strcpy(shopkeeper.name, "Shopkeeper");
+
+	innkeeper.coord.X = room->xSize - 3;
+	innkeeper.coord.Y = 2;
+	innkeeper.marker = 'I';
+	strcpy(innkeeper.name, "Innkeeper");
+
+	blacksmith.coord.X = 2;
+	blacksmith.coord.Y = room->ySize - 3;
+	blacksmith.marker = 'B';
+	strcpy(shopkeeper.name, "Blacksmith");
+
+	drawEntities((COORD) { 0, 0 }, shopkeeper.coord, shopkeeper.marker);
+	drawEntities((COORD) { 0, 0 }, blacksmith.coord, blacksmith.marker);
+	drawEntities((COORD) { 0, 0 }, innkeeper.coord, innkeeper.marker);
 }
