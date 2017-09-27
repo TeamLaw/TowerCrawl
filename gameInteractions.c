@@ -77,6 +77,7 @@ essentially contains a list of aliases to values we can use in our logic)
 
 Programmer: Joe
 */
+
 void gameLogic(struct Enemy* Monster, enum PlayerChoice PC )
 {
 	// temp Healing Potion power
@@ -140,6 +141,7 @@ void MonsterAction(struct Enemy* Monster)
 			counter++; experience /= 2; 
 		}
 		player.level = counter + 1;
+		player.money += Monster->money;
 	}
 	else
 	{

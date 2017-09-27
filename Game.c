@@ -11,29 +11,28 @@ int main()
 {
 	delCounter = 0;
 	difficulty = 0;
+	location = 1;
 	clock_t startTime = clock();
 	srand((unsigned)time(&t));
-
-	// display greeting
-	printGameIntroMessage();
-
+  
+  printGameIntroMessage()
 	createPlayer();
 	createFloor();
-
+	createNPCs();
+  
 	while (1)
 	{
 		if ((double)(clock() - startTime) > 1000)
 		{
-			enemyMove();
+			if (player.roomLoc->enemy.health > 0) { enemyMove(); }
 			startTime = clock();
 		}
 		if (_kbhit()) { playerMove(); }
 
 		if (checkInteraction() == -1) { return; }
-
 	}
 	clearMemory();
-
+	
 	return 0;
 }
 
@@ -80,7 +79,7 @@ int randomNum(int low, int high)
 }
 
 /*
-randomNum(int mod) Compares how many rooms have been entered with how many are left, if all have been entered, spawn boss or continue spawning rooms
+minCheck(int mod) Compares how many rooms have been entered with how many are left, if all have been entered, spawn boss or continue spawning rooms
 Parameters:
 mod - edits it behavior
 Returns:
@@ -90,11 +89,11 @@ Programmer: Law
 int minCheck(int mod)
 {
 	int counter = mod;
-
 	for (int i = 0; i < delCounter; i++) { counter += delPointers[i]->entered; }
 
 	return (counter == delCounter);
 }
+
 
 /*
 clearMemory() At the end of the program, this function frees up all the memory
@@ -104,6 +103,7 @@ Returns:
 Void
 Programmer: Law
 */
+
 void clearMemory()
 {
 	for (int i = 0; i < delCounter; i++)

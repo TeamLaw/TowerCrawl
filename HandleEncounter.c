@@ -67,7 +67,7 @@ int handleEncounter(struct Enemy * Monster)
 			// give player gains experience, this gaining levels?
 			return 1;
 		}
-		
+
 		drawEncounters(Monster);
 	}
 }
