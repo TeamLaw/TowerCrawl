@@ -56,6 +56,27 @@ void ShowPlayerStats()
 	printf("Player's Current Health: %d \n", player.health);
 	printf("Player's Max Health: %d \n", player.maxHealth);
 	printf("Player's Current Level: %d \n", player.level);
+	printf("                 _A_ \n");
+	printf("                / | \\ \n");
+	printf("               |.-=-.| \n");
+	printf("               )\\_|_/( \n");
+	printf("            .=='\\   /`==. \n");
+	printf("          .'\\   (`:')   /`. \n");
+	printf("        _/_ |_.-' : `-._|__\\_ \n");
+	printf("       <___>'\\    :    /`<___> \n");
+	printf("       /  /   >=======<  /  / \n");
+	printf("     _/ .'   /  ,-:-.  \\/=,' \n");
+	printf("    / _/    |__/v^v^v\\__) \\ \n");
+	printf("    \\(\\)     |V^V^V^V^V|\\_/ \n");
+	printf("     (\\\\     \\`---|---'/ \n");
+	printf("       \\\\     \\-._|_,-/ \n");
+	printf("        \\\\     |__|__| \n");
+	printf("         \\\\   <___X___> \n");
+	printf("          \\\\   \\..|../ \n");
+	printf("           \\\\   \\ | / \n");
+	printf("            \\\\  /V|V\\ \n");
+	printf("            \ \\|/  |  \\ \n");
+	printf("              '--' `--` \n");
 	_getch();
 
 	drawRoom(player.roomLoc);
