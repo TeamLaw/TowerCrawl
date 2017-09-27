@@ -1,3 +1,9 @@
+/*HandleEncounter.c
+Team Law
+TowerCrawl
+Programmers: Kyle, Jesse, Andrew, Joe
+*/
+
 #include "TowerCrawl.h"
 
 /*

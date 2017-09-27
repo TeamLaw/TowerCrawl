@@ -1,3 +1,8 @@
+/*TowerCrawl.h
+Team Law
+TowerCrawl
+Programmers: Kyle, Jesse, Andrew, Joe
+*/
 #ifndef stdio 
 #define stdio 1
 #include <stdio.h>

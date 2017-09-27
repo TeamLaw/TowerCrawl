@@ -1,4 +1,8 @@
-﻿
+﻿/*Game.c
+Team Law
+TowerCrawl
+Programmers: Kyle, Jesse, Andrew, Joe
+*/
 #include "TowerCrawl.h"
 
 //Save game to file?
@@ -121,32 +125,23 @@ Programmer: Joe
 */
 void printGameIntroMessage()
 {
-	printf("============= \n");
-	printf("WELCOME TO    \n");
-	printf("============= \n");
-
-	printf("\n-`-`-`-``-`-` \n");
-	printf("  T		   \n");
-	printf("  0		   \n");
-	printf("  W		   \n");
-	printf("  E		   \n");
-	printf("C R A W L  \n\n");
-
-	printf("PRESS ANY KEY TO START THE GAME \n");
+	printf("TO ADD GRAPHIC\nPRESS ANY KEY TO START THE GAME \n");
 	printf("> ");
 	_getch();
 	system("cls");
 
-	printf("~ An evil wizard has stolen your crown. ~\n~ You and your finest warriors travel to the wizard's tower ~\n~ to take it back! ~ \n>");	
+	printf("~ An evil wizard has stolen your crown. ~\n~ You and your finest warriors travel to the wizard's tower ~\n~ to take it back! ~ \n>");
 	_getch();
 	system("cls");
-	
+
 	printf("~ You burst down the front door of his tower. ~\n~ The room goes dark and you find yourself alone, ~\n~ in a strange room.... ~ \n>");
 	_getch();
 	system("cls");
-	
-	printf("~ Doors appear on the walls. The wizard's strange ~\n~ magic will not... cannot keep you from your goal. Travel to the ~\n~ top of the tower and end this maddness! ~ \n>");
+
+	printf("~ Doors appear on the walls. The wizard strange ~\n~ magic will not... cannot keep you from your goal. Travel to the ~\n~ top of the tower and end this maddness! ~ \n>");
 	_getch();
 	system("cls");
+
 }
+
 
