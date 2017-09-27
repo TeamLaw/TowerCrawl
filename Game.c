@@ -78,7 +78,18 @@ void clearMemory()
 
 void printGameIntroMessage()
 {
-	printf("TO ADD GRAPHIC\nPRESS ANY KEY TO START THE GAME \n");
+	printf("============= \n");
+	printf("WELCOME TO    \n");
+	printf("============= \n");
+
+	printf("\n-`-`-`-``-`-` \n");
+	printf("  T		   \n");
+	printf("  0		   \n");
+	printf("  W		   \n");
+	printf("  E		   \n");
+	printf("C R A W L  \n\n");
+
+	printf("PRESS ANY KEY TO START THE GAME \n");
 	printf("> ");
 	_getch();
 	system("cls");
@@ -94,5 +105,4 @@ void printGameIntroMessage()
 	printf("~ Doors appear on the walls. The wizard's strange ~\n~ magic will not... cannot keep you from your goal. Travel to the ~\n~ top of the tower and end this maddness! ~ \n>");
 	_getch();
 	system("cls");
-
 }
