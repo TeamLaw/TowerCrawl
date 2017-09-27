@@ -29,26 +29,43 @@ int main()
 
 	}
 	clearMemory();
-	
+
 	return 0;
 }
 
+/*
+randomNum(int low, int high) generates a random number
+Parameters:
+low - The lowest possible random number
+high- The highest possible random number
+Returns:
+the random number
+*/
 int coordCompare(COORD coord1, COORD coord2)//OVERLOAD OPERATORS IN C++!!!
 {
 	return (coord1.X == coord2.X && coord1.Y == coord2.Y);
 }
 
+/*
+randomNum(int low, int high) generates a random number
+Parameters:
+low - The lowest possible random number
+high- The highest possible random number
+Returns:
+the random number
+*/
 void moveCursor(int x, int y)
 {
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), (COORD) { x, y });
 }
 
-/*randomNum(int low, int high) generates a random number
-Parameters: 
-	low - The lowest possible random number 
-	high- The highest possible random number
-Returns: 
-	the random number
+/*
+randomNum(int low, int high) generates a random number
+Parameters:
+low - The lowest possible random number
+high- The highest possible random number
+Returns:
+the random number
 */
 int randomNum(int low, int high)
 {
@@ -58,17 +75,31 @@ int randomNum(int low, int high)
 	return r;
 }
 
+/*
+randomNum(int mod) Compares how many rooms have been entered with how many are left, if all have been entered, spawn boss or continue spawning rooms
+Parameters:
+mod - edits it behavior
+Returns:
 
+Programmer: Law
+*/
 int minCheck(int mod)
-{//Compares how many rooms have been entered with how many are left, if all have been entered, spawn boss or continue spawning rooms
+{
 	int counter = mod;
-  
+
 	for (int i = 0; i < delCounter; i++) { counter += delPointers[i]->entered; }
-	
+
 	return (counter == delCounter);
 }
 
-
+/*
+clearMemory() At the end of the program, this function frees up all the memory
+Parameters:
+None
+Returns:
+Void
+Programmer: Law
+*/
 void clearMemory()
 {
 	for (int i = 0; i < delCounter; i++)
@@ -77,6 +108,7 @@ void clearMemory()
 }
 
 /*
+
 void printGameIntroMessage()
 
 Purpose: Prints a welcome message and ASCII art image to the user. It then
@@ -117,3 +149,4 @@ void printGameIntroMessage()
 	_getch();
 	system("cls");
 }
+
