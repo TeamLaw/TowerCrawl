@@ -1,4 +1,11 @@
-﻿#include "TowerCrawl.h"
+
+/*DrawEnviroment.c
+Team Law
+TowerCrawl
+Programmers: Kyle, Jesse, Andrew, Joe
+*/
+
+#include "TowerCrawl.h"
 
 void drawRoom(struct Room * room)
 {//Door coded for 2 slots at halfway point of wall
@@ -56,6 +63,7 @@ void drawLegend()
 	printf(" x   Monster\n");
 	printf(" #   Boss\n");
 	printf(" @   Portal\n");
+
 }
 
 void ShowPlayerStats()
@@ -65,12 +73,34 @@ void ShowPlayerStats()
 	printf("Player's Current Health: %d \n", player.health);
 	printf("Player's Max Health: %d \n", player.maxHealth);
 	printf("Player's Current Level: %d \n", player.level);
+	printf("Player: *");
+	printf("                 _A_ \n");
+	printf("                / | \\ \n");
+	printf("               |.-=-.| \n");
+	printf("               )\\_|_/( \n");
+	printf("            .=='\\   /`==. \n");
+	printf("          .'\\   (`:')   /`. \n");
+	printf("        _/_ |_.-' : `-._|__\\_ \n");
+	printf("       <___>'\\    :    /`<___> \n");
+	printf("       /  /   >=======<  /  / \n");
+	printf("     _/ .'   /  ,-:-.  \\/=,' \n");
+	printf("    / _/    |__/v^v^v\\__) \\ \n");
+	printf("    \\(\\)     |V^V^V^V^V|\\_/ \n");
+	printf("     (\\\\     \\`---|---'/ \n");
+	printf("       \\\\     \\-._|_,-/ \n");
+	printf("        \\\\     |__|__| \n");
+	printf("         \\\\   <___X___> \n");
+	printf("          \\\\   \\..|../ \n");
+	printf("           \\\\   \\ | / \n");
+	printf("            \\\\  /V|V\\ \n");
+	printf("            \ \\|/  |  \\ \n");
+	printf("              '--' `--` \n");
 	_getch();
-
 	drawRoom(player.roomLoc);
 	drawInfo();
 	drawLegend();
 	if (player.roomLoc->enemy.health > 0) { drawEntities((COORD){ 0,0 }, player.roomLoc->enemy.coord, player.roomLoc->enemy.marker); }
+
 	drawEntities((COORD) { 0, 0 }, player.coord, player.marker);
 
 	return 0;

@@ -1,3 +1,8 @@
+/*TowerCrawl.h
+Team Law
+TowerCrawl
+Programmers: Kyle, Jesse, Andrew, Joe
+*/
 #ifndef stdio 
 #define stdio 1
 #include <stdio.h>
@@ -20,6 +25,7 @@
 
 struct Item
 {
+  char name[100];
 	int value;
 	int health;
 	int maxHealth;
@@ -128,5 +134,7 @@ void displayDeathScreen();
 void clearMemory();
 void createFloor();
 void createNPCs();
+void printGameIntroMessage();
+
 
 #endif
