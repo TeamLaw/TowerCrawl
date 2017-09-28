@@ -33,6 +33,7 @@ void createPlayer()
 	player.level = 1;
 	player.roomLoc = NULL;
 	player.name[21] = 0;
+	player.inventory[0] = (struct Item) { "Club", 25, 0, 0, 2 };
 	
 	printf("What shall we call you, your lordship? (enter player name - max 20 characters long): \n");
 	fgets(player.name, 20, stdin);
@@ -66,10 +67,9 @@ void createFloor()
 
 	floorStart = player.roomLoc;
 
-	drawRoom(player.roomLoc);
-	drawInfo();
-	drawLegend();
-	drawEntities((COORD) { 0, 0 }, player.coord, player.marker);
+	reDraw('r');
+	reDraw('c');
+	reDraw('n');
 }
 
 /*createRoom()
@@ -189,16 +189,26 @@ void createNPCs()
 	shopkeeper.coord.Y = 2;
 	shopkeeper.marker = 'S';
 	strcpy(shopkeeper.name, "Shopkeeper");
-
-	innkeeper.coord.X = room->xSize - 3;
-	innkeeper.coord.Y = 2;
-	innkeeper.marker = 'I';
-	strcpy(innkeeper.name, "Innkeeper");
+	shopkeeper.merchandise[0] = (struct Item) { "Small Health Potion", 10, 10, 0, 0 };
+	shopkeeper.merchandise[1] = (struct Item) { "Health Potion", 50, 25, 0, 0 };
+	shopkeeper.merchandise[2] = (struct Item) { "Large Health Potion", 100, 50, 0, 0 };
 
 	blacksmith.coord.X = 2;
 	blacksmith.coord.Y = room->ySize - 3;
 	blacksmith.marker = 'B';
 	strcpy(shopkeeper.name, "Blacksmith");
+	blacksmith.merchandise[0] = (struct Item) { "Club", 25, 0, 0, 2 };
+	blacksmith.merchandise[1] = (struct Item) { "sword", 100, 0, 0, 5 };
+	blacksmith.merchandise[2] = (struct Item) { "Great Axe", 250, 0, 0, 10 };
+	blacksmith.merchandise[3] = (struct Item) { "Cloth Armor", 10, 0, 5, 0 };
+	blacksmith.merchandise[4] = (struct Item) { "Leather Armor", 100, 0, 15, 0 };
+	blacksmith.merchandise[5] = (struct Item) { "Studded Armor", 250, 0, 50, 0 };
+	blacksmith.merchandise[6] = (struct Item) { "Plate Armor", 500, 0, 100, 0 };
+
+	innkeeper.coord.X = room->xSize - 3;
+	innkeeper.coord.Y = 2;
+	innkeeper.marker = 'I';
+	strcpy(innkeeper.name, "Innkeeper");
 
 	drawEntities((COORD) { 0, 0 }, shopkeeper.coord, shopkeeper.marker);
 	drawEntities((COORD) { 0, 0 }, blacksmith.coord, blacksmith.marker);

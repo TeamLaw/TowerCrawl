@@ -67,9 +67,9 @@ void playerMove()
 	}
 
 	room = player.roomLoc;
-	if (room->isPortal) { drawEntities((COORD) { 0, 0 }, room->portal.coord, room->portal.marker); }
 	if (roomChange) 
 	{ 
+		coord = (COORD) { 0, 0 };
 		if (!room->entered)	
 		{ 
 			openDoors(player.roomLoc);
@@ -82,19 +82,12 @@ void playerMove()
 			}
 		}
 
-		drawRoom(player.roomLoc);
-		drawInfo();
-		drawLegend();
-		if (room->enemy.health > 0) { drawEntities((COORD) { 0, 0 }, room->enemy.coord, room->enemy.marker); }
+		reDraw('r');
+		reDraw('e');
 	}
-
-	drawEntities((roomChange ? (COORD) { 0, 0 } : coord), player.coord, player.marker);
-	if (player.roomLoc == floorStart)
-	{
-		drawEntities((COORD) { 0, 0 }, shopkeeper.coord, shopkeeper.marker);
-		drawEntities((COORD) { 0, 0 }, blacksmith.coord, blacksmith.marker);
-		drawEntities((COORD) { 0, 0 }, innkeeper.coord, innkeeper.marker);
-	}
+	drawEntities(coord, player.coord, player.marker);
+	reDraw('n');
+	reDraw('p');
 }
 
 /*
@@ -210,26 +203,22 @@ int checkInteraction()
 		{
 			player.coord.X += (player.coord.X <= room->xSize / 2 ? (room->xSize / 3) : -(room->xSize / 3));
 			player.coord.Y += (player.coord.Y <= room->ySize / 2 ? (room->ySize / 3) : -(room->ySize / 3));
-			drawRoom(room);
-			drawInfo();
-			drawLegend();
-			drawEntities((COORD) { 0, 0 }, player.coord, player.marker);
-			if (enemy->health) { drawEntities((COORD) { 0, 0 }, enemy->coord, enemy->marker); }
-			if (room->isPortal) { drawEntities((COORD) { 0, 0 }, room->portal.coord, room->portal.marker); }
+			reDraw('r');
+			reDraw('c');
+			reDraw('e');
+			reDraw('p');
 		}
 		else if (interactionResult == 1)
 		{
-			drawRoom(room);
-			drawInfo();
-			drawLegend();
+			reDraw('r');
 
 			if (enemy->isBoss)
 			{
 				player.coord.Y += (player.coord.X == room->xSize / 2 && player.coord.Y == room->ySize / 2 ? 2 : 0);
 				room->isPortal = 1;
-				drawEntities((COORD) { 0, 0 }, room->portal.coord, room->portal.marker);
+				reDraw('p');
 			}
-			drawEntities((COORD) { 0, 0 }, player.coord, player.marker);
+			reDraw('c');
 		}
 		else if (interactionResult == -1)
 		{
@@ -237,6 +226,10 @@ int checkInteraction()
 			return -1;
 		}
 	}
+
+	if (coordCompare(player.coord, shopkeeper.coord) && player.roomLoc == floorStart) { npcInteraction(&shopkeeper, merchSizeLimit); }
+	if (coordCompare(player.coord, innkeeper.coord) && player.roomLoc == floorStart) { npcInteraction(&innkeeper, 0); }
+	if (coordCompare(player.coord, blacksmith.coord) && player.roomLoc == floorStart) { npcInteraction(&blacksmith, merchSizeLimit); }
 
 	//checking to see if the character has walked into a portal
 

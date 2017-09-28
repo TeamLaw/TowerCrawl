@@ -18,6 +18,8 @@ Programmers: Kyle, Jesse, Andrew, Joe
 #define TOWERCRAWL_H_ 1
 
 #define _CRT_SECURE_NO_WARNINGS 1
+#define invSizeLimit 10
+#define merchSizeLimit 10
 
 #include <Windows.h>
 #include <math.h>
@@ -55,13 +57,13 @@ struct Player
 	struct Sprite;
 	struct Room * roomLoc;
 	int experience;
-	struct Item inventory[10];
+	struct Item inventory[invSizeLimit];
 };
 
 struct NPC
 {
 	struct Entity;
-	struct Item merchandise[10];
+	struct Item merchandise[merchSizeLimit];
 };
 
 struct Enemy
@@ -136,6 +138,10 @@ void clearMemory();
 void createFloor();
 void createNPCs();
 void printGameIntroMessage();
-
+int displayInventory(struct Item *, int, int);
+void npcInteraction(struct NPC *, int);
+void reDraw(char);
+void inventoryInteraction(struct Items *, int, char);
+int inventoryCheck(int);
 
 #endif
