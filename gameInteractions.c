@@ -15,6 +15,7 @@ void drawEncounters(struct Enemy * Monster)
 	if (Monster->isBoss)
 	{
 		system("cls");
+		printf("\n\n");
 		printf("Brosifv Stalin spits on your Democracy! \n");
 		printf("Brosifv Stalin's Health: %d\n\n", Monster->health);
 		printf("                !#########       # \n");
@@ -36,13 +37,13 @@ void drawEncounters(struct Enemy * Monster)
 		printf("   ####'                                      ##### \n");
 		printf("   ~##                                          ##~ \n\n");
 		printf("Your health : %d\n", player.health);
-		printf("You have 43 potions.\n");
 		printf("\nWhat do you do ?\n");
-		printf("\nAttack(1)\nUse Potion(2)\nWait(3)\nFlee(9)\n");
+		printf("\nAttack(1)\nUse Item(2)\nWait(3)\nFlee(9)\n");
 	}
 	else
 	{
 		system("cls");
+		printf("\n\n");
 		printf("A monster stands before you!\n");
 		printf("Its health : %d\n\n", Monster->health);
 		printf("        ______ \n");
@@ -58,9 +59,8 @@ void drawEncounters(struct Enemy * Monster)
 		printf("   _ /    .    | \n");
 		printf("____-|_/\\/_`--.|____ \n\n");
 		printf("Your health : %d\n", player.health);
-		printf("You have 43 potions.\n");
 		printf("\nWhat do you do ?\n");
-		printf("\nAttack(1)\nUse Potion(2)\nWait(3)\nFlee(9)\n");
+		printf("\nAttack(1)\nUse Item(2)\nWait(3)\nFlee(9)\n");
 	}
 }
 
@@ -81,38 +81,21 @@ Programmer: Joe, Law
 void gameLogic(struct Enemy* Monster, enum PlayerChoice PC )
 {
 	// temp Healing Potion power
-	int healingPotionPower = 25;
+	int check = 1;
 
 	// Takes Player choice
 	switch (PC)
 	{
 	case Attack:
-
 		//Player does damage to the monster
 		Monster->health -= player.damage;		
-
-		//Monsters turn
-		MonsterAction(Monster);
-
 		break;
 
-	case Use_Potion:
+	case Use_Item:
 		// only add health if we don't go over max
-		if (player.health + healingPotionPower <= player.maxHealth)
-		{
-			player.health += healingPotionPower;
-		}
-		else if (player.health == player.maxHealth)
-		{
-		}
-		else if (player.health > player.maxHealth - healingPotionPower)
-		{
-			player.health = player.maxHealth;
-		}
-		//Monsters turn
-		MonsterAction(Monster);
+		check = inventoryInteraction(player.inventory, displayInventory(player.inventory, invSizeLimit, 1), 'O', 1);
+		drawEncounters(Monster);
 		break;
-
 		//Cheating is for losers :/
 	case Cheat:
 		//Player gets full health
@@ -120,12 +103,10 @@ void gameLogic(struct Enemy* Monster, enum PlayerChoice PC )
 		//Monster dies
 		Monster->health = 0;
 		break;
-
 	case Wait:
-		//Monsters turn
-		MonsterAction(Monster);
 		break;
 	}
+	if (check) { MonsterAction(Monster); }
 }
 
 //Determines what the monster will do
@@ -169,13 +150,14 @@ void npcInteraction(struct NPC * npc, int invSize)
 			printf("\n$: %d\n", player.money);
 			invPrinted = displayInventory(&npc->merchandise, invSize, 0);
 			printf("\nPress (e) to Exit");
-			inventoryInteraction(&npc->merchandise, invPrinted, npc->marker);
+			inventoryInteraction(&npc->merchandise, invPrinted, npc->marker, 0);
 			break;
 		case '2':
 			printf("\n$: %d\n", player.money);
 			invPrinted = displayInventory(&player.inventory, invSizeLimit, 1);
 			printf("\nPress (e) to Exit");
-			inventoryInteraction(&player.inventory, invPrinted, player.marker);
+			inventoryInteraction(&player.inventory, invPrinted, player.marker, 0);
+
 			break;
 		case '3':
 			break;
@@ -213,11 +195,22 @@ void npcInteraction(struct NPC * npc, int invSize)
 	reDraw('c');
 	reDraw('n');
 }
-
-void inventoryInteraction(struct Items * items, int itemCount, char marker)
+/*int inventoryInteraction(struct Items * items, int itemCount, char marker, int type)
+Allows player to scroll through inventory and select an item
+Parameters:
+items - pointer to inventory array
+itemCount - number of items in inventory
+marker - checks whether player or npc inventory
+type - type of interaction in which inventory is being accessed (1 for battle, 0 for shopping)
+Returns:
+int - if action was taken
+Programmer: Law
+*/
+int inventoryInteraction(struct Items * items, int itemCount, char marker, int type)
 {
 	struct Item * item = items;
-	int oldPos = 0, newPos = 11, loop = 1, count = 0;
+	int oldPos = 0, newPos = (type ? 29 : 11), loop = 1, count = 0, check = 0;
+
 
 	drawEntities((COORD) { 0, 0 }, (COORD) { 1, newPos }, 'X');
 	
@@ -253,36 +246,8 @@ void inventoryInteraction(struct Items * items, int itemCount, char marker)
 			}
 			break;
 		case '\r':
-			if (marker == 'O')
-			{
-				player.money += item->value;
-				moveCursor(2, 7);
-				printf(" %d       ", player.money);
-				item->value = 0;
-				moveCursor(0, newPos);
-				printf("    -Sold-                                                                                       ");
-			}
-			else
-			{
-				if (player.money >= item->value)
-				{
-					if (!inventoryCheck(1))
-					{
-						player.money -= item->value;
-						player.inventory[inventoryCheck(0)] = *item;
-						moveCursor(2, 7);
-						printf(" %d       ", player.money);
-						moveCursor(0, newPos);
-						printf("\n    -Thank you for your purchase-                                                 ");
-					}
-					else 
-					{ 
-						moveCursor(0, 11 + (itemCount * 2));
-						printf("Inventory is full"); 
-						loop = 0;
-					}
-				}
-			}
+			check = inventoryProcess(item, marker, type, newPos);
+			if (type) { loop = 0; }
 			break;
 		case 'e':
 			moveCursor(0, 11 + (itemCount * 2));
@@ -292,7 +257,74 @@ void inventoryInteraction(struct Items * items, int itemCount, char marker)
 			goto CONTINUE;
 		}
 	}
+	return check;
 }
+/*int inventoryProcess(struct Item * item, char marker, int type, int newPos)
+Processes the decision the player made on the displayed inventory
+Parameters:
+item - pointer to item selected
+marker - checks whether player or npc inventory
+type - type of interaction in which inventory is being accessed (1 for battle, 0 for shopping)
+newPos - receives in coordinate to adjust
+Returns:
+int - if action was taken
+Programmer: Law
+*/
+int inventoryProcess(struct Item * item, char marker, int type, int newPos)
+{
+	if (marker == 'O')
+	{
+		if (type)
+		{
+			moveCursor(0, 0);
+			if (item->health) 
+			{ 
+				player.health = ((player.health + item->health) >= player.maxHealth ? player.maxHealth : player.health + item->health);
+				item->value = 0;
+				printf("Drank health potion");
+				_getch();
+				return 1;
+			}
+			else { printf("Oak: Now is not the time to use that!"); _getch(); }
+		}
+		else
+		{
+			player.money += item->value;
+			moveCursor(2, 7);
+			printf(" %d       ", player.money);
+			item->value = 0;
+			moveCursor(0, newPos);
+			printf("    -Sold-                                                                                       ");
+		}
+	}
+	else
+	{
+		if (player.money >= item->value)
+		{
+			if (!inventoryCheck(1))
+			{
+				player.money -= item->value;
+				player.inventory[inventoryCheck(0)] = *item;
+				moveCursor(2, 7);
+				printf(" %d       ", player.money);
+				moveCursor(0, newPos);
+				printf("\n    -Thank you for your purchase-                                                 ");
+			}
+			else
+			{
+				moveCursor(0, newPos + 1);
+				printf("    -Inventory is full-                                                 ");
+			}
+		}
+		else
+		{
+			moveCursor(0, newPos + 1);
+			printf("    -Not enough money-                                                 ");
+		}
+	}
+	return 0;
+}
+
 
 int inventoryCheck(int type)
 {

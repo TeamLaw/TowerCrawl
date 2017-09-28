@@ -27,13 +27,15 @@ void createPlayer()
 	player.coord.Y = 0;
 	player.maxHealth = 100;
 	player.health = player.maxHealth;
-	player.damage = 5;
+	player.damage = 3;
 	player.money = 10;
 	player.exp = 0;
 	player.level = 1;
 	player.roomLoc = NULL;
 	player.name[21] = 0;
 	player.inventory[0] = (struct Item) { "Club", 25, 0, 0, 2 };
+	player.inventory[1] = (struct Item) { "Small health potion", 10, 10, 0, 0 };
+
 	
 	printf("What shall we call you, your lordship? (enter player name - max 20 characters long): \n");
 	fgets(player.name, 20, stdin);
@@ -210,7 +212,5 @@ void createNPCs()
 	innkeeper.marker = 'I';
 	strcpy(innkeeper.name, "Innkeeper");
 
-	drawEntities((COORD) { 0, 0 }, shopkeeper.coord, shopkeeper.marker);
-	drawEntities((COORD) { 0, 0 }, blacksmith.coord, blacksmith.marker);
-	drawEntities((COORD) { 0, 0 }, innkeeper.coord, innkeeper.marker);
+	reDraw('n');
 }
