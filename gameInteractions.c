@@ -151,6 +151,157 @@ void MonsterAction(struct Enemy* Monster)
 	return;
 }
 
+void npcInteraction(struct NPC * npc, int invSize)
+{
+	int invPrinted = 0;
+
+	system("cls");
+	printf("Hello %s,\nWelcome to my %s\n\n", player.name, (invSize ? "Shop" : "Inn"));
+
+	if (invSize)
+	{
+		printf("(1) Buy\n(2) Sell\n(3) Exit\n");
+
+	REDOSHOP:
+		switch (_getch())
+		{
+		case '1':
+			printf("\n$: %d\n", player.money);
+			invPrinted = displayInventory(&npc->merchandise, invSize, 0);
+			printf("\nPress (e) to Exit");
+			inventoryInteraction(&npc->merchandise, invPrinted, npc->marker);
+			break;
+		case '2':
+			printf("\n$: %d\n", player.money);
+			invPrinted = displayInventory(&player.inventory, invSizeLimit, 1);
+			printf("\nPress (e) to Exit");
+			inventoryInteraction(&player.inventory, invPrinted, player.marker);
+			break;
+		case '3':
+			break;
+		default:
+			goto REDOSHOP;
+		}
+	}
+	else
+	{
+		printf("(1) Stay the Night for $10\n(2) Exit\n");
+	REDOINN:
+		switch (_getch() - 48)
+		{
+		case 1:
+			if (player.money >= 10) 
+			{ 
+				player.health = player.maxHealth; 
+				player.money -= 10;
+				printf("\nThank you for staying!\n");
+			}
+			else { printf("\nYou don't have enough money\n"); }
+		case 2:
+			break;
+		default:
+			goto REDOINN;
+		}
+	}
+
+	player.coord.X = player.roomLoc->xSize / 2;
+	player.coord.Y = player.roomLoc->ySize / 2;
+
+	printf("\nI look forward to your next visit.");
+	_getch();
+	reDraw('r');
+	reDraw('c');
+	reDraw('n');
+}
+
+void inventoryInteraction(struct Items * items, int itemCount, char marker)
+{
+	struct Item * item = items;
+	int oldPos = 0, newPos = 11, loop = 1, count = 0;
+
+	drawEntities((COORD) { 0, 0 }, (COORD) { 1, newPos }, 'X');
+	
+	while (loop)
+	{
+		CONTINUE:
+		switch (_getch())
+		{
+		case 'w':
+			if (count)
+			{
+				do
+				{
+					item--;
+					oldPos = newPos;
+					newPos -= 2;
+					count--;
+					if (item->value) { drawEntities((COORD) { 1, oldPos }, (COORD) { 1, newPos }, 'X'); }
+				} while (!item->value && count);
+			}
+			break;
+		case 's':
+			if (count < itemCount - 1)
+			{
+				do 
+				{
+					item++;
+					oldPos = newPos;
+					newPos += 2;
+					count++;
+					if (item->value) { drawEntities((COORD) { 1, oldPos }, (COORD) { 1, newPos }, 'X'); }
+				} while (!item->value && count < itemCount - 1);
+			}
+			break;
+		case '\r':
+			if (marker == 'O')
+			{
+				player.money += item->value;
+				moveCursor(2, 7);
+				printf(" %d       ", player.money);
+				item->value = 0;
+				moveCursor(0, newPos);
+				printf("    -Sold-                                                                                       ");
+			}
+			else
+			{
+				if (player.money >= item->value)
+				{
+					if (!inventoryCheck(1))
+					{
+						player.money -= item->value;
+						player.inventory[inventoryCheck(0)] = *item;
+						moveCursor(2, 7);
+						printf(" %d       ", player.money);
+						moveCursor(0, newPos);
+						printf("\n    -Thank you for your purchase-                                                 ");
+					}
+					else 
+					{ 
+						moveCursor(0, 11 + (itemCount * 2));
+						printf("Inventory is full"); 
+						loop = 0;
+					}
+				}
+			}
+			break;
+		case 'e':
+			moveCursor(0, 11 + (itemCount * 2));
+			loop = 0;
+			break;
+		default:
+			goto CONTINUE;
+		}
+	}
+}
+
+int inventoryCheck(int type)
+{
+	int counter = 0;
+	for (int i = 0; i < invSizeLimit; i++) { counter += (player.inventory[i].value ? 1 : 0); }
+
+	if (type) { return (counter == invSizeLimit); }
+	else { return counter; }
+}
 
 /*
 void displayDeathScreen()

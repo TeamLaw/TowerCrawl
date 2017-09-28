@@ -79,39 +79,94 @@ void drawLegend()
 void ShowPlayerStats()
 {
 	system("cls");
+
 	printf("Player's Damage: %d \n", player.damage);
 	printf("Player's Current Health: %d \n", player.health);
 	printf("Player's Max Health: %d \n", player.maxHealth);
 	printf("Player's Current Level: %d \n\n", player.level);
-	printf("King %s\n", player.name);
-	printf("                  _A_ \n");
-	printf("                 / | \\ \n");
-	printf("                |.-=-.| \n");
-	printf("                )\\_|_/( \n");
-	printf("             .=='\\   /`==. \n");
-	printf("           .'\\   (`:')   /`. \n");
-	printf("         _/_ |_.-' : `-._|__\\_ \n");
-	printf("        <___>'\\    :    /`<___> \n");
-	printf("        /  /   >=======<  /  / \n");
-	printf("      _/ .'   /  ,-:-.  \\/=,' \n");
-	printf("     / _/    |__/v^v^v\\__) \\ \n");
-	printf("     \\(\\)     |V^V^V^V^V|\\_/ \n");
-	printf("      (\\\\     \\`---|---'/ \n");
-	printf("        \\\\     \\-._|_,-/ \n");
-	printf("         \\\\     |__|__| \n");
-	printf("          \\\\   <___X___> \n");
-	printf("           \\\\   \\..|../ \n");
-	printf("            \\\\   \\ | / \n");
-	printf("             \\\\  /V|V\\ \n");
-	printf("              \\\|/  |  \\ \n");
-	printf(" ______________'--' `--`_________________ \n");
-	_getch();
-	drawRoom(player.roomLoc);
-	drawInfo();
-	drawLegend();
-	if (player.roomLoc->enemy.health > 0) { drawEntities((COORD){ 0,0 }, player.roomLoc->enemy.coord, player.roomLoc->enemy.marker); }
 
-	drawEntities((COORD) { 0, 0 }, player.coord, player.marker);
+	displayInventory(&player.inventory, invSizeLimit, 1);
+	
+	_getch();
+	reDraw('r');
+	reDraw('c');
+	reDraw('n');
+	reDraw('e');
+	reDraw('p');
 
 	return 0;
 }
+
+int displayInventory(struct Item * items, int size, int check)
+{
+	int count = 0;
+	if (size) { printf("\n=%s=%s=\n\n", (check ? player.name : "NPC"), (check ? "Inventory" : "Merchandise")); }
+	else { printf("\nWould you like to stay a night and rest?\n\n"); }
+
+	for (int i = 1; i <= size; i++)
+	{
+		if (items->value)
+		{
+			printf("[ ] %s - value: %d\n\n", items->name, items->value);
+			count++;
+		}
+		items++;
+	}
+
+	return count;
+}
+
+void reDraw(char draw)
+{
+	switch (draw)
+	{
+	case 'c':
+		drawEntities((COORD) { 0, 0 }, player.coord, player.marker);
+		break;
+	case 'e':
+		if (player.roomLoc->enemy.health > 0) { drawEntities((COORD) { 0, 0 }, player.roomLoc->enemy.coord, player.roomLoc->enemy.marker); }
+		break;
+	case 'n':
+		if (floorStart == player.roomLoc)
+		{
+			drawEntities((COORD) { 0, 0 }, innkeeper.coord, innkeeper.marker);
+			drawEntities((COORD) { 0, 0 }, blacksmith.coord, blacksmith.marker);
+			drawEntities((COORD) { 0, 0 }, shopkeeper.coord, shopkeeper.marker);
+		}
+		break;
+	case 'p':
+		if (player.roomLoc->isPortal) { drawEntities((COORD) { 0, 0 }, player.roomLoc->portal.coord, player.roomLoc->portal.marker); }
+		break;
+	case 'r':
+		drawRoom(player.roomLoc);
+		drawInfo();
+		drawLegend();
+		break;
+	}
+}
+
+
+
+
+/*printf("King %s\n", player.name);
+printf("                  _A_ \n");
+printf("                 / | \\ \n");
+printf("                |.-=-.| \n");
+printf("                )\\_|_/( \n");
+printf("             .=='\\   /`==. \n");
+printf("           .'\\   (`:')   /`. \n");
+printf("         _/_ |_.-' : `-._|__\\_ \n");
+printf("        <___>'\\    :    /`<___> \n");
+printf("        /  /   >=======<  /  / \n");
+printf("      _/ .'   /  ,-:-.  \\/=,' \n");
+printf("     / _/    |__/v^v^v\\__) \\ \n");
+printf("     \\(\\)     |V^V^V^V^V|\\_/ \n");
+printf("      (\\\\     \\`---|---'/ \n");
+printf("        \\\\     \\-._|_,-/ \n");
+printf("         \\\\     |__|__| \n");
+printf("          \\\\   <___X___> \n");
+printf("           \\\\   \\..|../ \n");
+printf("            \\\\   \\ | / \n");
+printf("             \\\\  /V|V\\ \n");
+printf("              \\\|/  |  \\ \n");
+printf(" ______________'--' `--`_________________ \n");*/

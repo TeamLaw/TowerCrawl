@@ -24,34 +24,34 @@ int handleEncounter(struct Enemy * Monster)
 
 	while (1)
 	{
-		switch (getch() - 48)
+		switch (_getch())
 		{
 			//If the player hits "1" the player attacks
-		case 1:
+		case '1':
 			PC = Attack;
 			gameLogic(Monster, PC);
 			break;
 
 			//If the player hits "2" the player uses a healing potion
-		case 2:
+		case '2':
 			PC = Use_Potion;
 			gameLogic(Monster, PC);
 			break;
 
 			//If the player hits "3" the player waits
-		case 3:
+		case '3':
 			PC = Wait;
 			gameLogic(Monster, PC);
 			break;
 
 			//If the player hits "7" the player cheats
-		case 7:
+		case '7':
 			PC = Cheat;
 			gameLogic(Monster, PC);
 			break;
 
 			//Flee
-		case 9:
+		case '9':
 			return 0;
 			break;
 
