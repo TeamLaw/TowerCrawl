@@ -60,6 +60,7 @@ struct Player
 	struct Item inventory[invSizeLimit];
 	struct Item * weapon;
 	struct Item * armor;
+
 };
 
 struct NPC
@@ -146,5 +147,6 @@ void reDraw(char);
 int inventoryInteraction(struct Items *, int, char, int);
 int inventoryCheck(int);
 int inventoryProcess(struct Item *, char, int, int);
+
 
 #endif

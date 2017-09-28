@@ -35,6 +35,7 @@ void createPlayer()
 	player.name[21] = 0;
 	player.inventory[0] = (struct Item) { "Club", 25, 0, 0, 2 };
 	player.inventory[1] = (struct Item) { "Small health potion", 10, 10, 0, 0 };
+
 	
 	printf("What shall we call you, your lordship? (enter player name - max 20 characters long): \n");
 	fgets(player.name, 20, stdin);

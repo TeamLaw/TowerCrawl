@@ -157,6 +157,7 @@ void npcInteraction(struct NPC * npc, int invSize)
 			invPrinted = displayInventory(&player.inventory, invSizeLimit, 1);
 			printf("\nPress (e) to Exit");
 			inventoryInteraction(&player.inventory, invPrinted, player.marker, 0);
+
 			break;
 		case '3':
 			break;
@@ -209,6 +210,7 @@ int inventoryInteraction(struct Items * items, int itemCount, char marker, int t
 {
 	struct Item * item = items;
 	int oldPos = 0, newPos = (type ? 29 : 11), loop = 1, count = 0, check = 0;
+
 
 	drawEntities((COORD) { 0, 0 }, (COORD) { 1, newPos }, 'X');
 	

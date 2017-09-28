@@ -231,6 +231,10 @@ int checkInteraction()
 	if (coordCompare(player.coord, innkeeper.coord) && player.roomLoc == floorStart) { npcInteraction(&innkeeper, 0); }
 	if (coordCompare(player.coord, blacksmith.coord) && player.roomLoc == floorStart) { npcInteraction(&blacksmith, merchSizeLimit); }
 
+	if (coordCompare(player.coord, shopkeeper.coord) && player.roomLoc == floorStart) { npcInteraction(&shopkeeper, merchSizeLimit); }
+	if (coordCompare(player.coord, innkeeper.coord) && player.roomLoc == floorStart) { npcInteraction(&innkeeper, 0); }
+	if (coordCompare(player.coord, blacksmith.coord) && player.roomLoc == floorStart) { npcInteraction(&blacksmith, merchSizeLimit); }
+
 	//checking to see if the character has walked into a portal
 
 	if (coordCompare(player.coord, room->portal.coord) && room->isPortal)
