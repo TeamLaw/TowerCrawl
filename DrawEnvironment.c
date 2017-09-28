@@ -96,7 +96,16 @@ void ShowPlayerStats()
 
 	return 0;
 }
-
+/*int displayInventory(struct Item * items, int size, int check)
+Draws the inventory based off the inventory needing to be looked at
+Parameters:
+items - pointer to inventory array
+size - max size of inventory to be displayed
+check - checks whether to display player or npc inventory
+Returns:
+count - amount of items in the inventory
+Programmer: Law
+*/
 int displayInventory(struct Item * items, int size, int check)
 {
 	int count = 0;

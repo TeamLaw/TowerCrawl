@@ -58,6 +58,8 @@ struct Player
 	struct Room * roomLoc;
 	int experience;
 	struct Item inventory[invSizeLimit];
+	struct Item * weapon;
+	struct Item * armor;
 };
 
 struct NPC
@@ -91,7 +93,7 @@ struct Room
 enum PlayerChoice
 {
 	Attack,
-	Use_Potion,
+	Use_Item,
 	Wait,
 	Cheat,
 };
@@ -141,7 +143,8 @@ void printGameIntroMessage();
 int displayInventory(struct Item *, int, int);
 void npcInteraction(struct NPC *, int);
 void reDraw(char);
-void inventoryInteraction(struct Items *, int, char);
+int inventoryInteraction(struct Items *, int, char, int);
 int inventoryCheck(int);
+int inventoryProcess(struct Item *, char, int, int);
 
 #endif

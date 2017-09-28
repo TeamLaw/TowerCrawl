@@ -34,7 +34,7 @@ int handleEncounter(struct Enemy * Monster)
 
 			//If the player hits "2" the player uses a healing potion
 		case '2':
-			PC = Use_Potion;
+			PC = Use_Item;
 			gameLogic(Monster, PC);
 			break;
 
