@@ -16,8 +16,6 @@ Programmers: Kyle, Jesse, Andrew, Joe
 //TowerCrawl will only run once
 #ifndef TOWERCRAWL_H_
 #define TOWERCRAWL_H_ 1
-
-#define _CRT_SECURE_NO_WARNINGS 1
 #define invSizeLimit 10
 #define merchSizeLimit 10
 
@@ -25,25 +23,30 @@ Programmers: Kyle, Jesse, Andrew, Joe
 #include <math.h>
 #include <time.h>
 
-struct Item
-{
-    char name[100];
+class Coordinate {
+public:
+	int x, y;
+	bool operator==(const Coordinate c1)const { return this->x == c1.x && this->y == c1.y; }
+};
+
+class Item {
+public:
+	char name[100];
 	int value;
 	int health;
 	int maxHealth;
 	int damage;
 };
 
-struct Entity
-{
+class Entity {
+public:
 	char marker;
 	char name[21];
-	COORD coord;
+	Coordinate coord;
 };
 
-struct Sprite
-{
-	struct Entity;
+class Sprite : public Entity {
+public:
 	int health;
 	int maxHealth;
 	int damage;
@@ -52,41 +55,38 @@ struct Sprite
 	int money;
 };
 
-struct Player
-{
-	struct Sprite;
-	struct Room * roomLoc;
+class Player : public Sprite {
+public:
+	class Room * roomLoc;
 	int experience;
-	struct Item inventory[invSizeLimit];
-	struct Item * weapon;
-	struct Item * armor;
+	Item inventory[invSizeLimit];
+	Item * weapon;
+	Item * armor;
 };
 
-struct NPC
-{
-	struct Entity;
-	struct Item merchandise[merchSizeLimit];
+class NPC : public Entity {
+public:
+	Item merchandise[merchSizeLimit];
 };
 
-struct Enemy
-{
-	struct Sprite;
-	struct Item loot;
+class Enemy : public Sprite {
+public:
+	Item loot;
 	int isBoss;//0 = normal enemy, 1 = boss
 };
 
-struct Room
-{//One enemy per room
+class Room {
+public:
 	int xSize;
 	int ySize;
 	int isPortal;
 	int entered;
-	struct Room * nDoor;
-	struct Room * sDoor;
-	struct Room * eDoor;
-	struct Room * wDoor;	
-	struct Entity portal;
-	struct Enemy enemy;
+	Room * nDoor;
+	Room * sDoor;
+	Room * eDoor;
+	Room * wDoor;
+	Entity portal;
+	Enemy enemy;
 };
 
 //enum to pass player choice , I thought it was less confusing than using ints
@@ -97,54 +97,55 @@ enum PlayerChoice
 	Wait,
 	Cheat,
 };
-struct Room * delPointers[1000];
-int delCounter;
 
-struct Room * floorStart;
-struct Room * floorEnd;
+extern Room * delPointers[1000];
+extern int delCounter;
 
-struct Player player;
-struct NPC shopkeeper;
-struct NPC innkeeper;
-struct NPC blacksmith;
+extern Room * floorStart;
+extern Room * floorEnd;
 
-time_t t;
-int difficulty;
-int branch;
-int location;
+extern Player player;
+extern NPC shopkeeper;
+extern NPC innkeeper;
+extern NPC blacksmith;
+
+extern time_t t;
+extern int difficulty;
+extern int branch;
+extern int location;
 
 //Game.c
 void createPlayer();
-struct Room * createRoom(int);
-int openDoors(struct Room *);
-int createEnemies(struct Room *, int);
-int checkPlayerPos(int, struct Room *);
-void drawRoom(struct Room *);
+class Room * createRoom(int);
+int openDoors(Room *);
+int createEnemies(Room *, int);
+int checkPlayerPos(int, Room *);
+void drawRoom(Room *);
 void drawInfo();
 void drawLegend();
 void playerMove();
 void enemyMove();
-void drawEntities(COORD, COORD, char);
+void drawEntities(Coordinate, Coordinate, char);
 void moveCursor(int, int);
 int randomNum(int, int);//accepts min and max integer and returns: min <= num < max
 int checkInteraction();
-int coordCompare(COORD, COORD);
+int coordCompare(Coordinate, Coordinate);
 int minCheck(int);
-void drawEncounters(struct Enemy *);
-void gameLogic(struct Enemy *, enum PlayerChoice);
-void MonsterAction(struct Enemy *);
-int handleEncounter(struct Enemy *);
+void drawEncounters(Enemy *);
+void gameLogic(Enemy *, enum PlayerChoice);
+void MonsterAction(Enemy *);
+int handleEncounter(Enemy *);
 void ShowPlayerStats();
 void displayDeathScreen();
 void clearMemory();
 void createFloor();
 void createNPCs();
 void printGameIntroMessage();
-int displayInventory(struct Item *, int, int);
-void npcInteraction(struct NPC *, int);
+int displayInventory(Item *, int, int);
+void npcInteraction(NPC *, int);
 void reDraw(char);
-int inventoryInteraction(struct Items *, int, char, int);
+int inventoryInteraction(Item *, int, char, int);
 int inventoryCheck(int);
-int inventoryProcess(struct Item *, char, int, int);
+int inventoryProcess(Item *, char, int, int);
 
 #endif

@@ -1,4 +1,4 @@
-﻿
+
 /*DrawEnviroment.c
 Team Law
 TowerCrawl
@@ -7,7 +7,7 @@ Programmers: Kyle, Jesse, Andrew, Joe
 
 #include "TowerCrawl.h"
 
-void drawRoom(struct Room * room)
+void drawRoom(Room * room)
 {//Door coded for 2 slots at halfway point of wall
 	system("cls");
 	for (int n = 0; n < room->xSize; n++)
@@ -41,15 +41,15 @@ Returns:
 none
 Programmer: Law
 */
-void drawEntities(COORD oldCoord, COORD coord, char marker)
+void drawEntities(Coordinate oldCoord, Coordinate coord, char marker)
 {
-	if (oldCoord.X || oldCoord.Y)
+	if (oldCoord.x || oldCoord.y)
 	{
-		moveCursor(oldCoord.X, oldCoord.Y);
+		moveCursor(oldCoord.x, oldCoord.y);
 		printf(" ");
 	}
 
-	moveCursor(coord.X, coord.Y);
+	moveCursor(coord.x, coord.y);
 	printf("%c", marker);
 
 	moveCursor(0, 0);
@@ -85,16 +85,14 @@ void ShowPlayerStats()
 	printf("Player's Max Health: %d \n", player.maxHealth);
 	printf("Player's Current Level: %d \n\n", player.level);
 
-	displayInventory(&player.inventory, invSizeLimit, 1);
-	
+	displayInventory(player.inventory, invSizeLimit, 1);
+
 	_getch();
 	reDraw('r');
 	reDraw('c');
 	reDraw('n');
 	reDraw('e');
 	reDraw('p');
-
-	return 0;
 }
 /*int displayInventory(struct Item * items, int size, int check)
 Draws the inventory based off the inventory needing to be looked at
@@ -106,7 +104,7 @@ Returns:
 count - amount of items in the inventory
 Programmer: Law
 */
-int displayInventory(struct Item * items, int size, int check)
+int displayInventory(Item * items, int size, int check)
 {
 	int count = 0;
 	if (size) { printf("\n=%s=%s=\n\n", (check ? player.name : "NPC"), (check ? "Inventory" : "Merchandise")); }
@@ -130,21 +128,21 @@ void reDraw(char draw)
 	switch (draw)
 	{
 	case 'c':
-		drawEntities((COORD) { 0, 0 }, player.coord, player.marker);
+		drawEntities({ 0, 0 }, player.coord, player.marker);
 		break;
 	case 'e':
-		if (player.roomLoc->enemy.health > 0) { drawEntities((COORD) { 0, 0 }, player.roomLoc->enemy.coord, player.roomLoc->enemy.marker); }
+		if (player.roomLoc->enemy.health > 0) { drawEntities({ 0, 0 }, player.roomLoc->enemy.coord, player.roomLoc->enemy.marker); }
 		break;
 	case 'n':
 		if (floorStart == player.roomLoc)
 		{
-			drawEntities((COORD) { 0, 0 }, innkeeper.coord, innkeeper.marker);
-			drawEntities((COORD) { 0, 0 }, blacksmith.coord, blacksmith.marker);
-			drawEntities((COORD) { 0, 0 }, shopkeeper.coord, shopkeeper.marker);
+			drawEntities({ 0, 0 }, innkeeper.coord, innkeeper.marker);
+			drawEntities({ 0, 0 }, blacksmith.coord, blacksmith.marker);
+			drawEntities({ 0, 0 }, shopkeeper.coord, shopkeeper.marker);
 		}
 		break;
 	case 'p':
-		if (player.roomLoc->isPortal) { drawEntities((COORD) { 0, 0 }, player.roomLoc->portal.coord, player.roomLoc->portal.marker); }
+		if (player.roomLoc->isPortal) { drawEntities({ 0, 0 }, player.roomLoc->portal.coord, player.roomLoc->portal.marker); }
 		break;
 	case 'r':
 		drawRoom(player.roomLoc);

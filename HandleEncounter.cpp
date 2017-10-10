@@ -7,17 +7,17 @@ Programmers: Kyle, Jesse, Andrew, Joe
 #include "TowerCrawl.h"
 
 /*
-HandleEncounter(struct Player * Player, struct Sprite * Monster) 
-	Will handle when a player encounters a monster
+HandleEncounter(struct Player * Player, struct Sprite * Monster)
+Will handle when a player encounters a monster
 Parameters:
-	Player - is the main player
-	Monster- is the monster that the player is fighting
+Player - is the main player
+Monster- is the monster that the player is fighting
 Returns:
-	-1- if player dies
-	0 - if player flees
-	1 - if player wins the fight
+-1- if player dies
+0 - if player flees
+1 - if player wins the fight
 */
-int handleEncounter(struct Enemy * Monster)
+int handleEncounter(Enemy * Monster)
 {
 	drawEncounters(Monster);
 	enum PlayerChoice PC = Wait;

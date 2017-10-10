@@ -1,4 +1,4 @@
-﻿/*Game.c
+/*Game.c
 Team Law
 TowerCrawl
 Programmers: Kyle, Jesse, Andrew, Joe
@@ -7,19 +7,35 @@ Programmers: Kyle, Jesse, Andrew, Joe
 
 //Save game to file?
 
-int main()
+Room * delPointers[1000];
+int delCounter;
+
+Room * floorStart;
+Room * floorEnd;
+
+Player player;
+NPC shopkeeper;
+NPC innkeeper;
+NPC blacksmith;
+
+time_t t;
+int difficulty;
+int branch;
+int location;
+
+void main()
 {
 	delCounter = 0;
 	difficulty = 0;
 	location = 1;
 	clock_t startTime = clock();
 	srand((unsigned)time(&t));
-  
+
 	printGameIntroMessage();
 	createPlayer();
 	createFloor();
 	createNPCs();
-  
+
 	while (1)
 	{
 		if ((double)(clock() - startTime) > 1000)
@@ -32,8 +48,6 @@ int main()
 		if (checkInteraction() == -1) { return; }
 	}
 	clearMemory();
-	
-	return 0;
 }
 
 int coordCompare(COORD coord1, COORD coord2)//OVERLOAD OPERATORS IN C++!!!
@@ -44,7 +58,7 @@ int coordCompare(COORD coord1, COORD coord2)//OVERLOAD OPERATORS IN C++!!!
 
 void moveCursor(int x, int y)
 {
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), (COORD) { x, y });
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), { (short)x, (short)y });
 }
 
 int randomNum(int low, int high)
@@ -103,17 +117,17 @@ Programmer: Joe
 void printGameIntroMessage()
 {
 	printf("============= \n");
-	printf("WELCOME TO    \n");		
- 	printf("============= \n");		
- 		
- 	printf("\n-`-`-`-``-`-` \n");		
- 	printf("  T		   \n");		
- 	printf("  0		   \n");		
- 	printf("  W		   \n");		
- 	printf("  E		   \n");		
- 	printf("C R A W L  \n\n");		
- 		
- 	printf("PRESS ANY KEY TO START THE GAME \n");
+	printf("WELCOME TO    \n");
+	printf("============= \n");
+
+	printf("\n-`-`-`-``-`-` \n");
+	printf("  T		   \n");
+	printf("  0		   \n");
+	printf("  W		   \n");
+	printf("  E		   \n");
+	printf("C R A W L  \n\n");
+
+	printf("PRESS ANY KEY TO START THE GAME \n");
 	printf("> ");
 	_getch();
 	system("cls");

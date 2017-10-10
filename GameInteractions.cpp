@@ -7,7 +7,7 @@ Programmers: Kyle, Jesse, Andrew, Joe
 
 
 //DrawEncounters will display the the health of both the monster and the player
-void drawEncounters(struct Enemy * Monster)
+void drawEncounters(class Enemy * Monster)
 {
 	//#########################################
 	//Graphics need to be added to their own  graphics text files
@@ -68,17 +68,17 @@ void drawEncounters(struct Enemy * Monster)
 void gameLogic(struct Enemy* Monster, enum PlayerChoice PC)
 
 Purpose: takes the players choice and caculates what both the player's
-and monster's action and health will be.. 
+and monster's action and health will be..
 
 Parameter 1: struct Enemy* Monster (this is a pointer to the Monster struct)
 
-Parameter 2: enum PlayerChoice PC (this is a PlayerChoice of type enum, which 
+Parameter 2: enum PlayerChoice PC (this is a PlayerChoice of type enum, which
 essentially contains a list of aliases to values we can use in our logic)
 
 Programmer: Joe, Law
 */
 
-void gameLogic(struct Enemy* Monster, enum PlayerChoice PC )
+void gameLogic(Enemy* Monster, enum PlayerChoice PC)
 {
 	// temp Healing Potion power
 	int check = 1;
@@ -88,7 +88,7 @@ void gameLogic(struct Enemy* Monster, enum PlayerChoice PC )
 	{
 	case Attack:
 		//Player does damage to the monster
-		Monster->health -= player.damage;		
+		Monster->health -= player.damage;
 		break;
 
 	case Use_Item:
@@ -110,7 +110,7 @@ void gameLogic(struct Enemy* Monster, enum PlayerChoice PC )
 }
 
 //Determines what the monster will do
-void MonsterAction(struct Enemy* Monster)
+void MonsterAction(Enemy* Monster)
 {
 	//can't do much if it is dead ... or can it?
 	if (Monster->health <= 0)
@@ -118,8 +118,8 @@ void MonsterAction(struct Enemy* Monster)
 		player.exp += Monster->exp;
 
 		int experience = player.exp / 100, counter = 0;
-		while (experience) { 
-			counter++; experience /= 2; 
+		while (experience) {
+			counter++; experience /= 2;
 		}
 		player.level = counter + 1;
 		player.money += Monster->money;
@@ -132,7 +132,7 @@ void MonsterAction(struct Enemy* Monster)
 	return;
 }
 
-void npcInteraction(struct NPC * npc, int invSize)
+void npcInteraction(NPC * npc, int invSize)
 {
 	int invPrinted = 0;
 
@@ -148,15 +148,15 @@ void npcInteraction(struct NPC * npc, int invSize)
 		{
 		case '1':
 			printf("\n$: %d\n", player.money);
-			invPrinted = displayInventory(&npc->merchandise, invSize, 0);
+			invPrinted = displayInventory(npc->merchandise, invSize, 0);
 			printf("\nPress (e) to Exit");
-			inventoryInteraction(&npc->merchandise, invPrinted, npc->marker, 0);
+			inventoryInteraction(npc->merchandise, invPrinted, npc->marker, 0);
 			break;
 		case '2':
 			printf("\n$: %d\n", player.money);
-			invPrinted = displayInventory(&player.inventory, invSizeLimit, 1);
+			invPrinted = displayInventory(player.inventory, invSizeLimit, 1);
 			printf("\nPress (e) to Exit");
-			inventoryInteraction(&player.inventory, invPrinted, player.marker, 0);
+			inventoryInteraction(player.inventory, invPrinted, player.marker, 0);
 			break;
 		case '3':
 			break;
@@ -171,9 +171,9 @@ void npcInteraction(struct NPC * npc, int invSize)
 		switch (_getch() - 48)
 		{
 		case 1:
-			if (player.money >= 10) 
-			{ 
-				player.health = player.maxHealth; 
+			if (player.money >= 10)
+			{
+				player.health = player.maxHealth;
 				player.money -= 10;
 				printf("\nThank you for staying!\n");
 			}
@@ -185,8 +185,8 @@ void npcInteraction(struct NPC * npc, int invSize)
 		}
 	}
 
-	player.coord.X = player.roomLoc->xSize / 2;
-	player.coord.Y = player.roomLoc->ySize / 2;
+	player.coord.x = player.roomLoc->xSize / 2;
+	player.coord.y = player.roomLoc->ySize / 2;
 
 	printf("\nI look forward to your next visit.");
 	_getch();
@@ -205,16 +205,16 @@ Returns:
 int - if action was taken
 Programmer: Law
 */
-int inventoryInteraction(struct Items * items, int itemCount, char marker, int type)
+int inventoryInteraction(Item * items, int itemCount, char marker, int type)
 {
-	struct Item * item = items;
+	Item * item = items;
 	int oldPos = 0, newPos = (type ? 29 : 11), loop = 1, count = 0, check = 0;
 
-	drawEntities((COORD) { 0, 0 }, (COORD) { 1, newPos }, 'X');
-	
+	drawEntities({ 0, 0 }, { 1, newPos }, 'X');
+
 	while (loop)
 	{
-		CONTINUE:
+	CONTINUE:
 		switch (_getch())
 		{
 		case 'w':
@@ -226,20 +226,20 @@ int inventoryInteraction(struct Items * items, int itemCount, char marker, int t
 					oldPos = newPos;
 					newPos -= 2;
 					count--;
-					if (item->value) { drawEntities((COORD) { 1, oldPos }, (COORD) { 1, newPos }, 'X'); }
+					if (item->value) { drawEntities({ 1, oldPos }, { 1, newPos }, 'X'); }
 				} while (!item->value && count);
 			}
 			break;
 		case 's':
 			if (count < itemCount - 1)
 			{
-				do 
+				do
 				{
 					item++;
 					oldPos = newPos;
 					newPos += 2;
 					count++;
-					if (item->value) { drawEntities((COORD) { 1, oldPos }, (COORD) { 1, newPos }, 'X'); }
+					if (item->value) { drawEntities({ 1, oldPos }, { 1, newPos }, 'X'); }
 				} while (!item->value && count < itemCount - 1);
 			}
 			break;
@@ -268,15 +268,15 @@ Returns:
 int - if action was taken
 Programmer: Law
 */
-int inventoryProcess(struct Item * item, char marker, int type, int newPos)
+int inventoryProcess(Item * item, char marker, int type, int newPos)
 {
 	if (marker == 'O')
 	{
 		if (type)
 		{
 			moveCursor(0, 0);
-			if (item->health) 
-			{ 
+			if (item->health)
+			{
 				player.health = ((player.health + item->health) >= player.maxHealth ? player.maxHealth : player.health + item->health);
 				item->value = 0;
 				printf("Drank health potion");
