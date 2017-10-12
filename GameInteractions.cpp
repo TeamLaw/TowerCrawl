@@ -7,7 +7,7 @@ Programmers: Kyle, Jesse, Andrew, Joe
 
 
 //DrawEncounters will display the the health of both the monster and the player
-void drawEncounters(class Enemy * Monster)
+void drawEncounters(Enemy * Monster)
 {
 	//#########################################
 	//Graphics need to be added to their own  graphics text files

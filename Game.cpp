@@ -50,11 +50,6 @@ void main()
 	clearMemory();
 }
 
-int coordCompare(COORD coord1, COORD coord2)//OVERLOAD OPERATORS IN C++!!!
-{
-	return (coord1.X == coord2.X && coord1.Y == coord2.Y);
-}
-
 
 void moveCursor(int x, int y)
 {
@@ -63,10 +58,7 @@ void moveCursor(int x, int y)
 
 int randomNum(int low, int high)
 {
-	int r;
-
-	r = rand() % (high - low) + low;
-	return r;
+	return rand() % (high - low) + low;
 }
 
 /*
@@ -98,7 +90,7 @@ Programmer: Law
 void clearMemory()
 {
 	for (int i = 0; i < delCounter; i++)
-		free(delPointers[i]);
+		delete delPointers[i];
 	delCounter = 0;
 }
 

@@ -17,7 +17,7 @@ Programmer: Law
 */
 void enemyMove()
 {
-	class Enemy * enemy = &player.roomLoc->enemy;
+	Enemy * enemy = &player.roomLoc->enemy;
 	Coordinate coord = { enemy->coord.x, enemy->coord.y };
 
 	if (abs(enemy->coord.x - player.coord.x) > abs(enemy->coord.y - player.coord.y))
@@ -41,7 +41,7 @@ void playerMove()
 {
 	int roomChange = 0;
 	Coordinate coord = player.coord;
-	class Room * room = player.roomLoc;
+	Room * room = player.roomLoc;
 
 	switch (_getch())
 	{
@@ -101,9 +101,9 @@ Returns :
 
 Programmer: Law
 */
-int checkPlayerPos(int direction, class Room * oldRoom)
+int checkPlayerPos(int direction, Room * oldRoom)
 {
-	class Room * newRoom;
+	Room * newRoom;
 
 	switch (direction)
 	{
@@ -195,7 +195,7 @@ int checkInteraction()
 	Room * room = player.roomLoc;
 	Enemy * enemy = &room->enemy;
 
-	if (player.coord == enemy->coord && enemy->health > 0)
+	if (enemy->health > 0 && player.coord == enemy->coord)
 	{
 		//Text combat
 		interactionResult = handleEncounter(enemy);
@@ -226,14 +226,16 @@ int checkInteraction()
 			return -1;
 		}
 	}
-
-	if (player.coord == shopkeeper.coord && player.roomLoc == floorStart) { npcInteraction(&shopkeeper, merchSizeLimit); }
-	if (player.coord == innkeeper.coord && player.roomLoc == floorStart) { npcInteraction(&innkeeper, 0); }
-	if (player.coord == blacksmith.coord && player.roomLoc == floorStart) { npcInteraction(&blacksmith, merchSizeLimit); }
+	if (player.roomLoc == floorStart)
+	{
+		if (player.coord == shopkeeper.coord) { npcInteraction(&shopkeeper, merchSizeLimit); }
+		if (player.coord == innkeeper.coord) { npcInteraction(&innkeeper, 0); }
+		if (player.coord == blacksmith.coord) { npcInteraction(&blacksmith, merchSizeLimit); }
+	}
 
 	//checking to see if the character has walked into a portal
 
-	if (player.coord == room->portal.coord && room->isPortal)
+	if (room->isPortal && player.coord == room->portal.coord)
 	{
 		clearMemory();
 		if (location != (difficulty + 3))
