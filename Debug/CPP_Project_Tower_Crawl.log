@@ -1,0 +1,13 @@
+﻿  Movement.cpp
+  HandleEncounter.cpp
+  GameInteractions.cpp
+c:\users\jsabatini\towercrawl-cpp\towercrawl\gameinteractions.cpp(357): warning C4129: ' ': unrecognized character escape sequence
+c:\users\jsabatini\towercrawl-cpp\towercrawl\gameinteractions.cpp(358): warning C4129: ' ': unrecognized character escape sequence
+c:\users\jsabatini\towercrawl-cpp\towercrawl\gameinteractions.cpp(360): warning C4129: '_': unrecognized character escape sequence
+  Game.cpp
+  DrawEnvironment.cpp
+  CreateWorld.cpp
+  Generating Code...
+c:\users\jsabatini\towercrawl-cpp\towercrawl\movement.cpp(252): warning C4715: 'checkInteraction': not all control paths return a value
+  CPP_Project_Tower_Crawl.vcxproj -> c:\users\jsabatini\documents\visual studio 2015\Projects\CPP_Project_Tower_Crawl\Debug\CPP_Project_Tower_Crawl.exe
+  CPP_Project_Tower_Crawl.vcxproj -> c:\users\jsabatini\documents\visual studio 2015\Projects\CPP_Project_Tower_Crawl\Debug\CPP_Project_Tower_Crawl.pdb (Partial PDB)
